@@ -1,0 +1,64 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto, auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani2"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="20%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView height="85%">
+			<StackLayout>
+				<StackLayout class="memMargin">
+					<Label text="Member Details" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar" horizontalAlignment="left">
+					<StackLayout orientation="horizontal">
+						<Label text="Are you currently in " textWrap="true"></Label>
+						<Label text="{{userState}}? " textWrap="true" class="memDetails-underline"></Label>
+					</StackLayout>
+					<Label text="If not, choose the state you will be in at the time or your consult." textWrap="true"></Label>
+				</StackLayout>
+				<!--<StackLayout class="reganimation3">
+					<DropDown #states (selectedIndexChange)="onStateChange(states)" [items]="statesInfo" [selectedIndex]="sSelectedIndex" hint="State"></DropDown>
+				</StackLayout> -->
+				<StackLayout orientation="horizontal" class="profile-formDropline reganimation3" width="90%">
+					<Image src="res://locationicon" stretch="none" verticalAlignment="center" class="loaction-icon"></Image>
+					<StackLayout class="profile-form memberDetails-form">
+						<DropDown #states (selectedIndexChange)="onStateChange(states)" [items]="statesInfo" [selectedIndex]="sSelectedIndex" hint="State"></DropDown>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout>
+					<RL:Ripple rippleColor="#fff" class="reqbtn" (tap)="showNextPage()">
+						<Label text=" CONTINUE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<StackLayout class="memDetail-bottombg" height="15%">
+			<StackLayout class="home-bottomtext" width="80%">
+				<Label text="We need to connect you to a doctor licensed in the state your visit will be conducted in." textWrap="true"></Label>
+			</StackLayout>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>

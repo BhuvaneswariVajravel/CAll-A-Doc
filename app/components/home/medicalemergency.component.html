@@ -1,0 +1,56 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto, auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani1"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="10%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<ScrollView>
+		<StackLayout height="100%" class="servicetype-bg">
+			<StackLayout height="85%">
+				<StackLayout class="memMargin">
+					<Label text="Physician Consultation" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="servicetype-Mar" height="15%">
+					<Label text="Is this a Medical Emergency?" textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout width="85%">
+					<GridLayout columns="auto,auto" rows="auto,auto">
+						<RL:Ripple col="0" rippleColor="#fff" (tap)="showNextPage('emergencycall')" class="yesbtn">
+							<Label text="YES "></Label>
+						</RL:Ripple>
+						<RL:Ripple col="1" rippleColor="#fff" class="continuebtn1" (tap)="showNextPage('memberdetails')">
+							<Label text="NO, CONTINUE"></Label>
+						</RL:Ripple>
+					</GridLayout>
+				</StackLayout>
+			</StackLayout>
+			<StackLayout height="15%" class="home-bottombg">
+				<StackLayout class="home-bottomtext" width="80%">
+					<Label text="If this is a medical emergency, please call 911 immediately. Otherwise, click Continue." textWrap="true"></Label>
+				</StackLayout>
+			</StackLayout>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>

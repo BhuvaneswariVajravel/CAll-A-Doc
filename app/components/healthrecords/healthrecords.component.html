@@ -1,0 +1,749 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" (tap)="goback()">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="HEALTH RECORDS" class="regRound whiteTxt-Topbar"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout>
+		<TabView width="100%" (selectedIndexChange)="onTabChange($event)">
+			<StackLayout *tabItem="{title: 'Personal and Lifestyle'}">
+				<ScrollView>
+					<StackLayout [ngClass]="{'healthRecView': !healthView}">
+						<StackLayout class="conslt-controls personallife-bg" width="97%">
+							<StackLayout col="2" class="userHealthTxt" width="90%">
+								<RL:Ripple rippleColor="blue" class="profileEditbtn" (tap)="editPersonal()">
+									<Label text="EDIT" isEnabled={{!healthView}}></Label>
+								</RL:Ripple>
+							</StackLayout>
+							<StackLayout class="personallife-mar">
+								<Label text="Height" class="personallife-text"></Label>
+								<GridLayout *ngIf="healthView" columns="3*,2*" rows="auto,auto">
+									<StackLayout col="0" class="payment-cardno" orientation="horizontal" horizontalAlignment="left" width="40%">
+										<DropDown #h1 [items]="height" class="" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.htindx" (selectedIndexChange)="onHeight1Change(h1)">
+										</DropDown>
+										<!--<DropDown class="UserHealth-drophide UserHealth-Viewwidth" #dd2 [items]="height2" [selectedIndex]="htindx1"> </DropDown>-->
+									</StackLayout>
+									<StackLayout col="1" class="payment-cardno  UserHealth-dropwidth" horizontalAlignment="right" width="40%">
+										<DropDown class="UserHealth-ViewHide" isEnabled="{{ healthView }}" #h2 [items]="height2" [selectedIndex]="personalLsObj.htindx1"
+											(selectedIndexChange)="onHeight2Change(h2)">
+										</DropDown>
+									</StackLayout>
+								</GridLayout>
+								<StackLayout *ngIf="!healthView" orientation="horizontal" horizontalAlignment="left" class="payment-cardno personallife-form"
+									width="100%">
+									<Label text=" {{height.getDisplay(personalLsObj.htindx)+' '}} " class="personallife-darktext"></Label>
+									<Label text="{{height2.getDisplay(personalLsObj.htindx1)}}" class="personallife-darktext"></Label>
+								</StackLayout>
+							</StackLayout>
+							<StackLayout class="personallife-mar">
+								<Label text="Weight" class="personallife-text"></Label>
+								<StackLayout *ngIf="healthView" orientation="horizontal" horizontalAlignment="left" class="payment-cardno personallife-form"
+									width="100%">
+									<TextField width="70%" keyboardType="number" [(ngModel)]="personalData.Weight" editable="{{ healthView }}"></TextField>
+									<Label text="Pounds" class="personallife-darktext" width="30%" horizontalAlignment="right"></Label>
+								</StackLayout>
+								<StackLayout *ngIf="!healthView" orientation="horizontal" horizontalAlignment="left" class="payment-cardno personallife-form"
+									width="100%">
+									<Label text="{{ personalData.Weight }}" class="personallife-darktext"></Label>
+									<Label text="  Pounds" class="personallife-darktext"></Label>
+								</StackLayout>
+								<!--<Label text="Weight should be in positive" class="required-label" *ngIf="personalData.Weight != undefined && personalData.Weight.indexOf('-')>-1"></Label>-->
+							</StackLayout>
+
+							<StackLayout class="personallife-mar ">
+								<Label text="Blood Type" class="personallife-text"></Label>
+								<StackLayout col="1" class="payment-cardno" width="100%">
+									<DropDown #bt [items]="bloodgrp" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.bloodIndex" (selectedIndexChange)="onBloodTypeChange(bt)"
+										width="100%">
+									</DropDown>
+								</StackLayout>
+							</StackLayout>
+							<StackLayout class="personallife-mar ">
+								<Label text="Marital Status" class="personallife-text"></Label>
+								<StackLayout col="1" class="payment-cardno" width="100%">
+									<DropDown #ms [items]="marialstatus" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.maritalIndex" (selectedIndexChange)="onMaritalStateChange(ms)"
+										width="100%">
+									</DropDown>
+								</StackLayout>
+							</StackLayout>
+							<StackLayout class="personallife-mar ">
+								<Label text="Smoke" class="personallife-text"></Label>
+								<GridLayout columns="3*,2*" rows="auto,auto">
+									<StackLayout col="0" class="payment-cardno" width="50%" horizontalAlignment="left">
+										<DropDown #smk [items]="smoke" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.smokeIndx" (selectedIndexChange)="onSmokeChange(smk)"
+											width="100%">
+										</DropDown>
+									</StackLayout>
+									<StackLayout col="1" class="payment-cardno" width="50%" horizontalAlignment="right" *ngIf="personalLsObj.SmokeStatusItem != 'No'">
+										<DropDown #smkt [items]="smokehis" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.smoktindx" (selectedIndexChange)="onSmokeTimeChange(smkt)"
+											width="100%"> </DropDown>
+									</StackLayout>
+								</GridLayout>
+							</StackLayout>
+							<StackLayout class="personallife-mar ">
+								<Label text="Drink" class="personallife-text"></Label>
+								<StackLayout col="1" class="payment-cardno" width="100%">
+									<DropDown #drnk [items]="drink" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.drinkIndx" (selectedIndexChange)="onDrinkChange(drnk)"
+										width="100%">
+									</DropDown>
+								</StackLayout>
+							</StackLayout>
+							<StackLayout class="personallife-mar ">
+								<Label text="Exercise" class="personallife-text"></Label>
+								<GridLayout columns="3*,2*" rows="auto,auto">
+									<StackLayout col="0" class="payment-cardno" width="40%" horizontalAlignment="left">
+										<DropDown #exr [items]="exercise" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.exIndex" (selectedIndexChange)="onExerciseChange(exr)"
+											width="100%">
+										</DropDown>
+									</StackLayout>
+									<StackLayout col="1" class="payment-cardno" width="40%" horizontalAlignment="right" *ngIf="personalLsObj.ExerciseItem != 'No'">
+										<DropDown #exrt [items]="extimes" isEnabled="{{ healthView }}" [selectedIndex]="personalLsObj.extimeIndx" (selectedIndexChange)="onExerciseTimeChange(exrt)"
+											width="100%"> </DropDown>
+									</StackLayout>
+								</GridLayout>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout width="90%">
+							<RL:Ripple rippleColor="#fff" class="userHealthButton HealthUpdate-Btn" (tap)="updatePersonalInfo()">
+								<Label col="1" text="UPDATE"></Label>
+							</RL:Ripple>
+						</StackLayout>
+					</StackLayout>
+				</ScrollView>
+			</StackLayout>
+
+			<StackLayout *tabItem="{title: 'Drug Allergies'}">
+				<Label text="No Records Found" class="HealthNoRecords" *ngIf="drugList.length==0"></Label>
+				<StackLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="userHealthHeadTxt">
+						<Label col="0" class="DrugLeftPad" text="Drug" *ngIf="drugList.length!=0"></Label>
+						<Label col="1" class="DrugLeftPad" text="Reaction" *ngIf="drugList.length!=0"></Label>
+					</GridLayout>
+					<ScrollView height="100%">
+						<!-- MedImgDel-ScrollMar -->
+						<StackLayout class="{{deleteDrugObj.selected == true ? 'MedImgDel-ScrollMar' : 'MadImg-ScrollMar'}}">
+							<StackLayout *ngFor="let item of drugList;let i = index" [class]="i == deleteDrugObj.indx ? 'ActiveBgCol' : '' ">
+								<StackLayout width="90%">
+									<GridLayout columns="2*,2*,auto" rows="auto,auto,auto" class="userHealthBoxbg" (longPress)="onSelectDrug(i,item)">
+										<Label col="0" [text]="item.Drug"></Label>
+										<Label col="1" [text]="item.Reaction" class="userHealthBoxBod"></Label>
+										<RL:Ripple rippleColor="#000" col="2" class="userHealthBoxImage" (tap)="editDrug(item,i)">
+											<Image [src]="item.img" stretch="none" class="userHealthBoxImage"></Image>
+										</RL:Ripple>
+									</GridLayout>
+								</StackLayout>
+							</StackLayout>
+
+						</StackLayout>
+					</ScrollView>
+					<!-- MedImgDel-AddIcon  {{deleteDrugObj.selected == 'selected' ? MedImgDel-AddIcon : MedImg-AddIcon}} -->
+					<StackLayout class="{{deleteDrugObj.selected == true ? 'MedImgDel-AddIcon' : 'MedImg-AddIcon'}}">
+						<RL:Ripple rippleColor="#fff" *ngIf="!deleteDrugObj.selected" class="userHealthAddBtn" (tap)="addDrug()">
+							<Image src="res://addicon" stretch="none"></Image>
+						</RL:Ripple>
+
+						<GridLayout columns="2*,2*" rows="auto,auto" class="userHealthDelete">
+							<StackLayout col="0" horizontalAlignment="right" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" *ngIf="drugList.length != 0" class="userHealthDeleteCenter" (tap)="updateOrAddDrug('Delete',true,true)">
+									<Image src="res://trashicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Delete"></Label>
+							</StackLayout>
+							<StackLayout col="1" horizontalAlignment="left" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" *ngIf="drugList.length!=0 && deleteDrugObj.selected == true"
+									(tap)="cancelSelect()">
+									<Image src="res://cancelicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Cancel"></Label>
+							</StackLayout>
+						</GridLayout>
+
+
+					</StackLayout>
+				</StackLayout>
+
+			</StackLayout>
+
+			<StackLayout *tabItem="{title: 'Medications'}">
+				<Label text="No Records Found" class="HealthNoRecords" *ngIf="medicationsList.length==0"></Label>
+				<StackLayout>
+					<ScrollView height="100%">
+						<StackLayout class="{{delMedication.selected == true ? 'MedImgDel-ScrollMar' : 'MadImg-ScrollMar'}}">
+							<StackLayout *ngFor="let item of medicationsList; let i=index" [class]="i == delMedication.index ? 'ActiveBgCol' : '' ">
+								<StackLayout class="userHealth-MedTextBoxbg" width="90%">
+									<GridLayout columns="2*,auto" rows="auto,auto" (longPress)="onSelectMedication(i,item)">
+										<StackLayout col="0">
+											<Label text="{{item.Medication}}" class="UserHeath-MedHead"></Label>
+
+											<StackLayout orientation="horizontal" class="UserHeath-MedText">
+												<Label text="{{item.Frequency}}"></Label>
+												<Label text=" | "></Label>
+												<Label text="{{item.Status == 'Currently taking' ? 'Currently taking this': item.Status}}"></Label>
+												<!--<RL:Ripple rippleColor="#000" (tap)="showMedication(item)" class="userHealth-doubleArrow">
+												<Image src="res://doublearrow" stretch="none"></Image>
+											</RL:Ripple>-->
+											</StackLayout>
+										</StackLayout>
+										<RL:Ripple rippleColor="#000" col="1" class="userHealthBoxImage" (tap)="editMedicationDetails(item)">
+											<Image [src]="item.img" stretch="none"></Image>
+										</RL:Ripple>
+
+									</GridLayout>
+								</StackLayout>
+							</StackLayout>
+
+						</StackLayout>
+					</ScrollView>
+					<StackLayout class="{{delMedication.selected == true ? 'MedImgDel-AddIcon' : 'MedImg-AddIcon'}}">
+						<RL:Ripple rippleColor="#fff" *ngIf="!delMedication.selected" class="userHealthAddBtn" (tap)="addMedication()">
+							<Image src="res://addicon" stretch="none"></Image>
+						</RL:Ripple>
+
+						<GridLayout columns="2*,2*" rows="auto,auto" class="userHealthDelete">
+							<StackLayout col="0" *ngIf="medicationsList.length != 0 " horizontalAlignment="right" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" (tap)="deleteMedications()">
+									<Image src="res://trashicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Delete"></Label>
+							</StackLayout>
+							<StackLayout col="1" horizontalAlignment="left" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" *ngIf="medicationsList.length!=0 && delMedication.selected == true"
+									(tap)="cancelSelect()">
+									<Image src="res://cancelicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Cancel"></Label>
+							</StackLayout>
+						</GridLayout>
+
+					</StackLayout>
+
+				</StackLayout>
+			</StackLayout>
+
+
+
+			<StackLayout *tabItem="{title: 'Medical Conditions'}">
+				<Label text="No Records Found" class="HealthNoRecords" *ngIf="medicalConditionsList.length==0"></Label>
+				<StackLayout>
+					<ScrollView height="100%">
+						<StackLayout class="{{delMedicalCondition.selected == true ? 'MedImgDel-ScrollMar' : 'MadImg-ScrollMar'}}">
+							<StackLayout *ngFor="let item of medicalConditionsList;let i=index" [class]="i == delMedicalCondition.index ? 'ActiveBgCol' : '' ">
+								<StackLayout class="userHealth-MedTextBoxbg" width="90%">
+									<GridLayout columns="2*,auto" rows="auto,auto" (longPress)="onSelectMedicalCondition(i,item)">
+										<StackLayout col="0">
+											<Label text="{{item.MedicalCondition}}" class="UserHeath-MedHead"></Label>
+											<Label text="{{item.Description}}" class="UserHeath-MedConText" textWrap="true"></Label>
+											<StackLayout orientation="horizontal" class="UserHeath-MedText">
+												<Label text="{{item.Status == 'Had it before'?'Had Condition In Past':item.Status}}"></Label>
+												<!--	<RL:Ripple rippleColor="#000" (tap)="showMedicalCondition()" class="userHealth-doubleArrow">
+												<Image src="res://doublearrow" stretch="none"></Image>
+											</RL:Ripple>-->
+											</StackLayout>
+										</StackLayout>
+										<RL:Ripple rippleColor="#000" col="1" class="userHealthBoxImage" (tap)="editMedicalCondition(item)">
+											<Image [src]="item.img" stretch="none"></Image>
+										</RL:Ripple>
+
+									</GridLayout>
+								</StackLayout>
+							</StackLayout>
+						</StackLayout>
+					</ScrollView>
+
+					<StackLayout class="{{delMedicalCondition.selected == true ? 'MedImgDel-AddIcon' : 'MedImg-AddIcon'}}">
+						<RL:Ripple rippleColor="#fff" *ngIf="!delMedicalCondition.selected" class="userHealthAddBtn" (tap)="addMedicalCondition()">
+							<Image src="res://addicon" stretch="none"></Image>
+						</RL:Ripple>
+
+						<GridLayout columns="2*,2*" rows="auto,auto" class="userHealthDelete">
+							<StackLayout col="0" *ngIf="medicalConditionsList.length != 0 " horizontalAlignment="right" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" (tap)="deleteMedicalConditions()">
+									<Image src="res://trashicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Delete"></Label>
+							</StackLayout>
+							<StackLayout col="1" horizontalAlignment="left" class="DurgDelCan-Icon" *ngIf="medicalConditionsList.length!=0 && delMedicalCondition.selected">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" (tap)="cancelSelect()">
+									<Image src="res://cancelicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Cancel"></Label>
+							</StackLayout>
+						</GridLayout>
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+
+
+			<StackLayout *tabItem="{title: 'Surgery History'}">
+				<Label text="No Records Found" class="HealthNoRecords" *ngIf="surgHisList.length==0"></Label>
+				<StackLayout>
+
+					<ScrollView height="100%">
+						<StackLayout class="{{delSurgery.selected == true ? 'MedImgDel-ScrollMar' : 'MadImg-ScrollMar'}}">
+							<StackLayout *ngFor="let item of surgHisList;let i = index" [class]="i == delSurgery.indx ? 'ActiveBgCol' : '' ">
+								<StackLayout class="surgeryHistory-Boxbg" width="90%">
+									<GridLayout columns="2*,auto" rows="auto,auto" (longPress)="onSelectSurgery(i,item)">
+										<StackLayout col="0">
+											<Label [text]="item.Surgery" textWrap="true" class="UserHeath-MedHead"></Label>
+											<Label [text]="item.When" class="UserHeath-MedConText" textWrap="true"></Label>
+										</StackLayout>
+										<RL:Ripple rippleColor="#000" col="1" class="userHealthBoxImage" (tap)="editSurgeryHis(item,i)">
+											<Image [src]="item.img" stretch="none"></Image>
+										</RL:Ripple>
+									</GridLayout>
+								</StackLayout>
+							</StackLayout>
+						</StackLayout>
+					</ScrollView>
+					<StackLayout class="{{delSurgery.selected == true ? 'MedImgDel-AddIcon' : 'MedImg-AddIcon'}}">
+						<RL:Ripple rippleColor="#fff" *ngIf="!delSurgery.selected" class="userHealthAddBtn" (tap)="addSurgery()">
+							<Image src="res://addicon" stretch="none"></Image>
+						</RL:Ripple>
+						<GridLayout columns="2*,2*" rows="auto,auto" class="userHealthDelete">
+							<StackLayout col="0" *ngIf="surgHisList.length != 0 " horizontalAlignment="right" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" (tap)="updateOrAddSurgery('Delete',true,true)">
+									<Image src="res://trashicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Delete"></Label>
+							</StackLayout>
+							<StackLayout col="1" horizontalAlignment="left" class="DurgDelCan-Icon">
+								<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" *ngIf="surgHisList.length!=0 && delSurgery.selected == true"
+									(tap)="cancelSelect()">
+									<Image src="res://cancelicon" stretch="none"></Image>
+								</RL:Ripple>
+								<Label text="Cancel"></Label>
+							</StackLayout>
+						</GridLayout>
+
+					</StackLayout>
+
+				</StackLayout>
+
+			</StackLayout>
+
+			<StackLayout *tabItem="{title: 'Family History'}">
+				<GridLayout columns="2*,2*,auto" rows="auto,auto,auto" class="userHealthHeadTxt" width="95%">
+					<Label col="0" text="Condition"></Label>
+					<Label col="1" text="Who/Age when diagnosed/Description" textWrap="true"></Label>
+					<Label col="2" text=""></Label>
+				</GridLayout>
+				<ScrollView>
+					<StackLayout width="90%">
+						<StackLayout class="Family-Boxbg" *ngFor="let item of familyHistoryCondition;let i=index">
+							<GridLayout columns="2*,2*,auto" rows="2*,2*,2*" (tap)="ViewFamilyHistory(item.ItemId)">
+								<Label col="0" text="{{item.Value}}" textWrap="true"></Label>
+								<Label col="1" text="{{item.Answer == 'Y' ? 'Yes' : (item.Answer == 'N' ? 'None' : 'Unknown') }}" textWrap="true"></Label>
+								<!--<Label col="2" text="{{item.Description}}" class="Family-GeryText"></Label>
+								-->
+								<RL:Ripple rippleColor="#000" col="2" class="userHealthBoxImage" (tap)="editFamilyHistory(item.ItemId)">
+									<Image src="res://rededit" stretch="none"></Image>
+								</RL:Ripple>
+							</GridLayout>
+						</StackLayout>
+					</StackLayout>
+				</ScrollView>
+			</StackLayout>
+			<StackLayout *tabItem="{title: 'Medical Images'}">
+				<Label text="No Records Founds" class="HealthNoRecords" *ngIf="medimglist.length==0"></Label>
+				<StackLayout>
+					<ScrollView height="100%">
+						<StackLayout class="MadImg-ScrollMar">
+							<GridLayout columns="2*, 2*, 2*" rows="{{itemSpec}}" class="medicalImage-Bg">
+								<StackLayout *ngFor="let item of medimglist;let i = index" col="{{i>2?i%3:i}}" row="{{i<2?0:i/3}}" class="HealthRec-MedImgMarTop">
+									<StackLayout class="medicalImage-photoBg">
+										<RL:Ripple rippleColor="#fff" class="add-photoDel" (tap)="deleteImageWithConfirm(true,'Delete',item)">
+											<Image src="res://closeicon" stretch="none"></Image>
+										</RL:Ripple>
+										<Image [src]="'https://www.247calladoc.com/member/'+item.ImageSourceSmallURL" stretch="aspectFit" (tap)="showImageInPhotoViewer(i)"></Image>
+									</StackLayout>
+									<Label text="Image taken on "></Label>
+									<Label [text]="item.ImageTakeTime.split(' ')[0]"></Label>
+								</StackLayout>
+							</GridLayout>
+						</StackLayout>
+					</ScrollView>
+					<StackLayout class="MedImg-AddIcon">
+						<RL:Ripple rippleColor="#fff" (tap)="editMedicalImages()">
+							<Image src="res://addicon" stretch="none"></Image>
+						</RL:Ripple>
+					</StackLayout>
+				</StackLayout>
+
+			</StackLayout>
+		</TabView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="popup-blackBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}">
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="Drug Allergies"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="popupclose()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg">
+			<Label text="Drug" class="personallife-text"></Label>
+			<TextField width="100%" #txtdrug="ngModel" [(ngModel)]="drugname" required></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(drugform && txtdrug.invalid) || (txtdrug.errors && (txtdrug.dirty || txtdrug.touched)  && !txtdrug.pristine)">
+				<Label width="100%" *ngIf="txtdrug.errors.required && drugform" text="Drug is required"></Label>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="drugform && txtdrug.valid">
+				<Label width="100%" *ngIf="drugname.trim() == ''" text="Drug is required"></Label>
+			</StackLayout>
+			<Label text="Reaction" class="personallife-text"></Label>
+			<TextField width="100%" #txtreaction="ngModel" [(ngModel)]="reaction" required></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(drugform && txtreaction.invalid) || (txtreaction.errors && (txtreaction.dirty || txtreaction.touched)  && !txtreaction.pristine)">
+				<Label width="100%" *ngIf="txtreaction.errors.required && drugform" text="Reaction is required"></Label>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="drugform && txtreaction.valid">
+				<Label width="100%" *ngIf="reaction.trim() == ''" text="Reaction is required"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" (tap)="updateOrAddDrug('Add',txtdrug.valid,txtreaction.valid)">
+				<Button text="UPDATE" class="popup-button"></Button>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>
+
+<AbsoluteLayout class="popup-blackBg" visibility="{{editSurgery ? 'visible' : 'collapsed'}}">
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="Surgery History"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="popupclose()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg">
+			<Label text="Surgery" class="personallife-text"></Label>
+			<TextField #txtSurg="ngModel" [(ngModel)]="surgery" required width="100%"></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(surgform && txtSurg.invalid) || (txtSurg.errors && (txtSurg.dirty || txtSurg.touched)  && !txtSurg.pristine)">
+				<Label width="100%" *ngIf="txtSurg.errors.required && surgform" text="Surgery name is required"></Label>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="surgform && txtSurg.valid">
+				<Label width="100%" *ngIf="surgery.trim() == ''" text="Surgery name is required"></Label>
+			</StackLayout>
+			<Label text="When" class="personallife-text"></Label>
+			<TextField #txtSurgWhen="ngModel" [(ngModel)]="surgwhen" required width="100%"></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(surgform && txtSurgWhen.invalid) || (txtSurgWhen.errors && (txtSurgWhen.dirty || txtSurgWhen.touched)  && !txtSurgWhen.pristine)">
+				<Label width="100%" *ngIf="txtSurgWhen.errors.required && surgform" text="Surgery when happened is required"></Label>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="surgform && txtSurgWhen.valid">
+				<Label width="100%" *ngIf="surgwhen.trim() == ''" text="Surgery when happened is required"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" (tap)="updateOrAddSurgery('Add',txtSurg.valid,txtSurgWhen.valid)">
+				<Button text="UPDATE" class="HealthRecPopup-button"></Button>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>
+
+<AbsoluteLayout class="popup-blackBg" visibility="{{viewFamily ? 'visible' : 'collapsed'}}">
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="{{updateFamilyHistoryItem.Condition}}"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="closeViewFamilyHistory()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg" *ngIf="updateFamilyHistoryItem.Answer == 'Y' && familyHistoryItem[0].ItemId != '0'">
+			<StackLayout class="familyHistory-Bg" *ngFor="let item of familyHistoryItem;let i=index">
+				<StackLayout orientation="horizontal">
+					<Label text="Who: " class="familyHis-BlackText"></Label>
+					<Label text="{{item.Who}}" class=""></Label>
+				</StackLayout>
+				<StackLayout orientation="horizontal">
+					<Label text="Age when diagnosed: " class="familyHis-BlackText"></Label>
+					<Label text="{{item.WhatAge}}" class=""></Label>
+				</StackLayout>
+				<StackLayout orientation="horizontal">
+					<Label text="Description: " class="familyHis-BlackText"></Label>
+					<Label text="{{item.Description}}" textWrap="true" class=""></Label>
+				</StackLayout>
+			</StackLayout>
+		</StackLayout>
+		<StackLayout class="conslt-controls personallife-bg" *ngIf="updateFamilyHistoryItem.Answer == 'N' || updateFamilyHistoryItem.Answer == 'U' || (updateFamilyHistoryItem.Answer == 'Y' && familyHistoryItem[0].ItemId == '0')">
+			<Label text="No Records Found"></Label>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>
+
+<StackLayout class="popup-blackBg" visibility="{{editFamily ? 'visible' : 'collapsed'}}">
+	<StackLayout class="Fampopup-bg">
+
+		<GridLayout columns="auto, 2*, auto" rows="auto,auto,auto" class="popup-head">
+			<RL:Ripple rippleColor="#fff" col="0" (tap)="closeFamilyHistory()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<Label col="1" text="Family History"></Label>
+			<RL:Ripple col="2" rippleColor="#fff" class="FamUpdatebtn" (tap)="updateFamilyCondition()">
+				<Label text="UPDATE"></Label>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg FamilyHis-controls">
+
+			<ScrollView>
+				<StackLayout>
+					<StackLayout>
+						<Label textWrap="true" class="health-font-size" text="Have you or any blood relative (father, mother, sibling, grandparent) had the following medical condition: {{updateFamilyHistoryItem.Condition}}?"></Label>
+						<GridLayout visibility="{{ updateFamilyHistoryItem.Answer == 'Y' && familyHistoryItem[0].ItemId != '0' ? 'collapsed' : 'visible'}}"
+							columns="auto, auto, auto" rows="auto,auto,auto" class="FamilyHis-PopupLab">
+							<StackLayout col="0" orientation="horizontal" (tap)="onAnswerChange('N')">
+								<Image src="{{ updateFamilyHistoryItem.Answer == 'N' ? 'res://payradiocheck' : 'res://payradio'}}" stretch="none"></Image>
+								<Label text="None"></Label>
+							</StackLayout>
+							<StackLayout col="1" orientation="horizontal" (tap)="onAnswerChange('U')">
+								<Image src="{{ updateFamilyHistoryItem.Answer == 'U' ? 'res://payradiocheck' : 'res://payradio'}}" stretch="none"></Image>
+								<Label text="Unknown"></Label>
+							</StackLayout>
+							<StackLayout col="2" orientation="horizontal" (tap)="onAnswerChange('Y')">
+								<Image src="{{ updateFamilyHistoryItem.Answer == 'Y' ? 'res://payradiocheck' : 'res://payradio'}}" stretch="none"></Image>
+								<Label text="Yes"></Label>
+							</StackLayout>
+						</GridLayout>
+					</StackLayout>
+					<StackLayout *ngIf="updateFamilyHistoryItem.Answer == 'Y'">
+						<RL:Ripple rippleColor="#fff" *ngIf="updateFamilyHistoryItem.Answer == 'Y' && !addNewMember" (tap)="showForm()">
+							<Label text="Add New" style='text-align:center' class="FamRecPopup-button"></Label>
+</RL:Ripple>
+</StackLayout>
+<StackLayout *ngIf="updateFamilyHistoryItem.Answer == 'Y' && addNewMember">
+	<Label text="Who" class="personallife-text"></Label>
+	<StackLayout class="medication-Dropdown reganimation3 memberDet-DropImg">
+		<DropDown hint="Select" #who (selectedIndexChange)="onFamilyHistoryWhoChange(who)" [items]="familyHistoryWho" [selectedIndex]="fSelectedIndex">
+		</DropDown>
+	</StackLayout>
+	<StackLayout class="required-MarTop" width="100%" *ngIf="addFHForm && fSelectedIndex == null">
+		<Label width="100%" text="Please select Who"></Label>
+	</StackLayout>
+	<Label text="Age when diagnosed" class="personallife-text"></Label>
+	<TextField #txtAge="ngModel" width="100%" keyboardType="number" [(ngModel)]="updateFamilyHistoryItem.WhatAge" required></TextField>
+	<StackLayout class="required-MarTop" width="100%" *ngIf="(addFHForm && txtAge.invalid) || (txtAge.errors && (txtAge.dirty || txtAge.touched)  && !txtSurg.pristine)">
+		<Label width="100%" *ngIf="txtAge.errors.required && addFHForm" text="Please enter when it was diagnosed "></Label>
+	</StackLayout>
+	<Label text="Description" class="personallife-text"></Label>
+	<TextView width="100%" [(ngModel)]="updateFamilyHistoryItem.Description"></TextView>
+	<GridLayout columns="2*,2*" rows="auto,auto">
+		<RL:Ripple col="0" width="48%" rippleColor="#fff" (tap)="addNewFamilyHistoryItem()">
+			<Label text="Save" style='text-align:center' class="FamRecPopup-button"></Label>
+</RL:Ripple>
+<RL:Ripple col="1" width="48%" rippleColor="#fff" (tap)="hideForm()">
+	<Label text="Cancel" style='text-align:center' class="FamRecPopup-button"></Label>
+</RL:Ripple>
+</GridLayout>
+</StackLayout>
+</StackLayout>
+</ScrollView>
+
+
+<ScrollView>
+	<StackLayout *ngIf="updateFamilyHistoryItem.Answer == 'Y' && familyHistoryItem[0].ItemId != '0'">
+		<GridLayout columns="2*,2*,2*,2*,auto" rows="auto,auto,auto,auto" class="FamPop-HeadText">
+			<Label col="0" text="Who"></Label>
+			<Label col="1" text="At What Age"></Label>
+			<Label col="2" text="Description"></Label>
+			<Label col="3" width="20" text=""></Label>
+		</GridLayout>
+		<GridLayout *ngFor="let item of familyHistoryItem;let i=index" columns="2*,2*,2*,auto,auto" rows="auto,auto,auto,auto" class="FamPop-Text">
+			<Label col="0" text="{{item.Who}}"></Label>
+			<Label col="1" text="{{item.WhatAge}}"></Label>
+			<Label col="2" text="{{item.Description}}"></Label>
+			<RL:Ripple col="3" rippleColor="#fff" (tap)="editFamilyHistoryItem(item.ItemId)" class="editicon-Mar">
+				<Image src="res://editicon" stretch="none"></Image>
+			</RL:Ripple>
+			<RL:Ripple col="4" rippleColor="#fff" (tap)="deleteFamilyHistoryItem(item.ItemId)">
+				<Image src="res://deleteicon" stretch="none"></Image>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+</ScrollView>
+
+<!--<RL:Ripple rippleColor="#fff">
+				<Button text="UPDATE" class="HealthRecPopup-button"></Button>
+			</RL:Ripple>-->
+</StackLayout>
+</StackLayout>
+</StackLayout>
+
+<AbsoluteLayout class="popup-blackBg" visibility="{{editMedImg ? 'visible' : 'collapsed'}}">
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="Medical Images"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="popupclose()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg">
+			<Label text="Image Taken Date/Time" class="personallife-text"></Label>
+			<TextField #txtImgDate="ngModel" [(ngModel)]="imgdate" required width="100%"></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(medimgform && txtImgDate.invalid) || (txtImgDate.errors && (txtImgDate.dirty || txtImgDate.touched)  && !txtImgDate.pristine)">
+				<Label width="100%" *ngIf="txtImgDate.errors.required && medimgform" text="Image taken date is required"></Label>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="medimgform && txtImgDate.valid">
+				<Label width="100%" *ngIf="!isValidDate() && medimgform" text="Invalid date"></Label>
+			</StackLayout>
+			<Label text="Add Image" class="personallife-text"></Label>
+			<GridLayout columns="2*,2*" rows="auto,auto">
+				<RL:Ripple col="0" rippleColor="#fff" class="uploadbtn" (tap)="onSelectSingleTap()">
+					<Label text="Upload Document"></Label>
+				</RL:Ripple>
+				<RL:Ripple col="1" rippleColor="#fff" class="cambtn" (tap)='onRequestPermissionsTap()'>
+					<Label text="Capture Image"></Label>
+				</RL:Ripple>
+			</GridLayout>
+			<StackLayout class="required-MarTop" *ngIf="pic1 == null && medimgform">
+				<Label width="100%" text="Please select a picture to upload"></Label>
+			</StackLayout>
+			<StackLayout orientation="horizontal" horizontalAlignment="center">
+				<StackLayout class="add-photoBg" *ngIf="pic1 != null">
+					<RL:Ripple rippleColor="#fff" class="add-photoDel" (tap)="deleteImage('pic1')">
+						<Image src="res://closeicon" stretch="none"></Image>
+					</RL:Ripple>
+					<Image [src]="pic1" stretch="aspectFit"></Image>
+				</StackLayout>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" (tap)="delOrUploadMedImage(txtImgDate.valid,'Add','test')">
+				<Button text=" UPDATE " class="HealthRecPopup-button"></Button>
+			</RL:Ripple>
+		</StackLayout>
+
+	</StackLayout>
+</AbsoluteLayout>
+
+
+<AbsoluteLayout class="popup-blackBg" *ngIf="editMedication"><!--visibility="{{editMedication ? 'visible' : 'collapsed'}}" -->
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="Medication"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="closeMedication()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg">
+			<Label text="Medication" class="personallife-text"></Label>
+			<TextField #med="ngModel" width="100%" [(ngModel)]="Medication" required></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(mSubmitted && med.invalid) || (med.errors && (med.dirty || med.touched)  && !med.pristine)">
+				<Label width="100%" *ngIf="med.errors.required && mSubmitted" text="Medication is required"></Label>
+			</StackLayout>
+			<Label text="How often" class="personallife-text"></Label>
+			<StackLayout class="medication-Dropdown reganimation3">
+				<DropDown #frequency (selectedIndexChange)="onMedicationUsageFrequencyChange(frequency)" [items]="medicationUsageFrequency"
+					[selectedIndex]="mSelectedIndex" hint="Medication Usage Frequency"> </DropDown>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="mSubmitted &&  mSelectedIndex == null">
+				<Label width="100%" text="Frequency is required"></Label>
+			</StackLayout>
+			<Label text="Status" class="personallife-text"></Label>
+			<StackLayout class="medication-Dropdown reganimation3">
+				<DropDown hint="Medication Status" #status (selectedIndexChange)="onNedicationStatusChange(status)" [items]="medicationStatus"
+					[selectedIndex]="msSelectedIndex" hint="Status"> </DropDown>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="mSubmitted &&  msSelectedIndex == null">
+				<Label width="100%" text="Medication status is required"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff">
+				<Button text="UPDATE" (tap)="updateMedications()" class="HealthRecPopup-button"></Button>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>
+
+
+<AbsoluteLayout class="popup-blackBg" *ngIf="editMode"><!--visibility="{{editMode ? 'visible' : 'collapsed'}}"-->
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="Medical Conditions"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="closeMedicalCondition()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="conslt-controls personallife-bg">
+			<Label text="Medical Condition" class="personallife-text"></Label>
+			<StackLayout class="medication-Dropdown">
+				<DropDown #medicalcond (selectedIndexChange)="onMedicalConditionChange(medicalcond)" [items]="emrMedicalCondition" [selectedIndex]="mcSelectedIndex"
+					hint="Select"> </DropDown>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="mcSubmitted &&  mcSelectedIndex == null">
+				<Label width="100%" text="Medical Condition is required"></Label>
+			</StackLayout>
+			<Label text="Description" class="personallife-text"></Label>
+			<TextField width="100%" #desc="ngModel" [(ngModel)]="Description" required></TextField>
+			<StackLayout class="required-MarTop" *ngIf="(mcSubmitted && desc.invalid) || (desc.errors && (desc.dirty || desc.touched)  && !desc.pristine)">
+				<Label width="100%" *ngIf="desc.errors.required && mcSubmitted" text="Description is required"></Label>
+			</StackLayout>
+			<Label text="Status" class="personallife-text"></Label>
+			<StackLayout class="medication-Dropdown">
+				<DropDown #medstatus (selectedIndexChange)="onNedicalConditionStatusChange(medstatus)" [items]="medicalConditionStatus" [selectedIndex]="mcsSelectedIndex"
+					hint="Status"> </DropDown>
+			</StackLayout>
+			<StackLayout class="required-MarTop" *ngIf="mcSubmitted && mcsSelectedIndex == null">
+				<Label width="100%" text="Status is required"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff">
+				<Button text="UPDATE" (tap)="updateMedicalCondition()" class="HealthRecPopup-button"></Button>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>
+
+
+<AbsoluteLayout class="popup-blackBg inbox-popupBg " visibility="{{medication ? 'visible' : 'collapsed'}}" (tap)="closeMedicationStatus()">
+	<StackLayout class="medication-Center">
+		<RL:Ripple rippleColor="#a5a5a5" class="medication-popupBod" (tap)="closeMedicationStatus()">
+			<StackLayout orientation="horizontal">
+				<Image src="res://checkicon" stretch="none"></Image>
+				<Label text="Currently taking this"></Label>
+			</StackLayout>
+		</RL:Ripple>
+		<RL:Ripple rippleColor="#a5a5a5" class="medication-popupBod" (tap)="closeMedicationStatus()">
+			<StackLayout orientation="horizontal">
+				<Image src="res://checkedicon" stretch="none"></Image>
+				<Label text="Took this in the past"></Label>
+			</StackLayout>
+		</RL:Ripple>
+	</StackLayout>
+</AbsoluteLayout>
+
+
+<AbsoluteLayout class="inbox-popupBg UserHealth-MedpopTop" visibility="{{medicalCondition ? 'visible' : 'collapsed'}}">
+	<StackLayout width="100%">
+		<StackLayout class="medicalCondition-popup">
+			<RL:Ripple rippleColor="#a5a5a5" class="medicalCondition-popupBod">
+				<Label text="Had Condition In Past"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="medicalCondition-popupBod">
+				<Label text="Currently In Condition"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>

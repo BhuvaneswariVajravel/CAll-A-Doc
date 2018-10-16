@@ -1,0 +1,54 @@
+<StackLayout class="login-bg">
+	<ScrollView height="100%">
+		<StackLayout>
+			<StackLayout height="93%">
+				<Image src="res://logo" stretch="none" class="logo"></Image>
+				<StackLayout #formControls class="login-controls">
+					<StackLayout class="useranimation">
+						<TextField #txtUsername="ngModel" hint="Username" (loaded)="loadedField($event)" [(ngModel)]="username" class="usericon"
+							required alphanumeric returnKeyType="next" unfocus></TextField>
+						<StackLayout *ngIf="formSubmitted && txtUsername.invalid || txtUsername.errors && (txtUsername.dirty || txtUsername.touched )">
+							<Label class="required-label2" *ngIf="txtUsername.errors.required" text="Username is required"></Label>
+							<Label class="required-label2" *ngIf="txtUsername.errors.alphanumeric" text="Special characters are not allowed"></Label>
+						</StackLayout>
+						<StackLayout *ngIf="formSubmitted && txtUsername.valid">
+							<Label class="required-label2" *ngIf="username.trim()==''" text="Username is required"></Label>
+						</StackLayout>
+					</StackLayout>
+
+					<StackLayout class="passwordanimation">
+						<TextField #txtPassword="ngModel" minlength="6" secure="true" (loaded)="loadedField($event)" hint="Password" [(ngModel)]="password"
+							class="passwordicon" required returnKeyType="done" (returnPress)="doLogin(txtUsername.valid, txtPassword.valid)"></TextField>
+						<StackLayout *ngIf="formSubmitted && txtPassword.invalid ||  txtPassword.errors && (txtPassword.dirty || txtPassword.touched)  && !txtPassword.pristine">
+							<Label class="required-label2" *ngIf="txtPassword.errors.required" text="Password is required"></Label>
+							<Label class="required-label2" *ngIf="txtPassword.errors.minlength" text="Password must be longer than 6 characters"></Label>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout width="85%">
+					<!--	<Button  text = "Sign In" isEnabled="{{txtUsername.valid && txtPassword.valid  ? true : false}}" class="login-button" (tap)="doLogin()"></Button>
+					-->
+					<RL:Ripple rippleColor="#fff" #signIn (tap)="doLogin(txtUsername.valid, txtPassword.valid)">
+						<Label text="Sign In" style='text-align: center' class="login-button login-button-ripple"></Label>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#a5a5a5" [nsRouterLink]="['/forgotpassword']">
+						<StackLayout class="forgot-password-label">
+							<Label text="Forgot password ?"></Label>
+						</StackLayout>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a5a5a5" class="signup-mar" [nsRouterLink]="['/activate']">
+				<StackLayout height="8%" orientation="horizontal" horizontalAlignment="center">
+					<Label class="signup-text" text="Haven't activated your account yet? "></Label>
+					<Label class="signup-link" text="Activate now!"></Label>
+				</StackLayout>
+			</RL:Ripple>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>
+<AbsoluteLayout>
+	<StackLayout class="errorbg" *ngIf="errorMsg">
+		<Label text="Invalid Credentials."></Label>
+	</StackLayout>
+</AbsoluteLayout>

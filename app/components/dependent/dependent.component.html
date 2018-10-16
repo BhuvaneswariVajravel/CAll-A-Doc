@@ -1,0 +1,27 @@
+<StackLayout class="photo-MarRight">
+	<Image [src]="(photo != null && photo != undefined) ? 'data:image/png;base64,'+photo : 'res://male'" stretch="aspectFit" class="photo-round" (tap)="openDependents()"></Image><!--user.gender != 'Male' ?'res://female' : 'res://male'-->
+	<Image src="res://photoarrow" stretch="none" class="photo-arrow" *ngIf="dropdown"></Image>
+</StackLayout>
+
+<StackLayout class="photoDropdown-popupBg" *ngIf="dropdown" (tap)="openDependents()">
+	<StackLayout width="100%">
+		<ScrollView height="{{memlist.length > 5 ? 350 : memlist.length*55 }}" class="photoDropdown-popup">
+			<StackLayout>
+				<StackLayout *ngFor="let item of memlist; let i = index">
+					<RL:Ripple rippleColor="#a5a5a5" class="{{ item.PersonId == indx ? 'photoDropdown-userbg' : 'photoDropdown-popupBod'}}" (tap)="setMemberAccess(item.PersonId,item.DateOfBirth,item.RelationShip,i)"
+						*ngIf="(getAge(item.DateOfBirth) < 18 && item.RelationShip.indexOf('Dependent') > -1) || item.RelationShip.indexOf('Primary') > -1">
+						<StackLayout orientation="horizontal">
+							<!--item.Gender != 'Male'?'res://female':'res://male'--><!--'data:image/png;base64,'+item.photo-->
+							<Image [src]="item.photo != null && item.photo != undefined ? 'data:image/png;base64,'+item.photo : 'res://male'" stretch="aspectFit" class="photoDropdown-round"></Image>
+							<StackLayout verticalAlignment="center">
+								<Label text="{{item.FirstName+' '+item.LastName}}" class="userphoto-headtext"></Label>
+								<Label text="{{item.RelationShip}}" class="userphoto-text"></Label>
+							</StackLayout>
+						</StackLayout>
+					</RL:Ripple>
+					<Image src="res://greydownarrow" stretch="none" class="greydown-arrow" *ngIf="i < 1"></Image>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>

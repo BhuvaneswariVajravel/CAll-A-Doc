@@ -1,0 +1,68 @@
+<side-drawer>
+</side-drawer>
+<dependent></dependent>	
+	
+<StackLayout tkMainContent class="homebg">
+
+	<StackLayout class="home-topBg">
+		<GridLayout columns="auto,2*" rows="auto,auto">
+			<StackLayout col="0" class="white-LogoIcon">
+				<Image src="res://bluelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="1" class="nav-rippleText">
+				<Label text="Hello {{user.FirstName}}!" class="regRound"></Label>
+			</StackLayout>
+						
+		</GridLayout>
+	</StackLayout>
+	<ScrollView>
+		<StackLayout height="100%">
+			<StackLayout height="80%">
+				<StackLayout class="home-bannerMar">
+					<Label text="All Day, Every Day " class="home-bannertext" textWrap="true"></Label>
+					<Label text="access to a doctor." class="home-bannertext" textWrap="true"></Label>
+					<Label text="Saving your time " class="home-bannertextbold" textWrap="true"></Label>
+					<Label text="and money." class="home-bannertextbold" textWrap="true"></Label>
+				</StackLayout>
+					<StackLayout>
+					<RL:Ripple rippleColor="#164b8b" class="HomebtnTxt-link ser-animation1" [nsRouterLink]="['/servicetype']">
+						<GridLayout columns="auto, 2*" rows="auto,auto">
+							<Image col="0" src="res://navcall" stretch="none"></Image>
+							<Label col="1" text="REQUEST A CONSULT" textWrap="true" class="HomebtnTxt"></Label>
+						</GridLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#164b8b" class="HomebtnTxt-link ser-animation2" [nsRouterLink]="['/scheduledconsults']">
+						<GridLayout columns="auto, 2*" rows="auto,auto">
+							<Image col="0" src="res://navscheduled" stretch="none"></Image>
+							<Label col="1" text="SCHEDULED CONSULTS" textWrap="true" class="HomebtnTxt"></Label>
+						</GridLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#164b8b" class="HomebtnTxt-link ser-animation3" [nsRouterLink]="['/familymembers']">
+						<GridLayout columns="auto, 2*" rows="auto,auto">
+							<Image col="0" src="res://navfamily" stretch="none"></Image>
+							<Label col="1" text="FAMILY MEMBERS" textWrap="true" class="HomebtnTxt"></Label>
+						</GridLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#164b8b" class="HomebtnTxt-link ser-animation4" (tap)="openProfile('/profile')">
+						<GridLayout columns="auto, 2*" rows="auto,auto">
+							<Image col="0" src="res://profile" stretch="none"></Image>
+							<Label col="1" text="MY PROFILE" textWrap="true" class="HomebtnTxt"></Label>
+						</GridLayout>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+
+			<StackLayout height="20%" class="home-bottombg">
+				<GridLayout columns="auto, 2*" rows="auto,auto">
+					<Image col="0" src="res://logoicon" stretch="none"></Image>
+					<StackLayout col="1" class="home-bottomtext" width="80%">
+						<Label text="Save Time & Money" class="home-bottomtextbold" textWrap="true"></Label>
+						<Label text="Avoid the ER and Urgent Care clinics, and make an appointment from the comfort of your home on your own time!"
+							textWrap="true"></Label>
+					</StackLayout>
+				</GridLayout>
+			</StackLayout>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>
+

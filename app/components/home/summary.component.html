@@ -1,0 +1,113 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto,auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani8"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="80%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="memMargin">
+					<Label text="Order Summary" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar pharmacyMar" horizontalAlignment="left">
+					<Label text="Thank you for scheduling the Diagnostic Medical Consultation. Please review the information below for accuracy and completene."
+						textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout class="summary-mar reganimation2">
+					<StackLayout orientation="horizontal" class="summary-headText">
+						<Image src="res://membericon" stretch="none" class="MemConfirm-checkbox"></Image>
+						<Label text="Member Details"></Label>
+					</StackLayout>
+					<StackLayout>
+						<GridLayout columns="1*,2*" rows="auto,auto" class="summary-listText">
+							<Label col="0" text="External MemberId:" textWrap="true"></Label>
+							<Label col="1" text="{{user.ExternalMemberId}}" textWrap="true"></Label>
+						</GridLayout>
+						<GridLayout columns="1*,2*" rows="auto,auto" class="summary-listText">
+							<Label col="0" text="Name of Member:" textWrap="true"></Label>
+							<Label col="1" text="{{user.FirstName}} {{user.LastName}}" textWrap="true"></Label>
+						</GridLayout>
+						<GridLayout columns="1*,2*" rows="auto,auto" class="summary-listText summary-listgray">
+							<Label col="0" text="Phone Number:" textWrap="true"></Label>
+							<Label col="1" text="{{user.Phone}}" textWrap="true"></Label>
+						</GridLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout class="summary-mar reganimation3">
+					<StackLayout orientation="horizontal" class="summary-headText">
+						<Image src="res://consulticon" stretch="none" class="MemConfirm-checkbox"></Image>
+						<Label text="Consultation Details"></Label>
+					</StackLayout>
+					<StackLayout>
+						<GridLayout columns="1*,2*" rows="auto,auto" class="summary-listText">
+							<Label col="0" text="Schedule:" textWrap="true"></Label>
+							<!--<Label  col="1" text="07/05/2017 15:34:26 - 07/05/2017 18:34:26"  textWrap ="true" ></Label>-->
+							<Label col="1" text="{{ convertTime(scheduledTime) }}" textWrap="true"></Label>
+						</GridLayout>
+						<StackLayout *ngFor="let item of consultList;let i = index">
+							<GridLayout columns="1*,2*" rows="auto,auto" class="summary-listText summary-listgray">
+								<Label col="0" text="Headline:" textWrap="true"></Label>
+								<Label col="1" text="{{item.conditionType}}" textWrap="true"></Label>
+							</GridLayout>
+							<GridLayout columns="1*,2*" rows="auto,auto" class="summary-listText">
+								<Label col="0" text="Description:" textWrap="true"></Label>
+								<Label col="1" text="{{item.conditionDescription}}" textWrap="true"></Label>
+							</GridLayout>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout class="summary-mar reganimation4">
+					<StackLayout orientation="horizontal" class="summary-headText">
+						<Image src="res://pharmacyicon" stretch="none" class="MemConfirm-checkbox"></Image>
+						<Label text="Pharmacy"></Label>
+					</StackLayout>
+					<StackLayout class="summary-listText" horizontalAlignment="left">
+						<Label text="{{requestconsult.PharmacyName}}" textWrap="true"></Label>
+						<Label text="{{requestconsult.PharmacyAddress1}}" textWrap="true"></Label>
+						<Label text="{{requestconsult.PharmacyCity}}" textWrap="true"></Label>
+						<Label text="{{requestconsult.PharmacyState}}" textWrap="true"></Label>
+						<Label text="{{requestconsult.PharmacyZip}}" textWrap="true"></Label>
+						<Label text="{{requestconsult.PharmacyPhone}}" textWrap="true"></Label>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout class="summary-mar reganimation5">
+					<StackLayout orientation="horizontal" class="summary-headText">
+						<Image src="res://billingicon" stretch="none" class="MemConfirm-checkbox"></Image>
+						<Label text="Billing Details"></Label>
+					</StackLayout>
+					<StackLayout class="summary-listText">
+						<Label col="0" text="This consultation is included as part of the membership." textWrap="true"></Label>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout>
+					<RL:Ripple rippleColor="#fff" class="summary-btn" (tap)="showNextPage()">
+						<Label text="CONTINUE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>

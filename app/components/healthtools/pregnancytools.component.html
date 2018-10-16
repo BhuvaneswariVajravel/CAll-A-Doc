@@ -1,0 +1,87 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" (tap)="goback()">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="HEALTH TOOLS" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout height="45" class="reganimation2">
+		<GridLayout columns="2*, auto" class="inboxHeadtext">
+			<Label col="0" text="HEALTH TOPICS"></Label>
+			<RL:Ripple col="1" rippleColor="#a5a5a5" (tap)="popupbtn()">
+				<Image col="1" src="res://dropicon" stretch="none"></Image>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="health-secBg reganimation3">
+					<GridLayout columns="auto, 2*, auto">
+						<Image col="0" src="res://manicon" stretch="none"></Image>
+						<StackLayout col="1" class="health-secBod">
+							<Label text="Symptom Checker" textWrap="true" class="health-headText"></Label>
+							<Label text="Use this Symptom Checker to pinpoint possible causes of your medical symptoms." textWrap="true"></Label>
+						</StackLayout>
+						<RL:Ripple col="2" rippleColor="#fff" class="Health-startBtn" (tap)="launchBrowser('http://symptoms.webmd.com/symptomchecker')">
+							<Label text="START HERE"></Label>
+						</RL:Ripple>
+					</GridLayout>
+				</StackLayout>
+				<StackLayout width="90%" class="reganimation4">
+					<StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Image src="res://babyicon" stretch="none" class="healthtools-imageMar"></Image>
+							<StackLayout class="healthtools-list">
+								<Label text="Conception Slideshow" (tap)="launchBrowser('http://www.webmd.com/baby/slideshow-conception')"></Label>
+								<Label text="Due Date Calculator" (tap)="launchBrowser('http://www.webmd.com/baby/healthtool-due-date-calculator')"></Label>
+								<Label text="Fetal Development Slideshow" (tap)="launchBrowser('http://www.webmd.com/baby/healthtool-fetal-development-timeline')"></Label>
+								<Label text="Fetal Development Quiz" (tap)="launchBrowser('http://www.webmd.com/baby/fetal-development-quiz')"></Label>
+								<Label text="Pregnancy Calendar" (tap)="launchBrowser('http://www.webmd.com/baby/healthtool-pregnancy-calendar')"></Label>
+								<Label text="Week by week Guide" (tap)="launchBrowser('http://www.webmd.com/baby/your-pregnancy-week-by-week-weeks-1-4')"></Label>
+								<Label text="Are You at Risk for DVT?" (tap)="launchBrowser('http://www.webmd.com/dvt/deep-vein-thrombosis-risks-quiz')"></Label>
+								<Label text="Ovulation Calculator" (tap)="launchBrowser('http://www.webmd.com/baby/healthtool-ovulation-calculator')"></Label>
+								<Label text="Ovulation Calendar" (tap)="launchBrowser('http://www.webmd.com/baby/ovulation-calendar')"></Label>
+								<Label text="Quiz: Boost Your Conception Odds" (tap)="launchBrowser('http://www.webmd.com/baby/getting-pregnant-quiz')"></Label>
+							</StackLayout>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="inbox-popupBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}" (tap)="popupclose()">
+	<StackLayout width="100%">
+		<StackLayout class="inbox-popup">
+			<RL:Ripple rippleColor="#a5a5a5" [nsRouterLink]="['/healthtools']" class="inbox-popupBod">
+				<Label text="Health Topics"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod">
+				<Label text="Topics by Category"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod" [nsRouterLink]="['/fitnesstools']">
+				<Label text="Health and Fitness Tools"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod inbox-popupactive" [nsRouterLink]="['/pregnancytools']">
+				<Label text="Pregnancy Tools"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>

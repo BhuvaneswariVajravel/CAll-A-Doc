@@ -1,0 +1,118 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto, auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani9"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="90%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="memMargin">
+					<Label text="Additional Questions" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar pharmacyMar" horizontalAlignment="left">
+					<Label text="Additional Questions" textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout class="pharmacy-controls" width="85%">
+					<StackLayout class="reganimation3">
+						<Label text="Enter call back number if different than below" class="additional-Text" textWrap="true"></Label>
+						<TextField width="100%" hint="Enter Number" #txtPhone="ngModel" [(ngModel)]="userPhoneNumber" required></TextField>
+						<StackLayout *ngIf="(formSubmitted && txtPhone.invalid) || (txtPhone.errors && (txtPhone.dirty || txtPhone.touched)  && !txtPhone.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtPhone.errors.required" text="First Name is required"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout>
+						<Label text="What would you have done with your medical concerns if you had not called 24/7 Call-A-Doc?" class="additional-Text2"
+							textWrap="true"></Label>
+						<StackLayout class="schType-mar reganimation3">
+							<StackLayout orientation="horizontal" (tap)="onConcernChange(1)">
+								<Image src="{{emergencyRoomChecked ?  'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+								<Label text="Emergency Room"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout class="schType-mar reganimation4">
+							<StackLayout orientation="horizontal" (tap)="onConcernChange(2)">
+								<Image src="{{urgentCareChecked ?  'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+								<Label text="Urgent Care Clinic"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout class="schType-mar reganimation4">
+							<StackLayout orientation="horizontal" (tap)="onConcernChange(3)">
+								<Image src="{{primaryCareChecked ?  'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+								<Label text="Primary Care Physician"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout *ngIf="(formSubmitted && (!emergencyRoomChecked && !urgentCareChecked && !primaryCareChecked))">
+							<Label width="100%" class="required-label" text="Please make your selection"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="reganimation3">
+						<Label text="Need to upload a file for the doctor to review?" class="additional-Text2" textWrap="true"></Label>
+						<GridLayout columns="2*,2*" rows="auto,auto">
+							<RL:Ripple col="0" rippleColor="#fff" class="uploadbtn" (tap)="onSelectSingleTap()">
+								<Label text="Upload Document"></Label>
+							</RL:Ripple>
+							<RL:Ripple col="1" rippleColor="#fff" class="cambtn" (tap)='onRequestPermissionsTap()'>
+								<Label text="Capture Image"></Label>
+							</RL:Ripple>
+						</GridLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout orientation="horizontal" horizontalAlignment="center">
+					<StackLayout class="add-photoBg" *ngIf="pic1 != null">
+						<RL:Ripple rippleColor="#fff" class="add-photoDel" (tap)="deleteImage('pic1')">
+							<Image src="res://closeicon" stretch="none"></Image>
+						</RL:Ripple>
+						<Image [src]="pic1" stretch="aspectFit"></Image>
+					</StackLayout>
+					<StackLayout class="add-photoBg" *ngIf="pic2 != null">
+						<Image src="res://closeicon" stretch="none" class="add-photoDel" (tap)="deleteImage('pic2')"></Image>
+						<Image [src]="pic2" stretch="aspectFit"></Image>
+					</StackLayout>
+					<StackLayout class="add-photoBg" *ngIf="pic3 != null">
+						<Image src="res://closeicon" stretch="none" class="add-photoDel" (tap)="deleteImage('pic3')"></Image>
+						<Image [src]="pic3" stretch="aspectFit"></Image>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout class="pharmacy-controls" width="85%">
+					<Label text="We need your authorization for 24/7 Call-A-Doc Physicians to be your cross-coverage physician when your primary care physician is not availalable. Please check the box below to authorize."
+						class="additional-Text2" textWrap="true"></Label>
+					<StackLayout orientation="horizontal" class="MemConfirm-termsanimation add-termsanimation" (tap)="onAuthorize()">
+						<Image src="{{ authorize ? 'res://checkboxchecked' : 'res://checkbox'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+						<Label text="I authorize 24/7 Call-A-Doc Physicians to be my cross-coverage physician." textWrap="true"></Label>
+					</StackLayout>
+					<StackLayout *ngIf="(formSubmitted && !authorize)">
+						<Label width="100%" class="required-label" text="Please check it to authorize"></Label>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout width="85%">
+					<RL:Ripple rippleColor="#fff" width="100%" class="summary-btn" (tap)="showNextPage()">
+						<Label text="CONTINUE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>

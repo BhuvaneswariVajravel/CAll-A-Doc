@@ -1,0 +1,76 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent>
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="FAMILY MEMBERS" class="regRound whiteTxt-Topbar"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout>
+		<StackLayout>
+			<ScrollView height="100%">
+				<StackLayout class="MadImg-ScrollMar">
+					<StackLayout *ngFor="let item of memlist;let i = index" [class]="i == delFamMem.index ? 'ActiveBgCol' : '' ">
+						<StackLayout width="95%" class="reganimation4">
+						<GridLayout columns="2*, auto,auto" rows="auto" class="consultGrid-bg" (longPress)="onSelctFamMember(i,item,'select')">
+							<StackLayout col="0" class="consultGrid-mid" width="60%" horizontalAlignment="left">
+								<Label [text]="item.FirstName+' '+item.LastName" class="consultGrid-midHead" textWrap="true"></Label>
+								<Label [text]='"Member ID : "+item.PersonId' textWrap="true"></Label>
+								<Label [text]='"Gender  : "+item.Gender' textWrap="true"></Label>
+								<Label [text]='"DateOfBirth  : "+item.DateOfBirth' textWrap="true"></Label>
+							</StackLayout>
+							<StackLayout col="1" orientation="horizontal" class="familyGrid-right" width="40%">
+								<Label [text]="item.RelationShip" textWrap="true"></Label>
+							</StackLayout>
+							<RL:Ripple col="2" rippleColor="#fff" class="FamMem-EditIcon" (tap)="editMember(item)" *ngIf="i != 0 && primaryAccess;else other">
+								<Image [src]="i == delFamMem.index ? 'res://checkedicon' :'res://rededit'" stretch="none"></Image>
+							</RL:Ripple>
+							<ng-template #other>
+								<RL:Ripple col="2" rippleColor="#fff" class="FamMem-EditIcon">
+									<Image src="res://emptyspace" stretch="none"></Image>
+								</RL:Ripple>
+							</ng-template>
+						</GridLayout>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+			</ScrollView>
+			<StackLayout>
+				<ActivityIndicator [busy]="isLoading" width="50" height="50"></ActivityIndicator>
+			</StackLayout>
+			<StackLayout class="{{delFamMem.selected == true ? 'MedImgDel-AddIcon' : 'MedImg-AddIcon'}}" [visibility]="primaryAccess ? 'visible' : 'collapse'">
+				<RL:Ripple rippleColor="#fff" [nsRouterLink]="['/addmembers']" *ngIf="!delFamMem.selected">
+					<Image src="res://addicon" class="familyAddicon" stretch="none" horizontalAlignment="right"></Image>
+				</RL:Ripple>
+				<GridLayout columns="2*,2*" rows="auto,auto" class="userHealthDelete">
+					<StackLayout col="0" horizontalAlignment="right" class="DurgDelCan-Icon">
+						<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" (tap)="deleteFamilyMember()">
+							<Image src="res://trashicon" stretch="none"></Image>
+						</RL:Ripple>
+						<Label text="Delete"></Label>
+					</StackLayout>
+					<StackLayout col="1" horizontalAlignment="left" class="DurgDelCan-Icon">
+						<RL:Ripple rippleColor="#fff" class="userHealthDeleteCenter" (tap)="onSelctFamMember(0,'','unselect')">
+							<Image src="res://cancelicon" stretch="none"></Image>
+						</RL:Ripple>
+						<Label text="Cancel"></Label>
+					</StackLayout>
+				</GridLayout>
+			</StackLayout>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>

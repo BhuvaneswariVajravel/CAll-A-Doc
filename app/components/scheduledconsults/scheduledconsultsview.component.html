@@ -1,0 +1,198 @@
+<side-drawer></side-drawer>
+<StackLayout height="100%">
+	<StackLayout tkMainContent>
+		<StackLayout class="consulttop-bg">
+			<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+				<RL:Ripple col="0" rippleColor="#fff" (tap)="goback()">
+					<StackLayout class="ripple-healthArrow">
+						<Image src="res://backarrow" stretch="none"></Image>
+					</StackLayout>
+				</RL:Ripple>
+				<StackLayout col="1" class="white-LogoIcon">
+					<Image src="res://whitelogoicon" stretch="none"></Image>
+				</StackLayout>
+				<StackLayout col="2" class="ripple-headingText">
+					<Label text="SCHEDULED CONSULTS" class="regRound"></Label>
+				</StackLayout>
+				<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+					<StackLayout class="nav-ripple">
+						<Image src="res://emptyspace" stretch="none"></Image>
+					</StackLayout>
+				</RL:Ripple>
+			</GridLayout>
+		</StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<GridLayout columns="auto, 2*, auto" rows="auto,auto" class="consultHeading-viewBg reganimation1">
+					<!--<Image col="0" src="res://volicon" stretch="none"></Image> -->
+					<Label col="1" text="{{ schViewObj.consultType | uppercase }}"></Label>
+					<StackLayout col="2" orientation="horizontal" class="consultHeadingview-right">
+						<Label text="STATUS: " textWrap="true"></Label>
+						<Label text="NEW"></Label>
+					</StackLayout>
+				</GridLayout>
+				<StackLayout class="consultHeadingviewBg reganimation2">
+					<Label text="Description of Medical Request" class="consultGridview-midHead" textWrap="true"></Label>
+					<StackLayout class="consultView-padding">
+						<StackLayout col="1" orientation="horizontal" visibility="{{schViewObj.docName != undefined && schViewObj.docName != '' ? 'visible' : 'collapsed'}}">
+							<Label text="{{ schViewObj.docName }} " textWrap="true" class="consultGrid-midText"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal" visibility="{{schViewObj.phyaddr != 'undefined, undefined undefined' ? 'visible' : 'collapsed'}}">
+							<Label text="{{ schViewObj.phyaddr }} " textWrap="true"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal">
+							<Label text="Name: " textWrap="true"></Label>
+							<Label text="{{ user.FirstName+' '+user.LastName }}" class="consultGrid-midText" textWrap="true"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal">
+							<Label text="Relationship: " textWrap="true"></Label>
+							<Label text="{{ user.RelationShip }}" textWrap="true"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal">
+							<Label text="Subject: " textWrap="true"></Label>
+							<Label text="{{ schViewObj.subject }} " textWrap="true"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal">
+							<Label text="Schedule: " textWrap="true"></Label>
+							<Label text="{{ convertTime(schViewObj.schedule) }}"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal">
+							<Label text="Headline: " textWrap="true"></Label>
+							<Label text="{{ schViewObj.headLine }} " textWrap="true"></Label>
+						</StackLayout>
+						<StackLayout col="1" orientation="horizontal">
+							<Label text="Description: " textWrap="true"></Label>
+							<Label text="{{ schViewObj.description }} " textWrap="true"></Label>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<RL:Ripple rippleColor="#a5a5a5" class="consultView-List reganimation3" (tap)="popupbtn('phynotes')">
+					<StackLayout>
+						<Label text="Physician Progress Notes"></Label>
+					</StackLayout>
+				</RL:Ripple>
+
+				<RL:Ripple rippleColor="#a5a5a5" class="consultView-List reganimation3" (tap)="popupbtn('phyinstr')">
+					<StackLayout>
+						<Label text="Physician Instructions"></Label>
+					</StackLayout>
+				</RL:Ripple>
+
+				<RL:Ripple rippleColor="#a5a5a5" class="consultView-List reganimation3" (tap)="popupbtn('action')">
+					<StackLayout>
+						<Label text="Actions and Follow up messages"></Label>
+					</StackLayout>
+				</RL:Ripple>
+
+				<StackLayout>
+					<RL:Ripple rippleColor="#fff" class="consultView-backbtn" (tap)="goback()">
+						<Label text="BACK"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="popup-blackBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}">
+	<StackLayout class="popup-bg">
+		<GridLayout columns="2*, auto" rows="auto,auto" class="popup-head">
+			<Label col="0" text="{{ schViewObj.consultHead }}"></Label>
+			<RL:Ripple rippleColor="#fff" col="1" (tap)="popupclose()">
+				<StackLayout class="ripple-popupHead">
+					<Image src="res://closeicon" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout>
+			<StackLayout *ngIf="actionsList.length>0 && schViewObj.actionpopup == 'action'">
+				<GridLayout columns="auto, 2*" rows="auto,auto" class="consult-popupBg" *ngFor="let item of actionsList">
+					<Image col="0" src="res://popupuser" stretch="none" class="consult-usericon"></Image>
+					<StackLayout col="1">
+						<StackLayout orientation="horizontal">
+							<Label text="Subject: " textWrap="true"></Label>
+							<Label [text]="item.Subject" textWrap="true"></Label>
+						</StackLayout>
+						<StackLayout orientation="horizontal">
+							<Label text="Time:"></Label>
+							<Label [text]="convertTime(item.ActionTime)"></Label>
+						</StackLayout>
+						<StackLayout orientation="horizontal">
+							<Label [text]="item.Message" textWrap="true"></Label>
+						</StackLayout>
+					</StackLayout>
+				</GridLayout>
+			</StackLayout>
+			<GridLayout columns="auto, 2*" rows="auto,auto" class="consult-popupBg" *ngIf="actionsList.length==0 && schViewObj.actionpopup == 'action'">
+				<Image col="0" src="res://popupuser" stretch="none" class="consult-usericon"></Image>
+				<StackLayout orientation="horizontal" col="1">
+					<Label text="No Actions and Followups" textWrap="true"></Label>
+				</StackLayout>
+			</GridLayout>
+			<StackLayout *ngIf="prognotes.length>0 && schViewObj.actionpopup == 'phynotes'">
+				<ScrollView height="400">
+					<StackLayout>
+						<GridLayout columns="auto, 2*" rows="auto,auto" class="consult-popupBg" *ngFor="let item of prognotes;let i = index">
+							<StackLayout>
+								<StackLayout orientation="horizontal" *ngIf='item.PhysicianFName != undefined'>
+									<Label text=" Physician Name: " textWrap="true"></Label>
+									<Label [text]="item.PhysicianFName+' '+item.PhysicianLName" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf='item.SubjectiveChief != undefined'>
+									<Label text=" Subjective : " textWrap="true"></Label>
+									<Label [text]="item.SubjectiveChief+' '+item.SubjectiveHistory" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf="item.Objective != undefined">
+									<Label text=" Objective : " textWrap="true"></Label>
+									<Label [text]="item.Objective" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf="item.Assessment != undefined">
+									<Label text=" Assessment : " textWrap="true"></Label>
+									<Label [text]="item.Assessment" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf="item.Plan != undefined">
+									<Label text=" Plan : " textWrap="true"></Label>
+									<Label [text]="item.Plan" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf='item.ProgressNoteTime != undefined'>
+									<Label text=" Time: " textWrap="true"></Label>
+									<Label [text]="convertTime(item.ProgressNoteTime)" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf='item.Note != undefined && item.Note != ""'>
+									<Label text=" Note: " textWrap="true"></Label>
+									<Label [text]="item.Note" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf="prognotes.length == i+1">
+									<Label text="CPT Code: 99499: Telemedicine Service" textWrap="true"></Label>
+								</StackLayout>
+							</StackLayout>
+						</GridLayout>
+					</StackLayout>
+				</ScrollView>
+			</StackLayout>
+			<StackLayout *ngIf="phydocs.length>0 && schViewObj.actionpopup == 'phyinstr'">
+				<ScrollView height="400">
+					<StackLayout>
+						<GridLayout columns="auto, 2*" rows="auto,auto" class="consult-popupBg" *ngFor="let item of phydocs">
+							<StackLayout>
+								<StackLayout orientation="horizontal" *ngIf='item.Note != undefined && item.Note != ""'>
+									<Label text=" Note: " textWrap="true"></Label>
+									<Label [text]="item.Note" textWrap="true"></Label>
+								</StackLayout>
+								<StackLayout orientation="horizontal" *ngIf='item.DocumentSourceURL != undefined'>
+									<Label text=" URL: " textWrap="true"></Label>
+									<Label [text]="item.DocumentSourceURL" textWrap="true" (tap)="launchBrowser(item.DocumentSourceURL)"></Label>
+								</StackLayout>
+							</StackLayout>
+						</GridLayout>
+					</StackLayout>
+				</ScrollView>
+			</StackLayout>
+			<GridLayout columns="auto, 2*" rows="auto,auto" class="consult-popupBg" *ngIf="(schViewObj.consultHead == 'Physician Progress Notes' && prognotes.length < 1) || (schViewObj.consultHead == 'Physician Instructions' && phydocs.length < 1)">
+				<Image col="0" src="res://popupuser" stretch="none" class="consult-usericon"></Image>
+				<StackLayout orientation="horizontal" col="1">
+					<Label text="No records found" textWrap="true"></Label>
+				</StackLayout>
+			</GridLayout>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>

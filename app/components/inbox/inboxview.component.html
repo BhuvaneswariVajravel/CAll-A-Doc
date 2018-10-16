@@ -1,0 +1,71 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto, auto" width="90%" class="navBg-padding">
+			<RL:Ripple col="0" rippleColor="#fff" (tap)="goback()">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="INBOX" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout height="45">
+		<GridLayout columns="2*, auto, auto, auto" class="inboxHeadtext inboxHeadtextview">
+			<Label col="0" text="Your Consult Approved"></Label>
+			<Image col="1" src="res://inboxrep" stretch="none"></Image>
+			<Image col="2" src="res://inboxdel" stretch="none"></Image>
+			<Image col="3" src="res://dropicon" stretch="none" (tap)="popupbtn()"></Image>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="inboxviewText">
+					<GridLayout columns="2*, auto">
+						<Label col="0" text="Dr. James Test to Me"></Label>
+						<Label col="1" class="inboxviewTextRight" text="10:45 AM"></Label>
+					</GridLayout>
+				</StackLayout>
+				<StackLayout class="inboxviewblackText" *ngFor="let item of itemDetails">
+					<Label [text]="item.From"></Label>
+					<!--<Label  class="inboxviewMsg" text="Your request for consultation on 28th Jul 2017 at 11:30 AM is approved, We request you to be available on scheduled date."></Label> -->
+					<Label class="inboxviewMsg" [text]="item.Subject"></Label>
+					<Label text="Regards"></Label>
+					<Label [text]="item.From"></Label>
+				</StackLayout>
+				<StackLayout>
+					<GridLayout columns="auto, auto" class="inboxbottomtextview">
+						<Image col="0" src="res://inboxrep" stretch="none"></Image>
+						<Image col="1" src="res://inboxdel" stretch="none"></Image>
+					</GridLayout>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="inbox-popupBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}" (tap)="popupclose()">
+	<StackLayout width="100%">
+		<StackLayout class="inbox-popup">
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod inbox-popupactive" [nsRouterLink]="['/login']">
+				<Label text="All Messages"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod" [nsRouterLink]="['/activate']">
+				<Label text="New Messages"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod" [nsRouterLink]="['/termsconditions']">
+				<Label text="Already Opened"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>

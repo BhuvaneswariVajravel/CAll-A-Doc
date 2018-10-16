@@ -1,0 +1,92 @@
+<side-drawer>
+</side-drawer>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/familymembers']">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+				<StackLayout  col="1"  class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="FAMILY MEMBERS" class="regRound whiteTxt-Topbar"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg">
+		<ScrollView height="100%">
+			<StackLayout>
+				<Label text="Add New Member" class="familymem-BlackText" visibility="{{addMember.isEdited ? 'collapsed' : 'visible'}}"></Label>
+				<StackLayout class="conslt-controls personallife-bg" width="97%">
+
+					<StackLayout class="personallife-mar reganimation1">
+						<Label text="First Name" class="personallife-text"></Label>
+						<StackLayout orientation="horizontal" horizontalAlignment="left" class="payment-cardno personallife-form" width="100%">
+							<TextField width="100%" #txtfname="ngModel" [(ngModel)]="addMember.fname" required></TextField>
+						</StackLayout>
+						<StackLayout *ngIf="(addform && txtfname.invalid) || (txtfname.errors && (txtfname.dirty || txtfname.touched)  && !txtfname.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtfname.errors.required" text="Firstname is required"></Label>
+						</StackLayout>
+						<StackLayout *ngIf="addform && txtfname.valid">
+							<Label width="100%" class="required-label" *ngIf="addform && addMember.fname.trim() == ''" text="Firstname is required"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="personallife-mar reganimation1">
+						<Label text="Last Name" class="personallife-text"></Label>
+						<StackLayout orientation="horizontal" horizontalAlignment="left" class="payment-cardno personallife-form" width="100%">
+							<TextField width="100%" #txtlname="ngModel" [(ngModel)]="addMember.lname" required></TextField>
+						</StackLayout>
+						<StackLayout *ngIf="(addform && txtlname.invalid) || (txtlname.errors && (txtlname.dirty || txtlname.touched)  && !txtlname.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtlname.errors.required" text="Lastname is required"></Label>
+						</StackLayout>
+						<StackLayout *ngIf="addform && txtlname.valid">
+							<Label width="100%" class="required-label" *ngIf="addform && addMember.lname.trim() == ''" text="Lastname is required"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="personallife-mar reganimation2">
+						<Label text="Date of Birth" class="personallife-text"></Label>
+						<StackLayout col="0" orientation="horizontal" class="familymem-cal">
+							<TextField #txtdob="ngModel" [(ngModel)]="addMember.dob" required verticalAlignment="center" width="93%" keyboardType="phone" hint="MM-dd-yyyy"></TextField>
+							<Image src="res://exdateicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="required-MarTop" *ngIf="(addform && txtdob.invalid) || (txtdob.errors && (txtdob.dirty || txtdob.touched)  && !txtdob.pristine)">
+						<Label width="100%" *ngIf="txtdob.errors.required" text="Date of birth is required"></Label>
+					</StackLayout>
+					<StackLayout *ngIf="addform && txtdob.valid" class="required-MarTop">
+						<Label width="100%"  *ngIf="addform && !isValidDate()" text="Invalid date"></Label>
+					</StackLayout>
+					<StackLayout class="personallife-mar reganimation3">
+						<Label text="Gender" class="personallife-text"></Label>
+						<StackLayout col="1" class="payment-cardno" width="100%">
+							<DropDown #gen [items]="gender" [selectedIndex]="addMember.genindx" (selectedIndexChange)="onGenderChge(gen)" width="100%" hint="Select">
+							</DropDown>
+						</StackLayout>
+						<Label width="100%" class="required-label" *ngIf="addform && addMember.genindx == null" text="Please select gender"></Label>
+						<Label width="100%" class="required-label" *ngIf="addform && addMember.genindx == 2" text="Please select valid gender"></Label>
+
+					</StackLayout>
+					<StackLayout class="personallife-mar reganimation4">
+						<Label text="Relationship" class="personallife-text"></Label>
+						<StackLayout col="1" class="payment-cardno" width="100%">
+							<DropDown #rel [items]="relation" [selectedIndex]="addMember.relindx" (selectedIndexChange)="onRelChange(rel)" hint="Select"
+							 width="100%"> </DropDown>
+						</StackLayout>
+						<Label width="100%" class="required-label" *ngIf="addform && addMember.relindx == null" text="Please select relationship"></Label>
+					</StackLayout>
+					<RL:Ripple rippleColor="#fff"  (tap)="addFamilyMember(txtfname.valid,txtlname.valid,txtdob.valid)">
+						<Label text=" SAVE " class="login-button" style="text-align:center"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>

@@ -1,0 +1,50 @@
+<StackLayout>
+	<StackLayout class="reg-topBg">
+		<Label class="regTopline1"></Label>
+		<GridLayout columns="2*,2*,2*" rows="auto,auto,auto" width="100%" class="regGrid">
+			<StackLayout col="0" class="regTopsec topactive">
+				<Label text="" class="regRound"></Label>
+				<Label text="Personal Information"></Label>
+			</StackLayout>
+			<StackLayout col="1" class="regTopsec topactive ">
+				<Label text="" class="regRound"></Label>
+				<Label text="Terms/Hipaa"></Label>
+			</StackLayout>
+			<StackLayout col="2" class="regTopsec tophover">
+				<Label text="3" class="regRound"></Label>
+				<Label text="Confirmation "></Label>
+			</StackLayout>
+		</GridLayout>
+	</StackLayout>
+	<ScrollView>
+		<StackLayout>
+			<StackLayout>
+				<Label text="Order Confirmation" class="textHeading2"></Label>
+			</StackLayout>
+			<GridLayout columns="1*,3*" rows="auto,auto" width="90%" horizontalAlignment="center">
+				<StackLayout col="0" class="ordertick-mar">
+					<Image src="res://ordertick" stretch="none"></Image>
+				</StackLayout>
+				<StackLayout col="1" class="order-thanktext">
+					<Label class="order-thankhead reganimation5" text="Welcome to 24/7 Call-A-Doc!"></Label>
+					<Label class="reganimation5" textWrap="true" text="Dear {{activateAccount.APIResult_Activate.MemberName}},"></Label>
+					<Label class="reganimation5" textWrap="true" text="This message is to confirm your 24/7 Call-A-Doc account activation."></Label>
+					<Label class="reganimation5" textWrap="true" text="Please print for your records."></Label>
+					<Label class="order-line reganimation6"></Label>
+					<Label textWrap="true" text="Username" class="reganimation7"></Label>
+					<Label textWrap="true" text="{{activateAccount.APIResult_Activate.LoginName}}" class="order-textcolor reganimation7"></Label>
+					<Label textWrap="true" text="Password" class="reganimation8"></Label>
+					<Label textWrap="true" text="{{activateAccount.APIResult_Activate.Password}}" class="order-textcolor reganimation8"></Label>
+					<Label textWrap="true" text="24/7 Call-A-Doc Member Id" class="reganimation9"></Label>
+					<Label textWrap="true" text="{{activateAccount.APIResult_Activate.MemberId}}" class="order-textcolor reganimation9"></Label>
+					<Label textWrap="true" text="Membership Plan" class="reganimation10"></Label>
+					<Label textWrap="true" text="{{activateAccount.APIResult_Activate.PlanInfo}}" class="order-textcolor reganimation10"></Label>
+					<Label class="order-line reganimation10"></Label>
+					<RL:Ripple class="order-signinbtn" [nsRouterLink]="['/login']" clearHistory="true" rippleColor="#fff">
+						<Label text="SIGN IN"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</GridLayout>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>

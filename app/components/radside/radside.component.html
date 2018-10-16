@@ -1,0 +1,104 @@
+<RadSideDrawer #drawer drawerLocation="right">
+	<StackLayout tkDrawerContent>
+		<StackLayout class="nav-bg">
+			<StackLayout class="nav-logo">
+				<Image src="res://navlogo" stretch="none"></Image>
+				<Label *ngIf="user.RelationShip != 'Primary Member' && user.RelationShip != undefined" text="(You are accessing family member {{user.FirstName}} {{user.LastName}} account)"
+					class="head-textSize" textWrap="true"></Label>
+			</StackLayout>
+
+			<ScrollView tkDrawerContent>
+				<StackLayout>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/home')" clearHistory="true">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navhome" stretch="none"></Image>
+							<Label text="Home" class="homeMar" [ngClass]="{'nav-active': homeClass }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/servicetype')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navcall" stretch="none"></Image>
+							<Label text="Request a Consult" [ngClass]="{'nav-active': rcClass }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<!-- <RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/inbox')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://inbox" stretch="none"></Image>
+							<Label text="Inbox" [ngClass]="{'nav-active': inbxClass }"></Label>
+						</StackLayout>
+					</RL:Ripple> -->
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/followups')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://followup" stretch="none"></Image>
+							<Label text="Follow-ups" [ngClass]="{'nav-active': folUpClass }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/consulthistory')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navhistory" stretch="none"></Image>
+							<Label text="Consult History" [ngClass]="{'nav-active': conHisClass }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/scheduledconsults')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navscheduled" stretch="none"></Image>
+							<Label text="Scheduled Consults" [ngClass]="{'nav-active': schConslts }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="gotoRadsidePage('/familymembers')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navfamily" stretch="none"></Image>
+							<Label text="Family Members" [ngClass]="{'nav-active': fmclass }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="navigateToPage('/profile')">
+						<StackLayout orientation="horizontal">
+							<Image col="0" src="res://profile" stretch="none"></Image>
+							<Label col="1" text="My Profile" [ngClass]="{'nav-active': pfClass }"></Label>
+							<!--<ActivityIndicator  col="2" busy="true" [visibility]="ttt ? 'visible' : 'collapse'" width="20" height="20"></ActivityIndicator>-->
+							<!--<Label text="hhhh" col="2" [ngClass]="{'vijay': ttt }"></Label>-->
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="navigateToPage('/userhealthrecords')">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navhealthrecords" stretch="none"></Image>
+							<Label text="Health Records" [ngClass]="{'nav-active': hlthClass }"></Label>
+						</StackLayout>
+					</RL:Ripple>
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" [nsRouterLink]="['/videochat']">
+						<StackLayout orientation="horizontal">
+							<Image src="res://inbox" stretch="none"></Image>
+							<Label text="VIDEO CHAT" [ngClass]="{'nav-active': inbxClass }"></Label>
+						</StackLayout>
+					</RL:Ripple> 
+					<!--<RL:Ripple rippleColor="#c6c6c6" class="nav-text" [nsRouterLink]="['/healthtools']">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navhealthtools" stretch="none"></Image>
+							<Label text="Health Tools" [ngClass]="{'nav-active': htClass }"></Label>
+						</StackLayout>
+					</RL:Ripple> -->
+					<!--<RL:Ripple rippleColor="#c6c6c6" class="nav-text nav-disable">
+					<StackLayout orientation="horizontal">
+						<Image src="res://navsettting" stretch="none"></Image>
+						<Label text="Settings"></Label>
+					</StackLayout>
+				</RL:Ripple>-->
+					<RL:Ripple rippleColor="#c6c6c6" class="nav-text" (tap)="logout()">
+						<StackLayout orientation="horizontal">
+							<Image src="res://navlogout" stretch="none"></Image>
+							<Label text="Logout"></Label>
+						</StackLayout>
+					</RL:Ripple>
+				</StackLayout>
+			</ScrollView>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout tkMainContent>
+		<RL:Ripple rippleColor="#a4a4a4" col="1" class="home-topright" (tap)="openDrawer()" (longPress)="openDrawer()">
+			<StackLayout class=" nav-ripple">
+				<!--<Image src="res://navicon" stretch="none"></Image>-->
+				<Image src="{{ navIcon ? 'res://navicon' : 'res://whitemenu' }}" stretch="none"></Image>
+			</StackLayout>
+		</RL:Ripple>
+	</StackLayout>
+</RadSideDrawer>

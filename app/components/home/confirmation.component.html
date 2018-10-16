@@ -1,0 +1,63 @@
+<StackLayout class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto" rows="auto,auto,auto" width="100%">
+			<StackLayout class="progressbar-back"  col="0">
+				<RL:Ripple rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</RL:Ripple>
+			</StackLayout>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani10"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no ">
+				<Label text="100%" class="progress-LastMar"></Label>
+			</StackLayout>
+		</GridLayout>
+		<StackLayout class="progressbar-text progress-Last" width="100%">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView>
+			<StackLayout>
+				<StackLayout>
+					<Label text="Order Confirmation" class="textHeading2"></Label>
+				</StackLayout>
+				<GridLayout columns="1*,3*" rows="auto,auto" width="90%" horizontalAlignment="center" *ngIf="diagnosticconsult">
+					<StackLayout col="0" class="ordertick-mar">
+						<Image src="res://ordertick" stretch="none"></Image>
+					</StackLayout>
+					<StackLayout col="1" class="order-thanktext">
+						<Label class="order-thankhead reganimation3" text="Thank You!"></Label>
+						<Label class="reganimation3" textWrap="true" text="Your consultation request has been submitted to 24/7 Call-A-Doc."></Label>
+						<Label class="order-line reganimation4"></Label>
+						<Label textWrap="true" text="A doctor will contact you shortly. If you have questions, please contact member services at"
+							class="reganimation4"></Label>
+						<Label textWrap="true" text="1-844-362-2447" class="order-textcolor reganimation4"></Label>
+					</StackLayout>
+				</GridLayout>
+				<GridLayout columns="1*,3*" rows="auto,auto" width="90%" horizontalAlignment="center" *ngIf="emailconsult">
+					<StackLayout col="0" class="ordertick-mar">
+						<Image src="res://ordertick" stretch="none"></Image>
+					</StackLayout>
+					<StackLayout col="1" class="order-thanktext">
+						<Label class="order-thankhead reganimation3" text="Thank You!"></Label>
+						<Label class="reganimation3" textWrap="true" text="Your Email has been successfully submitted to the 24/7 Call-A-Doc Physician "></Label>
+						<Label class="order-line reganimation4"></Label>
+						<Label textWrap="true" text="You will be receiving a response within 24 hours. If you have questions, please contact member services at"
+							class="reganimation4"></Label>
+						<Label textWrap="true" text="1-844-362-2447" class="order-textcolor reganimation4"></Label>
+					</StackLayout>
+				</GridLayout>
+				<StackLayout class="confirm-closeMar">
+					<RL:Ripple rippleColor="#fff" class="summary-btn" [nsRouterLink]="['/home']">
+						<Label text="CLOSE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>

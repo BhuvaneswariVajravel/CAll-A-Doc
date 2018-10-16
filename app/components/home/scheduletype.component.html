@@ -1,0 +1,81 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto,auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani5"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="50%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView height="85%">
+			<StackLayout>
+				<StackLayout class="memMargin">
+					<Label text="Consultation Details" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar" horizontalAlignment="left">
+					<Label text="When would you like your consult to occur?  " textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout width="85%">
+					<StackLayout class="schType-mar reganimation3">
+						<StackLayout orientation="horizontal" (tap)="scheduleTypeOnChange()">
+							<Image src="{{isScheduleNow ? 'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+							<Label text="As soon as possible"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="schType-mar reganimation4">
+						<StackLayout orientation="horizontal" (tap)="scheduleTypeOnChange()">
+							<Image src="{{!isScheduleNow ?  'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+							<Label text="Schedule a specific time "></Label>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout *ngIf="!isScheduleNow" class="datetime-Martop">
+					<StackLayout *ngIf="showError">
+						<Label width="100%" class="required-label" text="Please select future date"></Label>
+					</StackLayout>
+					<Image src="res://grayarrow" stretch="none" class="datetime-arrow"></Image>
+					<StackLayout class="datetime-bg">
+						<Label text="DATE" class="datetime-text"></Label>
+						<!--<DatePicker #datePicker verticalAlignment="center"></DatePicker>-->
+						<DatePicker size="14" #date (loaded)="configureDateAndTime()" [year]="dtyear" [month]="dtmonth" [day]="dtday" class="date-text"></DatePicker>
+						<Label text="TIME" class="datetime-text" minute="00"></Label>
+						<StackLayout class="profile-formDropline schedul-dropMar">
+							<DropDown hint="" #time (selectedIndexChange)="onTimeChange($event)" [items]="timeRange" [selectedIndex]="tSelectedIndex"></DropDown>
+							<!--<TimePicker #time  [hour]="dthour" [minute]="dtmin"  ></TimePicker>-->
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout width="90%">
+					<RL:Ripple rippleColor="#fff" class="reqbtn" width="100%" (tap)="showNextPage()">
+						<Label text=" CONTINUE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<StackLayout class="memDetail-bottombg" height="15%">
+			<StackLayout class="home-bottomtext" width="80%">
+				<Label text="Would you like to speak to a doctor ASAP, or schedule a consult for a specific time?" textWrap="true"></Label>
+			</StackLayout>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>

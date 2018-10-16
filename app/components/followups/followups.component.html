@@ -1,0 +1,58 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="FOLLOW UPS" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout height="100%" class="norecords" visibility="{{followUpsList.length == 0 && norecords ? 'visible' : 'collapsed'}}">
+		<Label text="No Records Found" class="norecords"></Label>
+	</StackLayout>
+	<ListView [items]="followUpsList" (loadMoreItems)="loadMoreFollowUps()" width="100%" height="100%">
+		<ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+			<StackLayout class="reganimation4">
+				<StackLayout class="consultGrid-bg">
+					<GridLayout columns="auto, 2*, auto" rows="auto,auto" (tap)="followUpView(item)">
+						<Image col="0" src="res://msgicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email')>-1"></Image>
+						<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Diagnostic')>-1"></Image>
+						<Image col="0" src="res://convideoicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video')>-1"></Image>
+						<StackLayout col="1" class="consultGrid-mid" width="80%">
+							<Label [text]="item.ConsultationType" class="consultGrid-midHead" textWrap="true"></Label>
+							<StackLayout col="1" orientation="horizontal">
+								<!--	<Label text="Note: " textWrap="true"></Label>-->
+								<Label [text]="item.Note" class="consultGrid-midText" textWrap="true"></Label>
+							</StackLayout>
+							<StackLayout col="1" orientation="horizontal">
+								<Label text="Relationship: " textWrap="true"></Label>
+								<Label text="{{ user.RelationShip }}" textWrap="true"></Label>
+							</StackLayout>
+							<StackLayout col="1" orientation="horizontal">
+								<Label text="Date: " textWrap="true"></Label>
+								<Label [text]="convertTime(item.RelatedTime)" textWrap="true"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="2" orientation="horizontal" class="consultGrid-right">
+							<Label text="Serviced" textWrap="true"></Label>
+						</StackLayout>
+					</GridLayout>
+				</StackLayout>
+			</StackLayout>
+		</ng-template>
+	</ListView>
+</StackLayout>

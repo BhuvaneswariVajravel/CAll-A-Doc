@@ -1,0 +1,66 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto, auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani6"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="60%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView height="80%">
+			<StackLayout>
+				<StackLayout class="memMargin">
+					<Label text="Electronic Health Records" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar" horizontalAlignment="left">
+					<Label text="Are your medical records up-to-date?" textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout width="85%">
+					<StackLayout class="schType-mar reganimation3">
+						<StackLayout orientation="horizontal" (tap)="checkMedicalRecordStatus()">
+							<Image src="{{ isUptoDate ? 'res://payradiocheck' : 'res://payradio' }}" stretch="none" class="MemConfirm-checkbox"></Image>
+							<Label text="Yes"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="schType-mar reganimation4">
+						<StackLayout orientation="horizontal" (tap)="checkMedicalRecordStatus()">
+							<Image src="{{ !isUptoDate ? 'res://payradiocheck' : 'res://payradio' }}" stretch="none" class="MemConfirm-checkbox"></Image>
+							<Label text="No"></Label>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout>
+					<RL:Ripple rippleColor="#fff" class="reqbtn" (tap)="showNextPage()">
+						<Label text="CONTINUE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<StackLayout class="memDetail-bottombg" height="20%">
+			<StackLayout class="home-bottomtext" width="80%">
+				<Label text="It appears your medical record was last updated on {{ convertTime(lastUpdate) }}.  Its important that the doctor has complete and accurate information about your medical history."
+					textWrap="true"></Label>
+			</StackLayout>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>

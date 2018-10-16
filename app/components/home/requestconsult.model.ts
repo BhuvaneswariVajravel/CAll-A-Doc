@@ -1,0 +1,35 @@
+export class RequestConsultModel {
+    ExternalMemberId: string;
+    FirstName: string;
+    LastName: string;
+    ServiceType: number;
+    ServiceName: string;
+    StateId: string;
+    State: string;
+    ShortTermConditionChecked: boolean;
+    LongTermConditionChecked: boolean;
+    MedicationRefillChecked: boolean;
+    OtherHealthIssuesChecked: boolean;
+    ShortTermConditionDescription: string;
+    LongTermConditionDescription: string;
+    MedicationRefillDescription1: string;
+    MedicationRefillDescription2: string;
+    OtherHealthIssuesDescription: string;
+    ScheduleTimeNow: boolean = true;
+    ScheduleTimeFuture: any;
+    ScheduleTimeRange: string;
+    MedicalRecordsUptoDate: boolean = true;
+    UserPreferredPharmacy: any = null;
+    SetPreferredPharmacy: boolean = true;
+    PharmacyId: number;
+    PharmacyName: string;
+    PharmacyAddress1: string;
+    PharmacyCity: string;
+    PharmacyState: string;
+    PharmacyZip: string;
+    PharmacyPhone: string;
+    SearchPharmacyResults: any = null;
+    ConsultAvailable: any;
+    ConsultFee: any;
+    FeeDescription: any;
+}

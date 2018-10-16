@@ -1,0 +1,66 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="INBOX" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout height="45" class="reganimation2">
+		<GridLayout columns="2*, auto" class="inboxHeadtext">
+			<Label col="0" text="ALL MESSAGES"></Label>
+			<RL:Ripple col="1" rippleColor="#a5a5a5" (tap)="popupbtn()">
+				<Image col="1" src="res://dropicon" stretch="none" (tap)="popupbtn()"></Image>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout>
+		<StackLayout height="100%" class="norecords" visibility="{{inboxList.length == 0 ? 'visible' : 'collapsed'}}">
+			<Label text="There is no new messages" class="norecords"></Label>
+		</StackLayout>
+		<StackLayout class="reganimation3">
+			<ListView [items]="inboxList" (loadMoreItems)="loadMoreInboxItems()" width="100%" height="100%">
+				<ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+					<GridLayout columns="2*, auto" class="inbox-list" (tap)="inboxView(item)">
+						<StackLayout col="0" (tap)="inboxView(item)">
+							<Label [text]="item.From" class="inbox-boldText" (tap)="inboxView(item)"></Label>
+							<Label [text]="item.Subject" (tap)="inboxView(item)"></Label>
+							<Label class="inbox-listText" text="'Your next Follow up session is scheduled on '+item.SentDate" (tap)="inboxView(item)"></Label>
+						</StackLayout>
+						<Label class="inbox-dateText" col="1" [text]="item.SentDate" (tap)="inboxView(item)"></Label>
+					</GridLayout>
+				</ng-template>
+			</ListView>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="inbox-popupBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}" (tap)="popupclose()">
+	<StackLayout width="100%">
+		<StackLayout class="inbox-popup">
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod inbox-popupactive">
+				<Label text="All Messages"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod">
+				<Label text="New Messages"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod">
+				<Label text="Already Opened"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>

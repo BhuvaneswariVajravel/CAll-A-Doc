@@ -1,0 +1,74 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto,auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani7"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="70%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView height="83%">
+			<StackLayout>
+				<StackLayout>
+					<Label text="Preferred Pharmacy" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout orientation="horizontal" width="100%" class="pharmacy-Bod">
+					<StackLayout width="55%" class="pharmacy-map">
+						<!--<Label text="MAP" ></Label>-->
+						<MapView top="0" left="0" width="100%" height="100%" (mapReady)="onMapReady($event)"></MapView>
+					</StackLayout>
+					<StackLayout width="45%" class="pharmacy-mapText">
+						<Label text="{{preferredPharmacy.PharmacyName}}" textWrap="true"></Label>
+						<Label text="{{preferredPharmacy.PharmacyAddress1}}" textWrap="true"></Label>
+						<Label text="{{preferredPharmacy.PharmacyCity}}" textWrap="true"></Label>
+						<Label text="{{preferredPharmacy.PharmacyState}}" textWrap="true"></Label>
+						<Label text="{{preferredPharmacy.PharmacyZip}}" textWrap="true"></Label>
+						<Label text="{{preferredPharmacy.PharmacyPhone}}" textWrap="true"></Label>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar" horizontalAlignment="left">
+					<Label text="Would you like to use this pharmacy, or an alternate pharmacy?" textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout width="85%">
+					<StackLayout class="schType-mar reganimation3">
+						<StackLayout orientation="horizontal" (tap)="getPharmacyType()">
+							<Image src="{{usePreferredPharmacy ? 'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+							<Label text="Use the above pharmacy"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="schType-mar reganimation4">
+						<StackLayout orientation="horizontal" (tap)="getPharmacyType()">
+							<Image src="{{!usePreferredPharmacy ? 'res://payradiocheck' : 'res://payradio'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+							<Label text="Select alternate pharmacy"></Label>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout>
+					<RL:Ripple rippleColor="#fff" class="pharmacy-btn" (tap)="showNextPage()">
+						<Label text="CONTINUE"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>

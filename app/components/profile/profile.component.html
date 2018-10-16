@@ -1,0 +1,719 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="PROFILE" class="regRound"></Label>
+			</StackLayout>
+
+			<RL:Ripple rippleColor="#fff" col="4" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+
+	<StackLayout>
+		<TabView width="100%" (selectedIndexChange)="onTabChange($event)">
+			<StackLayout *tabItem="{title: 'CONTACT'}">
+				<ScrollView>
+					<StackLayout>
+
+						<StackLayout [ngClass]="{'profileView': !pfEdit}">
+							<!-- Remove "profileView" Class for Edit Section -->
+							<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+								<Label col="0" text="Personal Information"></Label>
+								<RL:Ripple rippleColor="red" col="1" class="profileEditbtn" (tap)="personalInfoEdit()">
+									<Label text="EDIT" isEnabled={{!pfEdit}}></Label>
+								</RL:Ripple>
+							</GridLayout>
+							<StackLayout class="profilePhotobg">
+								<!--<Image src="res://userphoto" stretch="aspectFit" class="profilePhoto"></Image>-->
+								<Image [src]="pic1 != null ? pic1 : 'res://userphoto'" stretch="aspectFit" class="profilePhoto" [visibility]="pic1 != null ? 'visible' : 'collapse'"></Image>
+								<Image [src]="user.pic2 != null ? 'data:image/png;base64,'+user.pic2 : 'res://userphoto'" stretch="aspectFit" class="profilePhoto" [visibility]="user.showPic ? 'visible' : 'collapse'"></Image>
+								<Image src="res://profilecam" stretch="none" class="profileCam" (tap)="onRequestPermissionsTap()"></Image>
+							</StackLayout>
+							<StackLayout width="90%" class="profile-form">
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="First Name" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="firstName" width="100%" hint="First name" #txtFirstName="ngModel" [(ngModel)]="personalInfo.FirstName" required
+												alphabets returnKeyType="next" editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtFirstName.invalid) || (txtFirstName.errors && (txtFirstName.dirty || txtFirstName.touched)  && !txtFirstName.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtFirstName.errors.required" text="First Name is required"></Label>
+												<Label width="100%" class="required-label" *ngIf="txtFirstName.errors.alphabets && pfEdit" text="Numeric and Special characters are not allowed"></Label>
+											</StackLayout>
+											<StackLayout *ngIf="txtFirstName.valid">
+												<Label width="100%" class="required-label" *ngIf="personalInfo.FirstName.trim() == ''" text="First Name is required"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Last Name" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="lastName" width="100%" hint="Last name" #txtLastName="ngModel" [(ngModel)]="personalInfo.LastName" required
+												alphabets returnKeyType="next" editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtLastName.invalid) || (txtLastName.errors && (txtLastName.dirty || txtLastName.touched)  && !txtLastName.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtLastName.errors.required" text="Last Name is required"></Label>
+												<Label width="100%" class="required-label" *ngIf="txtLastName.errors.alphabets && pfEdit" text="Numeric and Special characters are not allowed"></Label>
+											</StackLayout>
+											<StackLayout *ngIf="txtLastName.valid">
+												<Label width="100%" class="required-label" *ngIf="personalInfo.LastName.trim() == ''" text="Last Name is required"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="Date Of Birth" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="dob" width="100%" hint="MM/dd/yyyy" #txtDOB="ngModel" [(ngModel)]="personalInfo.DOB" required returnKeyType="next"
+												editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtDOB.invalid) || (txtDOB.errors && (txtDOB.dirty || txtDOB.touched)  && !txtDOB.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtDOB.errors.required" text="Date of Birth is required"></Label>
+											</StackLayout>
+											<StackLayout *ngIf="txtDOB.valid && !(isValidDate())">
+												<Label width="100%" class="required-label" text="Invalid Date"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Gender" class="profile-smallText"></Label>
+										<StackLayout class="profile-formDropline">
+											<DropDown [items]="gender" [selectedIndex]="personalInfo.genderIndx" isEnabled={{pfEdit}} > </DropDown>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+							</StackLayout>
+							<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+								<Label col="0" text="Contact Information"></Label>
+							</GridLayout>
+							<StackLayout width="90%" class="profile-form">
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="Address" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="addr1" width="100%" hint="Address" #txtAddr1="ngModel" [(ngModel)]="personalInfo.Address1" required returnKeyType="next"
+												editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtAddr1.invalid) || (txtAddr1.errors && (txtAddr1.dirty || txtAddr1.touched)  && !txtAddr1.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtAddr1.errors.required" text="Address is required"></Label>
+											</StackLayout>
+											<StackLayout *ngIf="txtAddr1.valid">
+												<Label width="100%" class="required-label" *ngIf="personalInfo.Address1.trim() == ''" text="Address is required"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Address 2" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField width="100%" hint="Address 2" [(ngModel)]="personalInfo.Address2" editable="{{pfEdit}}"></TextField>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="City" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="city" width="100%" hint="City" #txtCity="ngModel" [(ngModel)]="personalInfo.City" required alphabets returnKeyType="next"
+												editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtCity.invalid) || (txtCity.errors && (txtCity.dirty || txtCity.touched)  && !txtCity.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtCity.errors.required" text="City is required"></Label>
+												<Label width="100%" class="required-label" *ngIf="txtCity.errors.alphabets && pfEdit" text="Numeric and Special characters are not allowed"></Label>
+											</StackLayout>
+											<StackLayout *ngIf="txtCity.valid">
+												<Label width="100%" class="required-label" *ngIf="personalInfo.City.trim() == ''" text="City is required"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="State" class="profile-smallText"></Label>
+										<StackLayout class="profile-formDropline">
+											<DropDown #ps [items]="carstates" [selectedIndex]="personalInfo.stateIndx" isEnabled={{pfEdit}} (selectedIndexChange)="onPersonalStateChage(ps)">
+											</DropDown>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="ZIP" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="zip" width="100%" hint="ZIP" #txtZip="ngModel" keyboardType="number" [(ngModel)]="personalInfo.Zip" required
+												editable="{{pfEdit}}" minlength="5" maxlength="5"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtZip.invalid) || (txtZip.errors && (txtZip.dirty || txtZip.touched)  && !txtZip.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtZip.errors.required" text="Zip is required"></Label>
+												<Label width="100%" class="required-label" *ngIf="txtZip.errors.minlength || txtZip.errors.maxlength" text="Zip code must be a 5 digit"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Email" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="email" width="100%" hint="Email" #txtEmail="ngModel" [(ngModel)]="personalInfo.Email" email editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtEmail.invalid && personalInfo.Email != undefined) || (personalInfo.Email != undefined && txtEmail.errors && (txtEmail.dirty || txtEmail.touched)  && !txtEmail.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtEmail.errors.email && personalInfo.Email != undefined && personalInfo.Email.trim() != ''"
+													text="Invalid email"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="Phone" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="phone" width="100%" hint="999-999-9999" #txtPhone="ngModel" [(ngModel)]="personalInfo.Phone" required editable="{{pfEdit}}"></TextField>
+											<StackLayout *ngIf="(formSubmitted && txtPhone.invalid) || (txtPhone.errors && (txtPhone.dirty || txtPhone.touched)  && !txtPhone.pristine)">
+												<Label width="100%" class="required-label" *ngIf="txtPhone.errors.required" text="Phone is required"></Label>
+											</StackLayout>
+											<StackLayout *ngIf="txtPhone.valid && !isValidPhone(personalInfo.Phone)">
+												<Label width="100%" class="required-label" text="Invalid Phone"></Label>
+											</StackLayout>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Phone 2" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField id="phone2" width="100%" hint="999-999-9999" [(ngModel)]="personalInfo.Phone2" editable="{{pfEdit}}"></TextField>
+										</StackLayout>
+										<StackLayout *ngIf="(formSubmitted && personalInfo.Phone2 != undefined)">
+											<Label width="100%" class="required-label" *ngIf="personalInfo.Phone2.trim() != '' && !isValidPhone(personalInfo.Phone2)" text="Invalid phone"></Label>
+										</StackLayout>
+										<StackLayout *ngIf="(formSubmitted && personalInfo.Phone2error)">
+											<Label width="100%" class="required-label" text="Invalid phone"></Label>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+								
+									<StackLayout col="0" horizontalAlignment="left" width="100%"  class="profile-infoMar">
+										<Label text="Time Zone" class="profile-smallText"></Label>
+										<StackLayout class="profile-formDropline">
+											<DropDown [items]="timezones" [selectedIndex]="personalInfo.timezoneid" hint="Time zone" #tz  (selectedIndexChange)="onTimeZoneChange(tz)" editable="{{pfEdit}}"> </DropDown>
+										</StackLayout>
+									</StackLayout>
+								
+							</StackLayout>
+							<!--<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+								<Label col="0" text="Insurance Information"></Label>
+							</GridLayout>
+							<StackLayout width="90%" class="profile-form">
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="Plan Name" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField width="100%" hint="Plan Name" editable="{{pfEdit}}"></TextField>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Plan ID" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField width="100%" hint="Plan ID" editable="{{pfEdit}}"></TextField>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+								<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+									<StackLayout col="0" horizontalAlignment="left" width="46%">
+										<Label text="Member Number" class="profile-smallText"></Label>
+										<StackLayout>
+											<TextField width="100%" hint="1245638" editable="{{pfEdit}}"></TextField>
+										</StackLayout>
+									</StackLayout>
+									<StackLayout col="1" horizontalAlignment="right" width="46%">
+										<Label text="Group Number" class="profile-smallText"></Label>
+										<StackLayout class="profile-formDropline">
+											<DropDown [items]="state" [selectedIndex]="pSelectedIndex" hint="Group Number"> </DropDown>
+										</StackLayout>
+									</StackLayout>
+								</GridLayout>
+							</StackLayout>-->
+							<RL:Ripple col="0" rippleColor="#fff" style="text-align: center" class="profileupdate-button" (tap)="updateContactInfo(txtFirstName.valid,txtLastName.valid,txtDOB.valid,txtAddr1.valid,txtCity.valid,txtZip.valid,txtPhone.valid,txtEmail.valid)">
+<Label text="UPDATE"></Label>
+</RL:Ripple>
+</StackLayout>
+</StackLayout>
+</ScrollView>
+</StackLayout>
+<StackLayout *tabItem="{title: 'BILLING'}">
+	<ScrollView>
+		<StackLayout>
+			<StackLayout [ngClass]="{'profileView': !billEdit}">
+				<!-- Remove "profileView" Class for Edit Section -->
+				<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+					<Label col="0" text="Credit Card Details"></Label>
+					<RL:Ripple rippleColor="red" col="1" class="profileEditbtn" (tap)="billingInfoEdit()">
+						<Label text="EDIT" isEnabled={{!billEdit}}></Label>
+					</RL:Ripple>
+				</GridLayout>
+				<StackLayout width="90%" class="profile-form">
+					<StackLayout>
+						<StackLayout>
+							<Label text="Card Number" class="profile-smallText"></Label>
+							<StackLayout orientation="horizontal" class="billing-cardno">
+								<TextField id="cardno" hint="Card Number" keyboardType="number" verticalAlignment="center" #txtCardNo="ngModel" [(ngModel)]="billingInfo.CardNumber"
+									required editable="{{billEdit}}" width="94%"></TextField>
+								<Image src="res://cardnumbericon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+							</StackLayout>
+							<StackLayout *ngIf="(billFormSubmit && txtCardNo.invalid) || (txtCardNo.errors && (txtCardNo.dirty || txtCardNo.touched)  && !txtCardNo.pristine)">
+								<Label width="100%" class="required-label" *ngIf="txtCardNo.errors.required" text="Card number is required"></Label>
+							</StackLayout>
+							<StackLayout *ngIf="billFormSubmit && txtCardNo.valid && !isValidCard()">
+								<Label width="100%" class="required-label" text="Invalid card number"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout>
+							<Label text="Name on Card" class="profile-smallText"></Label>
+							<StackLayout orientation="horizontal" class="billing-cardno">
+								<TextField id="cardname" hint="Name on Card" #txtCardName="ngModel" [(ngModel)]="billingInfo.NameOnCard" required alphabets
+									verticalAlignment="center" editable="{{billEdit}}" width="95%"></TextField>
+								<Image src="res://namecardicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+							</StackLayout>
+							<StackLayout *ngIf="(billFormSubmit && txtCardName.invalid) || (txtCardName.errors && (txtCardName.dirty || txtCardName.touched)  && !txtCardName.pristine)">
+								<Label width="100%" class="required-label" *ngIf="txtCardName.errors.required" text="Crad name is required"></Label>
+								<Label width="100%" class="required-label" *ngIf="billFormSubmit && txtCardName.errors.alphabets" text="Numeric and Special characters are not allowed"></Label>
+							</StackLayout>
+							<StackLayout *ngIf="txtCardName.valid">
+								<Label width="100%" class="required-label" *ngIf="billFormSubmit && billingInfo.NameOnCard.trim() == ''" text="Card name is required"></Label>
+							</StackLayout>
+						</StackLayout>
+						<!--<GridLayout columns="2*,2*" rows="auto,auto" width="100%">
+										<StackLayout col="0" horizontalAlignment="left" width="45%">
+											<Label text="Expiration Date" class="profile-smallText"></Label>
+											<StackLayout orientation="horizontal" class="billing-cardno">
+												<TextField hint="Expiration Date" verticalAlignment="center" editable="{{billEdit}}" #txtExpDate="ngModel" [(ngModel)]="billingInfo.Address1" required width="93%"></TextField>
+												<StackLayout *ngIf="(billFormSubmit && txtExpDate.invalid) || (txtExpDate.errors && (txtExpDate.dirty || txtExpDate.touched)  && !txtExpDate.pristine)">
+													<Label width="100%" class="required-label" *ngIf="txtExpDate.errors.required" text="Expiration Date is required"></Label>													
+												</StackLayout>
+												<Image src="res://exdateicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+											</StackLayout>
+										</StackLayout>
+									
+									</GridLayout> -->
+
+						<GridLayout columns="3*,2*" rows="auto,auto" class="reganimation4" width="100%">
+							<StackLayout col="0" orientation="horizontal" class="payment-cardno memberDetails-form" width="70%" horizontalAlignment="left">
+								<!--<TextField hint="Expiration Date" verticalAlignment="center" width="93%"></TextField>-->
+								<DropDown hint="" #month (selectedIndexChange)="onMonthChange($event)" [items]="months" [selectedIndex]="billingInfo.monthindx" isEnabled={{billEdit}} 
+									verticalAlignment="center" width="40%"></DropDown>
+								<DropDown hint="" #year (selectedIndexChange)="onYearChange($event)" [items]="years" [selectedIndex]="billingInfo.yearindx" isEnabled={{billEdit}} verticalAlignment="center"
+									width="45%"></DropDown>
+								<Image src="res://exdateicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+							</StackLayout>
+							<!--<StackLayout col="1" orientation="horizontal" class="payment-cardno" width="30%" horizontalAlignment="right">
+										<TextField hint="CVV" #cvvno="ngModel" [(ngModel)]="cvv" keyboardType="number" required verticalAlignment="center" width="90%"
+											maxLength="3"></TextField>
+										<Image src="res://cvvicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+									</StackLayout>-->
+
+						</GridLayout>
+					</StackLayout>
+				</StackLayout>
+				<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+					<Label col="0" text="Billing Address"></Label>
+				</GridLayout>
+				<StackLayout width="90%" class="profile-form">
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="Address" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField id="billingaddr" width="100%" #txtBillAddr="ngModel" [(ngModel)]="billingInfo.Address1" required alphabets editable="{{billEdit}}"
+									hint="123 Main"></TextField>
+								<StackLayout *ngIf="(billFormSubmit && txtBillAddr.invalid) || (txtBillAddr.errors && (txtBillAddr.dirty || txtBillAddr.touched)  && !txtBillAddr.pristine)">
+									<Label width="100%" class="required-label" *ngIf="txtBillAddr.errors.required" text="Address is required"></Label>
+									<Label width="100%" class="required-label" *ngIf="billFormSubmit && txtBillAddr.errors.alphabets" text="Numeric and Special characters are not allowed"></Label>
+								</StackLayout>
+								<StackLayout *ngIf="txtBillAddr.valid">
+									<Label width="100%" class="required-label" *ngIf="billFormSubmit && billingInfo.Address1.trim() == ''" text="Address is required"></Label>
+								</StackLayout>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="City" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField id="billingcity" width="100%" #txtBillCity="ngModel" [(ngModel)]="billingInfo.City" required alphabets editable="{{billEdit}}"
+									hint="Anytown"></TextField>
+								<StackLayout *ngIf="(billFormSubmit && txtBillCity.invalid) || (txtBillCity.errors && (txtBillCity.dirty || txtBillCity.touched)  && !txtBillCity.pristine)">
+									<Label width="100%" class="required-label" *ngIf="txtBillCity.errors.required" text="City is required"></Label>
+									<Label width="100%" class="required-label" *ngIf="billFormSubmit && txtBillCity.errors.alphabets" text="Numeric and Special characters are not allowed"></Label>
+								</StackLayout>
+								<StackLayout *ngIf="txtBillCity.valid">
+									<Label width="100%" class="required-label" *ngIf="billFormSubmit && billingInfo.City.trim() == ''" text="City is required"></Label>
+								</StackLayout>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="State" class="profile-smallText"></Label>
+							<StackLayout class="profile-formDropline">
+								<DropDown #bil [items]="carstates" [selectedIndex]="billingInfo.stateindx" (selectedIndexChange)="onBSTChange(bil)" isEnabled={{billEdit}} hint="Billing State"> </DropDown>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="ZIP" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField id="billingzip" width="100%" keyboardType="number" #txtBillZip="ngModel" [(ngModel)]="billingInfo.Zip" required
+									editable="{{billEdit}}" hint="90210" minlength="5" maxlength="5"></TextField>
+								<StackLayout *ngIf="(billFormSubmit && txtBillZip.invalid) || (txtBillZip.errors && (txtBillZip.dirty || txtBillZip.touched)  && !txtBillZip.pristine)">
+									<Label width="100%" class="required-label" *ngIf="txtBillZip.errors.required" text="Zip is required"></Label>
+									<Label width="100%" class="required-label" *ngIf="txtBillZip.errors.minlength || txtBillZip.errors.maxlength" text="Zip code must be a 5 digit"></Label>
+								</StackLayout>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="Phone" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField id="billingphone" width="100%" #txtBillPhone="ngModel" [(ngModel)]="billingInfo.Phone" required editable="{{billEdit}}"
+									hint="999-999-9999"></TextField>
+								<StackLayout *ngIf="(billFormSubmit && txtBillPhone.invalid) || (txtBillPhone.errors && (txtBillPhone.dirty || txtBillPhone.touched)  && !txtBillPhone.pristine)">
+									<Label width="100%" class="required-label" *ngIf="txtBillPhone.errors.required" text="Phone is required"></Label>
+								</StackLayout>
+								<StackLayout *ngIf="txtBillPhone.valid && !isValidPhone(billingInfo.Phone)">
+									<Label width="100%" class="required-label" text="Invalid Phone"></Label>
+								</StackLayout>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+				</StackLayout>
+				<StackLayout orientation="horizontal" class="billing-termsanimation" (tap)="isAuthorize()">
+					<Image src="{{ authorize ? 'res://checkboxchecked' : 'res://checkbox'}}" stretch="none" class="MemConfirm-checkbox"></Image>
+					<Label text="I authorize 24/7 Call-A-Doc to charge my credit/debit card for recurring fee when applicable." textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout *ngIf="billFormSubmit && !authorize">
+					<Label width="90%" class="required-label" textWrap="true" text="We need your authorization to charge thecredit/debit cardfor the recurring fee when applicable."></Label>
+				</StackLayout>
+				<RL:Ripple col="0" rippleColor="#fff" style="text-align: center" class="profileupdate-button BtnBottomMar" (tap)="updateBillInfo(txtCardNo.valid,txtCardName.valid,txtBillAddr.valid,txtBillCity.valid,txtBillZip.valid,txtBillPhone.valid)">
+					<Label text="UPDATE"></Label>
+				</RL:Ripple>
+			</StackLayout>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>
+<StackLayout *tabItem="{title: 'INSURANCE'}">
+	<ScrollView>
+		<StackLayout>
+			<StackLayout [ngClass]="{'profileView': !insurEdit}">
+				<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+					<Label col="0" text="Insurance Information"></Label>
+					<RL:Ripple rippleColor="red" col="1" class="profileEditbtn" (tap)="insureInfoEdit()">
+						<Label text="EDIT" isEnabled={{!insurEdit}}></Label>
+					</RL:Ripple>
+				</GridLayout>
+				<StackLayout width="90%" class="profile-form">
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="Carrier Name" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" #txtCrName="ngModel" [(ngModel)]="insureInfo.CarrierName" required alphabets hint="Carrier Name"
+									editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+							<StackLayout *ngIf="(insrFormSubmit && txtCrName.invalid) || (txtCrName.errors && (txtCrName.dirty || txtCrName.touched)  && !txtCrName.pristine)">
+								<Label width="100%" class="required-label" *ngIf="insrFormSubmit && txtCrName.errors.required" text="Carrier name is required"></Label>
+								<Label width="100%" class="required-label" *ngIf="insrFormSubmit && txtCrName.errors.alphabets" text="Numeric and Special characters are not allowed"></Label>
+							</StackLayout>
+							<StackLayout *ngIf="txtCrName.valid">
+								<Label width="100%" class="required-label" *ngIf="insureInfo.CarrierName.trim() == ''" text="Carrier name is required"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="Carrier Address" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" [(ngModel)]="insureInfo.CarrierAddress" hint="Carrier Address" editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="Carrier City" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" [(ngModel)]="insureInfo.CarrierCity" hint="Carrier City" editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="Carrier State" class="profile-smallText"></Label>
+							<StackLayout class="profile-formDropline">
+								<DropDown #st [items]="carstates" [selectedIndex]="insureInfo.stateIndx" hint="Carrier State" (selectedIndexChange)="onCarStateChage(st)">
+								</DropDown>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="Carrier Zip" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" [(ngModel)]="insureInfo.CarrierZip" hint="Carrier Zip" keyboardType="number" editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+							<StackLayout>
+								<Label width="100%" class="required-label" *ngIf="insrFormSubmit && insureInfo.invalzip == true" text="invalid zip"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="Carrier Phone" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" hint="999-999-9999" #txtCrPhone="ngModel" [(ngModel)]="insureInfo.CarrierPhone" required editable="{{insurEdit}}"
+									(textChange)="formatPhoneNumber(insureInfo.CarrierPhone)"></TextField>
+							</StackLayout>
+							<StackLayout *ngIf="(insrFormSubmit && txtCrPhone.invalid) || (txtCrPhone.errors && (txtCrPhone.dirty || txtCrPhone.touched)  && !txtCrPhone.pristine)">
+								<Label width="100%" class="required-label" *ngIf="insrFormSubmit && txtCrPhone.errors.required" text="Phone is required"></Label>
+							</StackLayout>
+							<StackLayout *ngIf="txtCrPhone.valid && !isValidPhone(insureInfo.CarrierPhone)">
+								<Label width="100%" class="required-label" text="Invalid Phone"></Label>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="Insurance Group Id" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" [(ngModel)]="insureInfo.InsuranceGroupId" hint="Insurance Group Id" editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="Insurance Member Id" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" hint="Insurance Member Id" #txtCrMemId="ngModel" pattern="^((?!_)[A-Z a-z0-9])+$" [(ngModel)]="insureInfo.InsuranceMemberId"
+									required editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+							<StackLayout *ngIf="(insrFormSubmit && txtCrMemId.invalid) || (txtCrMemId.errors && (txtCrMemId.dirty || txtCrMemId.touched)  && !txtCrMemId.pristine)">
+								<Label width="100%" class="required-label" *ngIf="txtCrMemId.errors.required" text="Member Id is required"></Label>
+							</StackLayout>
+							<StackLayout *ngIf="txtCrMemId.valid">
+								<Label width="100%" class="required-label" *ngIf="insrFormSubmit && !isValidNo(insureInfo.InsuranceMemberId)" text="Allowed only numeric letters"></Label>
+							</StackLayout>-->
+						</StackLayout>
+					</GridLayout>
+					<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+						<StackLayout col="0" horizontalAlignment="left" width="46%">
+							<Label text="BIN" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" hint="BIN" [(ngModel)]="insureInfo.BIN" editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout col="1" horizontalAlignment="right" width="46%">
+							<Label text="PCN" class="profile-smallText"></Label>
+							<StackLayout>
+								<TextField width="100%" hint="PCN" [(ngModel)]="insureInfo.PCN" editable="{{insurEdit}}"></TextField>
+							</StackLayout>
+						</StackLayout>
+					</GridLayout>
+				</StackLayout>
+				<RL:Ripple col="0" rippleColor="#fff" style="text-align: center" class="profileupdate-button" (tap)="updateInsuranceInfo(txtCrName.valid,txtCrPhone.valid)">
+<Label text="UPDATE"></Label>
+</RL:Ripple>
+</StackLayout>
+</StackLayout>
+</ScrollView>
+</StackLayout>
+<StackLayout *tabItem="{title: 'PREFERRED PHARMACY'}">
+	<ScrollView id="scrollid" height="100%">
+		<StackLayout  class="PreForm_padding">
+			<StackLayout>
+				<StackLayout class="pharmacy-map">
+					<MapView top="0" left="0" width="100%" height="100%" (mapReady)="onMapReady($event)" (markerSelect)="onMarkerSelect($event)"></MapView>
+				</StackLayout>
+				<GridLayout columns="2*,auto" rows="auto,auto" class="preferred-bg" *ngIf="prefPhar.PharmacyName != undefined">
+					<StackLayout col="0" class="preferred-left" width="55%">
+						<Label textWrap="true" [text]="prefPhar.PharmacyName"></Label>
+						<Label textWrap="true" [text]="prefPhar.PharmacyAddress1+' '+prefPhar.PharmacyCity+' '+prefPhar.PharmacyState+' '+prefPhar.PharmacyZip"></Label>
+					</StackLayout>
+					<StackLayout col="1" width="40%">
+						<Label text="Operating Hours:"></Label>
+						<StackLayout orientation="horizontal" col="1">
+							<Label text="Phone: "></Label>
+							<Label [text]="formatPhoneNumber(prefPhar.PharmacyPhone)"></Label>
+						</StackLayout>
+						<StackLayout orientation="horizontal" col="1">
+							<Label text="Fax: "></Label>
+						</StackLayout>
+					</StackLayout>
+				</GridLayout>
+			</StackLayout>
+			<StackLayout>
+				<GridLayout columns="2*,auto" rows="auto,auto" class="textHeading memMargin" (tap)="toggle()">
+					<Label col="0" text="Search Pharmacy"></Label>
+					<Image col="1" [src]="pharSearchTab ? 'res://minusicon': 'res://plusicon'" stretch="none"></Image>
+				</GridLayout>
+				<StackLayout [visibility]="pharSearchTab ? 'visible' : 'collapse'">
+					<StackLayout class="pharmacy-controls" width="85%">
+						<StackLayout class="reganimation2">
+							<TextField hint="Pharmacy Name" #txtPharName="ngModel" [(ngModel)]="pharname" alphanumeric></TextField>
+						</StackLayout>
+						<StackLayout *ngIf="(txtPharName.errors && (txtPharName.dirty || txtPharName.touched)  && !txtPharName.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtPharName.errors.alphanumeric" text="Special characters not allowed."></Label>
+						</StackLayout>
+						<StackLayout class="reganimation3">
+							<TextField hint="City" [(ngModel)]="city"></TextField>
+						</StackLayout>
+						<StackLayout class="reganimation4">
+							<DropDown #states (selectedIndexChange)="onStateChange(states)" [items]="carstates" hint="State"></DropDown>
+						</StackLayout>
+						<StackLayout class="reganimation4">
+							<Label text="" class="dropdownline "></Label>
+						</StackLayout>
+						<StackLayout class="reganimation4">
+							<TextField hint="Zipcode" keyboardType="number" #txtZipCode="ngModel" [(ngModel)]="zipcode" maxlength="5" minlength="5"></TextField>
+							<StackLayout *ngIf="(formSubmitted && txtZipCode.invalid) || (txtZipCode.errors && (txtZipCode.dirty || txtZipCode.touched)  && !txtZipCode.pristine)">
+								<Label width="100%" class="required-label" *ngIf="txtZipCode.errors.minlength || txtZipCode.errors.maxlength" text="Zip code must be a 5 digit"></Label>
+							</StackLayout>
+						</StackLayout>
+					</StackLayout>
+					<RL:Ripple rippleColor="#fff" (tap)="searchPharmacy(txtPharName.valid,txtZipCode.valid)">
+						<StackLayout class="conslt-backbtn" width="85%">
+							<Label text="SEARCH"></Label>
+						</StackLayout>
+					</RL:Ripple>
+				</StackLayout>
+				<StackLayout>
+					<Label text="Select your preferred pharmacy" class="pharmacy-headText" width="85%" *ngIf="pharmacyList.length != 0"></Label>
+					<Label *ngIf="selectedPharmacy.submitted == true && (selectedPharmacy.PharmacyId == null || selectedPharmacy.PharmacyId == undefined)"
+						text="Select your preferred pharmacy" class="search-required-label" width="85%"></Label>
+
+					<StackLayout height="100%" style="text-align: center;margin: 30 0;color: #086872;" *ngIf="pharmacyList.length == 0">
+<Label text="No Pharmacies Found"></Label>
+</StackLayout>
+<StackLayout *ngFor="let item of pharmacyList;let i = index" width="100%" height="100%">
+	<GridLayout columns="2*, auto " rows="auto,auto " class="pharmacyGrid-bg">
+		<StackLayout col="0 " class="pharmacyGrid-mid" (tap)="setAsPreferredPharmacy(i)">
+			<GridLayout columns="2*,auto " rows="auto,auto ">
+				<StackLayout col="0 " class="pharmacy-mapText" horizontalAlignment="left">
+					<Label [text]="item.PharmacyName" textWrap="true"></Label>
+					<Label [text]='item.PharmacyAddress1+ " " + item.PharmacyCity +", "+item.PharmacyState+" "+item.PharmacyZip' textWrap="true"></Label>
+					<Label [text]="item.PharmacyPhone" textWrap="true"></Label>
+				</StackLayout>
+				<Image col="1" src="res://maptick" stretch="none" class="pharmacyGrid-left" *ngIf="item.MemberDefaultPharmacy"></Image>
+			</GridLayout>
+		</StackLayout>
+		<StackLayout col="1" verticalAlignment="center">
+			<RL:Ripple rippleColor="#fff" class="pharmacyGrid-right" (tap)="mapInGoogle(item)">
+				<Label text="MAP IT" textWrap="true"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</GridLayout>
+</StackLayout>
+</StackLayout>
+</StackLayout>
+</StackLayout>
+</ScrollView>
+<!-- visibility="{{(pharmacyList.length> 0 && !pharSearchTab) ? 'visible' : 'collapsed'}}"-->
+<Button text="SET PREFERRED PHARMACY" *ngIf="pharmacyList.length > 0 && !pharSearchTab" style="margin:-65 30 20 30;background-color: #2b5c97;color: #fff;padding:10 5 10 5; border-radius:5;" (tap)="updatePreferredPhar()"></Button>
+</StackLayout>
+<StackLayout *tabItem="{title: 'PLAN INFO'}">
+	<StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="profileView">
+					<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+						<Label col="0" text="Plan History"></Label>
+					</GridLayout>
+					<StackLayout width="90%" class="profile-form">
+						<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+							<StackLayout col="0" horizontalAlignment="left" width="46%">
+								<Label text="Plan ID" class="profile-smallText"></Label>
+								<StackLayout>
+									<Label width="100%" text="{{planInfo.PlanId}}"></Label>
+								</StackLayout>
+							</StackLayout>
+							<StackLayout col="1" horizontalAlignment="right" width="46%">
+								<Label text="Plan Name" class="profile-smallText"></Label>
+								<StackLayout>
+									<Label width="100%" text="{{planInfo.PlanName}}"></Label>
+								</StackLayout>
+							</StackLayout>
+						</GridLayout>
+						<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+							<StackLayout col="0" horizontalAlignment="left" width="46%">
+								<Label text="Plan Option" class="profile-smallText"></Label>
+								<StackLayout>
+									<Label width="100%" text="{{planInfo.PlanOption}}"></Label>
+								</StackLayout>
+							</StackLayout>
+							<StackLayout col="1" horizontalAlignment="right" width="46%">
+								<Label text="Effective Begin" class="profile-smallText"></Label>
+								<StackLayout>
+									<Label width="100%" text="{{planInfo.EffBegin}}"></Label>
+								</StackLayout>
+							</StackLayout>
+						</GridLayout>
+						<GridLayout columns="2*,2*" rows="auto,auto" class="profile-infoMar">
+							<StackLayout col="0" horizontalAlignment="left" width="46%">
+								<Label text="Effective End" class="profile-smallText"></Label>
+								<StackLayout>
+									<Label width="100%" text="{{planInfo.EffEnd}}"></Label>
+								</StackLayout>
+							</StackLayout>
+						</GridLayout>
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<StackLayout *tabItem="{title: 'LOGIN DETAILS'}">
+	<ScrollView>
+		<StackLayout>
+			<StackLayout class="profileView">
+				<!-- Remove "profileView" Class for Edit Section -->
+				<GridLayout columns="2*,auto" rows="auto,auto" class="profileHeadbg">
+					<Label col="0" text="Login Details"></Label>
+					<RL:Ripple rippleColor="red" col="1" class="profileEditbtn">
+						<Label text="EDIT"></Label>
+					</RL:Ripple>
+				</GridLayout>
+				<StackLayout width="90%" class="profile-form">
+					<StackLayout>
+						<StackLayout class="profileView">
+							<Label text="Member ID" class="profile-smallText"></Label>
+							<StackLayout orientation="horizontal" class="billing-cardno">
+								<TextField hint="{{user.ExternalMemberId}}" verticalAlignment="center" width="94%" editable="false"></TextField>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout>
+							<Label text="Username" class="profile-smallText"></Label>
+							<StackLayout orientation="horizontal" class="billing-cardno">
+								<TextField hint="{{user.username}}" editable="false" verticalAlignment="center" width="95%"></TextField>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout>
+							<Label text="Login Password" class="profile-smallText"></Label>
+							<StackLayout orientation="horizontal" class="billing-cardno">
+								<TextField hint="Login Password" verticalAlignment="center" width="95%"></TextField>
+								<Image src="res://infoicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout>
+							<Label text="Password Confirm" class="profile-smallText"></Label>
+							<StackLayout orientation="horizontal" class="billing-cardno">
+								<TextField hint="Password Confirm" verticalAlignment="center" width="95%"></TextField>
+							</StackLayout>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<Button text="UPDATE" class="profileupdate-button"></Button>
+			</StackLayout>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>
+</TabView>
+</StackLayout>
+</StackLayout>
+<AbsoluteLayout visibility="{{selectedPharmacy.error == false ? 'visible' : 'collapsed'}}">
+	<StackLayout class="successbg">
+		<Label text="Preferred pharmacy Successfully Saved."></Label>
+	</StackLayout>
+</AbsoluteLayout>
+<AbsoluteLayout visibility="{{imgdtls.result ? 'visible' : 'collapsed'}}">
+	<StackLayout class="successbg">
+		<Label text="Profile photo uploaded Successfully."></Label>
+	</StackLayout>
+</AbsoluteLayout>

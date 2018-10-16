@@ -1,0 +1,195 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="HEALTH TOOLS" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout height="45" class="reganimation2">
+		<GridLayout columns="2*, auto" class="inboxHeadtext">
+			<Label col="0" text="HEALTH TOPICS"></Label>
+			<RL:Ripple col="1" rippleColor="#a5a5a5" (tap)="popupbtn()">
+				<Image src="res://dropicon" stretch="none"></Image>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+
+	<StackLayout>
+		<StackLayout height="38">
+			<GridLayout columns="2*, auto" class="healthSearch reganimation2">
+				<TextField col="0" width="95%" hint="Search Health Topics"></TextField>
+				<RL:Ripple col="1" rippleColor="#a5a5a5">
+					<Image src="res://healthsearch" stretch="none"></Image>
+				</RL:Ripple>
+			</GridLayout>
+		</StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="health-secBg reganimation3">
+					<GridLayout columns="auto, 2*, auto">
+						<Image col="0" src="res://manicon" stretch="none"></Image>
+						<StackLayout col="1" class="health-secBod">
+							<Label text="Symptom Checker" textWrap="true" class="health-headText"></Label>
+							<Label text="Use this Symptom Checker to pinpoint possible causes of your medical symptoms." textWrap="true"></Label>
+						</StackLayout>
+						<RL:Ripple col="2" rippleColor="#fff" class="Health-startBtn" (tap)="launchBrowser('http://symptoms.webmd.com/symptomchecker')">
+							<Label text="START HERE"></Label>
+						</RL:Ripple>
+					</GridLayout>
+				</StackLayout>
+				<StackLayout width="90%" class="reganimation4">
+					<Label class="health-blackText" text="Begin here to find helpful information on more than 6,000 health realted topics – from basic information about medical conditions and treatments to help with making medical decisions"
+						textWrap="true"></Label>
+					<StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="A" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="ADD/ADHD" (tap)="launchBrowser('http://www.webmd.com/add-adhd/default.htm')"></Label>
+								<Label text="Allergies" (tap)="launchBrowser('http://www.webmd.com/allergies/default.htm')"></Label>
+								<Label text="Alzheimer's" (tap)="launchBrowser('http://www.webmd.com/alzheimers/default.htm')"></Label>
+								<Label text="Anxiety Disorders" (tap)="launchBrowser('http://www.webmd.com/anxiety-panic/default.htm')"></Label>
+								<Label text="Arthritis" (tap)="launchBrowser('http://www.webmd.com/arthritis/default.htm')"></Label>
+								<Label text="Asthma" (tap)="launchBrowser('http://www.webmd.com/asthma/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="B" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Back Pain" (tap)="launchBrowser('http://www.webmd.com/back-pain/default.htm')"></Label>
+								<Label text="Bipolar Disorder" (tap)="launchBrowser('http://www.webmd.com/bipolar-disorder/default.htm')"></Label>
+								<Label text="Breast Cancer's" (tap)="launchBrowser('http://www.webmd.com/breast-cancer/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="C" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Cancer" (tap)="launchBrowser('http://www.webmd.com/cancer/default.htm')"></Label>
+								<Label text="Cholesterol" (tap)="launchBrowser('http://www.webmd.com/cholesterol-management/default.htm')"></Label>
+								<Label text="Cold & Flu" (tap)="launchBrowser('http://www.webmd.com/cold-and-flu/default.htm')"></Label>
+								<Label text="Colorectal Cancer" (tap)="launchBrowser('http://www.webmd.com/colorectal-cancer/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="D" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Dental Health" (tap)="launchBrowser('http://www.webmd.com/oral-health/default.htm')"></Label>
+								<Label text="Depression" (tap)="launchBrowser('http://www.webmd.com/depression/default.htm')"></Label>
+								<Label text="Diabetes" (tap)="launchBrowser('http://www.webmd.com/diabetes/default.htm')"></Label>
+								<Label text="Diet & Weight Loss" (tap)="launchBrowser('http://www.webmd.com/diet/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="E" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Epilepsy" (tap)="launchBrowser('http://www.webmd.com/epilepsy/default.htm')"></Label>
+								<Label text="Erectile Dysfunction" (tap)="launchBrowser('http://www.webmd.com/erectile-dysfunction/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="F" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Fibromyalgia" (tap)="launchBrowser('http://www.webmd.com/fibromyalgia/default.htm')"></Label>
+								<Label text="Fitness" (tap)="launchBrowser('http://www.webmd.com/fitness-exercise/default.htm')"></Label>
+								<Label text="Food Poisoning" (tap)="launchBrowser('http://www.webmd.com/food-recipes/food-poisoning/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="G" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Genital Herpes" (tap)="launchBrowser('http://www.webmd.com/genital-herpes/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="H" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Healthy Aging" (tap)="launchBrowser('http://www.webmd.com/healthy-aging/default.htm')"></Label>
+								<Label text="Heart Disease" (tap)="launchBrowser('http://www.webmd.com/heart/default.htm')"></Label>
+								<Label text="Heartburn/GERD" (tap)="launchBrowser('http://www.webmd.com/heartburn-gerd/default.htm')"></Label>
+								<Label text="Hypertension" (tap)="launchBrowser('http://www.webmd.com/hypertension-high-blood-pressure/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="I" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="IBS" (tap)="launchBrowser('http://www.webmd.com/ibs/default.htm')"></Label>
+								<Label text="Incontinence/OAB" (tap)="launchBrowser('http://www.webmd.com/urinary-incontinence-oab/default.htm')"></Label>
+								<Label text="Infertility & Reproduction" (tap)="launchBrowser('http://www.webmd.com/infertility-and-reproduction/default.htm')"></Label>
+								<Label text="IBD / Crohn's Disease" (tap)="launchBrowser('http://www.webmd.com/ibd-crohns-disease/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="M" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Menopause" (tap)="launchBrowser('http://www.webmd.com/menopause/default.htm')"></Label>
+								<Label text="Mental Health" (tap)="launchBrowser('http://www.webmd.com/mind/default.htm')"></Label>
+								<Label text="Migraines / Headaches" (tap)="launchBrowser('http://www.webmd.com/migraines-headaches/default.htm')"></Label>
+								<Label text="Multiple Sclerosis" (tap)="launchBrowser('http://www.webmd.com/multiple-sclerosis/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="O" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Osteoporosis" (tap)="launchBrowser('http://www.webmd.com/osteoporosis/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="P" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Pain Management" (tap)="launchBrowser('http://www.webmd.com/pain-management/default.htm')"></Label>
+								<Label text="Parkinson's Disease" (tap)="launchBrowser('http://www.webmd.com/parkinsons-disease/default.htm')"></Label>
+								<Label text="Psoriasis" (tap)="launchBrowser('http://www.webmd.com/skin-problems-and-treatments/psoriasis/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="R" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Rheumatoid Arthritis" (tap)="launchBrowser('http://www.webmd.com/rheumatoid-arthritis/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Label text="S" class="healthtool-listRedbtn"></Label>
+							<StackLayout class="healthtools-list">
+								<Label text="Schizophrenia" (tap)="launchBrowser('http://www.webmd.com/schizophrenia/default.htm')"></Label>
+								<Label text="Sexual Conditions " (tap)="launchBrowser('http://www.webmd.com/sexual-conditions/default.htm')"></Label>
+							</StackLayout>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="inbox-popupBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}" (tap)="popupclose()">
+	<StackLayout width="100%">
+		<StackLayout class="inbox-popup">
+			<RL:Ripple rippleColor="#a5a5a5" [nsRouterLink]="['/healthtools']" class="inbox-popupBod inbox-popupactive">
+				<Label text="Health Topics"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod">
+				<Label text="Topics by Category"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod" [nsRouterLink]="['/fitnesstools']">
+				<Label text="Health and Fitness Tools"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod" [nsRouterLink]="['/pregnancytools']">
+				<Label text="Pregnancy Tools"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>

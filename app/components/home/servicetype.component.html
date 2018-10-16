@@ -1,0 +1,53 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="home-topBg">
+		<GridLayout columns="auto,auto,2*" rows="auto,auto">
+			<RL:Ripple rippleColor="#fff" col="0" style="horizontal-align: left;background-color:#E3EBED;padding:20 10 10 15;" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout>
+					<Image src="res://bluebackarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://bluelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="nav-rippleText">
+				<Label text="Hello {{user.FirstName}}!" class="regRound"></Label>
+			</StackLayout>
+		</GridLayout>
+	</StackLayout>
+	<ScrollView>
+		<StackLayout height="100%" class="servicetype-bg">
+			<StackLayout class="servicetype-Mar" height="40%">
+				<Label text="Who the consult is for?" textWrap="true"></Label>
+				<StackLayout class="servicetype-fontSize">
+					<!--	<DropDown hint="Select Member" #members (selectedIndexChange)="onMemberChange(members)" [items]="familyMembers" [selectedIndex]="mSelectedIndex"></DropDown>
+				-->
+					<Label text="{{user.FirstName+' '+user.LastName}}"></Label>
+				</StackLayout>
+			</StackLayout>
+			<StackLayout class="servicetype-bottombg" height="60%">
+				<Label text="TALK TO A DOCTOR!" class="servicetype-bottomtext" textWrap="true"></Label>
+				<RL:Ripple rippleColor="#164b8b" class="servicetype-link ser-animation1" (tap)="gotoMedicalEmergency(4,'Secure Email Consult')">
+					<GridLayout columns="auto, 2*" rows="auto,auto">
+						<Image col="0" src="res://mailicon" stretch="none"></Image>
+						<Label col="1" text="Secure Email Consult" textWrap="true" class="servicetype-linktext"></Label>
+					</GridLayout>
+				</RL:Ripple>
+				<RL:Ripple rippleColor="#164b8b" class="servicetype-link  ser-animation2" (tap)="gotoMedicalEmergency(3,'Diagnostic Consult')">
+					<GridLayout columns="auto, 2*" rows="auto,auto">
+						<Image col="0" src="res://callicon" stretch="none"></Image>
+						<Label col="1" text="Diagnostic Consult" textWrap="true" class="servicetype-linktext"></Label>
+					</GridLayout>
+				</RL:Ripple>
+				<!--<GridLayout columns="auto, 2*" rows="auto,auto" class="servicetype-link  ser-animation3" (tap)="gotoMedicalEmergency(7)">
+					-->
+				<RL:Ripple rippleColor="#164b8b" class="servicetype-link  ser-animation3  disable-opa">
+					<GridLayout columns="auto, 2*" rows="auto,auto">
+						<Image col="0" src="res://videoicon" stretch="none"></Image>
+						<Label col="1" text="Video Consult" textWrap="true" class="servicetype-linktext"></Label>
+					</GridLayout>
+				</RL:Ripple>
+			</StackLayout>
+		</StackLayout>
+	</ScrollView>
+</StackLayout>

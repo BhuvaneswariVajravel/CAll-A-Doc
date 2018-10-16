@@ -1,0 +1,32 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var nativescript_module_1 = require("nativescript-angular/nativescript.module");
+var core_1 = require("@angular/core");
+var http_1 = require("nativescript-angular/http");
+var router_1 = require("nativescript-angular/router");
+var forms_1 = require("nativescript-angular/forms");
+var passwordtermsconditions_routing_1 = require("./passwordtermsconditions.routing");
+var passwordtermsconditions_component_1 = require("./passwordtermsconditions.component");
+var PasswordTermsConditionsModule = (function () {
+    function PasswordTermsConditionsModule() {
+    }
+    return PasswordTermsConditionsModule;
+}());
+PasswordTermsConditionsModule = __decorate([
+    core_1.NgModule({
+        imports: [
+            nativescript_module_1.NativeScriptModule,
+            router_1.NativeScriptRouterModule,
+            forms_1.NativeScriptFormsModule,
+            router_1.NativeScriptRouterModule.forRoot(passwordtermsconditions_routing_1.passwordtermsconditionsRoutes),
+            http_1.NativeScriptHttpModule
+        ],
+        declarations: [passwordtermsconditions_component_1.PasswordTermsConditionsComponent],
+        schemas: [
+            core_1.NO_ERRORS_SCHEMA
+        ],
+        bootstrap: [passwordtermsconditions_component_1.PasswordTermsConditionsComponent],
+    })
+], PasswordTermsConditionsModule);
+exports.PasswordTermsConditionsModule = PasswordTermsConditionsModule;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGFzc3dvcmR0ZXJtc2NvbmRpdGlvbnMubW9kdWxlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsicGFzc3dvcmR0ZXJtc2NvbmRpdGlvbnMubW9kdWxlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsZ0ZBQThFO0FBRTlFLHNDQUEyRDtBQUMzRCxrREFBbUU7QUFDbkUsc0RBQXVFO0FBQ3ZFLG9EQUFxRTtBQUNyRSxxRkFBa0Y7QUFDbEYseUZBQXVGO0FBZ0J2RixJQUFhLDZCQUE2QjtJQUExQztJQUE2QyxDQUFDO0lBQUQsb0NBQUM7QUFBRCxDQUFDLEFBQTlDLElBQThDO0FBQWpDLDZCQUE2QjtJQWR6QyxlQUFRLENBQUM7UUFDUixPQUFPLEVBQUU7WUFDUCx3Q0FBa0I7WUFDbEIsaUNBQXdCO1lBQ3hCLCtCQUF1QjtZQUN2QixpQ0FBd0IsQ0FBQyxPQUFPLENBQUMsK0RBQTZCLENBQUM7WUFDL0QsNkJBQXNCO1NBQ3ZCO1FBQ0QsWUFBWSxFQUFFLENBQUMsb0VBQWdDLENBQUM7UUFDaEQsT0FBTyxFQUFFO1lBQ1AsdUJBQWdCO1NBQ2pCO1FBQ0QsU0FBUyxFQUFFLENBQUMsb0VBQWdDLENBQUM7S0FDOUMsQ0FBQztHQUNXLDZCQUE2QixDQUFJO0FBQWpDLHNFQUE2QiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE5hdGl2ZVNjcmlwdE1vZHVsZSB9IGZyb20gXCJuYXRpdmVzY3JpcHQtYW5ndWxhci9uYXRpdmVzY3JpcHQubW9kdWxlXCI7XG5pbXBvcnQgeyBSb3V0ZXIsIE5hdmlnYXRpb25TdGFydCwgTmF2aWdhdGlvbkVuZCB9IGZyb20gJ0Bhbmd1bGFyL3JvdXRlcic7XG5pbXBvcnQgeyBOZ01vZHVsZSwgTk9fRVJST1JTX1NDSEVNQSB9IGZyb20gXCJAYW5ndWxhci9jb3JlXCI7XG5pbXBvcnQgeyBOYXRpdmVTY3JpcHRIdHRwTW9kdWxlIH0gZnJvbSBcIm5hdGl2ZXNjcmlwdC1hbmd1bGFyL2h0dHBcIjtcbmltcG9ydCB7IE5hdGl2ZVNjcmlwdFJvdXRlck1vZHVsZSB9IGZyb20gXCJuYXRpdmVzY3JpcHQtYW5ndWxhci9yb3V0ZXJcIjtcbmltcG9ydCB7IE5hdGl2ZVNjcmlwdEZvcm1zTW9kdWxlIH0gZnJvbSBcIm5hdGl2ZXNjcmlwdC1hbmd1bGFyL2Zvcm1zXCI7XG5pbXBvcnQgeyBwYXNzd29yZHRlcm1zY29uZGl0aW9uc1JvdXRlcyB9IGZyb20gXCIuL3Bhc3N3b3JkdGVybXNjb25kaXRpb25zLnJvdXRpbmdcIjtcbmltcG9ydCB7IFBhc3N3b3JkVGVybXNDb25kaXRpb25zQ29tcG9uZW50IH0gZnJvbSBcIi4vcGFzc3dvcmR0ZXJtc2NvbmRpdGlvbnMuY29tcG9uZW50XCI7XG5cbkBOZ01vZHVsZSh7XG4gIGltcG9ydHM6IFtcbiAgICBOYXRpdmVTY3JpcHRNb2R1bGUsXG4gICAgTmF0aXZlU2NyaXB0Um91dGVyTW9kdWxlLFxuICAgIE5hdGl2ZVNjcmlwdEZvcm1zTW9kdWxlLFxuICAgIE5hdGl2ZVNjcmlwdFJvdXRlck1vZHVsZS5mb3JSb290KHBhc3N3b3JkdGVybXNjb25kaXRpb25zUm91dGVzKSxcbiAgICBOYXRpdmVTY3JpcHRIdHRwTW9kdWxlXG4gIF0sXG4gIGRlY2xhcmF0aW9uczogW1Bhc3N3b3JkVGVybXNDb25kaXRpb25zQ29tcG9uZW50XSxcbiAgc2NoZW1hczogW1xuICAgIE5PX0VSUk9SU19TQ0hFTUFcbiAgXSxcbiAgYm9vdHN0cmFwOiBbUGFzc3dvcmRUZXJtc0NvbmRpdGlvbnNDb21wb25lbnRdLFxufSlcbmV4cG9ydCBjbGFzcyBQYXNzd29yZFRlcm1zQ29uZGl0aW9uc01vZHVsZSB7IH1cbiJdfQ==

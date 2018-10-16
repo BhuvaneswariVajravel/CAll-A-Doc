@@ -1,0 +1,95 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto,auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani8"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="80%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a Consult"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="memMargin">
+					<Label text="Billing" class="textHeading"></Label>
+				</StackLayout>
+				<StackLayout class="eme-call-Mar" horizontalAlignment="left">
+					<Label text="Please enter credit/debit card information for consult fee" textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout class="payment-controls">
+					<StackLayout orientation="horizontal" class="payment-cardno reganimation2">
+						<TextField hint="Card Number" #cardNumber="ngModel" [(ngModel)]="billingInfo.CardNumber" keyboardType="number" required returnKeyType="next"
+							verticalAlignment="center" width="94%"></TextField>
+						<Image src="res://cardnumbericon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+					</StackLayout>
+					<StackLayout width="85%" *ngIf="(formSubmitted && cardNumber.invalid) || (cardNumber.errors && (cardNumber.dirty || cardNumber.touched)  && !cardNumber.pristine)">
+						<Label width="100%" class="required-label" *ngIf="cardNumber.errors.required" text="Card number is required"></Label>
+					</StackLayout>
+					<StackLayout width="85%" *ngIf="(formSubmitted && cardNumber.valid && !isValidCard())">
+						<Label width="100%" class="required-label" text="Invalid card number"></Label>
+					</StackLayout>
+					<StackLayout orientation="horizontal" class="payment-cardno reganimation3">
+						<TextField hint="Name on Card" #cardName="ngModel" [(ngModel)]="billingInfo.NameOnCard" required alphabets returnKeyType="next"
+							verticalAlignment="center" width="95%"></TextField>
+						<Image src="res://namecardicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+					</StackLayout>
+					<StackLayout width="85%" *ngIf="(formSubmitted && cardName.invalid) || (cardName.errors && (cardName.dirty || cardName.touched)  && !cardName.pristine)">
+						<Label width="100%" class="required-label" *ngIf="cardName.errors.required" text="Card name is required"></Label>
+						<Label width="100%" class="required-label" *ngIf="cardName.errors.alphabets" text="Numeric and special characters not allowed"></Label>
+					</StackLayout>
+					<StackLayout width="85%" *ngIf="cardName.valid">
+						<Label width="100%" class="required-label" *ngIf="billingInfo.NameOnCard.trim() == ''" text="Card name is required"></Label>
+					</StackLayout>
+					<GridLayout columns="3*,2*" rows="auto,auto" class="reganimation4 MarTopCre" width="85%">
+						<StackLayout col="0" orientation="horizontal" class="payment-cardno" width="100%" horizontalAlignment="left">
+							<!--<TextField hint="Expiration Date" verticalAlignment="center" width="93%"></TextField>-->
+							<DropDown hint="" #month (selectedIndexChange)="onMonthChange($event)" [items]="months" [selectedIndex]="billingInfo.monthindx"
+								verticalAlignment="center" width="40%"></DropDown>
+							<DropDown hint="" #year (selectedIndexChange)="onYearChange($event)" [items]="years" [selectedIndex]="billingInfo.yearindx"
+								verticalAlignment="center" width="45%"></DropDown>
+							<Image src="res://exdateicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+						</StackLayout>
+							<StackLayout col="1" orientation="horizontal" class="payment-cardno" width="30%" horizontalAlignment="right">
+							<TextField hint="CCV" #cvvno="ngModel" [(ngModel)]="billingInfo.CCVCode" keyboardType="number" required verticalAlignment="center" width="90%"
+								maxLength="3"></TextField>
+							<Image src="res://cvvicon" stretch="none" verticalAlignment="bottom" horizontalAlignment="right"></Image>
+						</StackLayout>
+
+					</GridLayout>
+					<StackLayout *ngIf="(formSubmitted && cvvno.invalid) || (cvvno.errors && (cvvno.dirty || cvvno.touched)  && !cvvno.pristine)" width="85%">
+						<Label class="required-label" *ngIf="cvvno.errors.required" text="Cvv is required" width="30%" horizontalAlignment="right"></Label>
+					</StackLayout>
+				</StackLayout>
+				<RL:Ripple rippleColor="#fff" class="reqbtn" (tap)="showNextPage(cardNumber.valid,cardName.valid,cvvno.valid)">
+					<StackLayout>
+						<Label text="CONTINUE"></Label>
+					</StackLayout>
+				</RL:Ripple>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout visibility="{{billingInfo.error ? 'visible' : 'collapsed'}}">
+	<StackLayout class="errorbg">
+		<Label text="{{billingInfo.errorMsg}}" textWrap="true"></Label>
+	</StackLayout>
+</AbsoluteLayout>

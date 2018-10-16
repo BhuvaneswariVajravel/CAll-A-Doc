@@ -1,0 +1,109 @@
+<side-drawer></side-drawer>
+<StackLayout tkMainContent class="homebg">
+	<StackLayout class="progressbar-bg">
+		<GridLayout columns="auto,auto,2*,auto,auto" rows="auto,auto,auto,auto">
+			<RL:Ripple rippleColor="#fff" (tap)="goback()" col="0" class="progressbar-back">
+				<StackLayout>
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon white-LogoMar">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="top-progressbar">
+				<Label text="" class="top-progressbar-red progressbar-ani7"></Label>
+			</StackLayout>
+			<StackLayout col="3" class="progressbar-no">
+				<Label text="70%"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#a4a4a4" col="4" class="home-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+		<StackLayout class="progressbar-text">
+			<Label text="Schedule a {{requestconsult.ServiceName}}"></Label>
+		</StackLayout>
+	</StackLayout>
+	<StackLayout class="servicetype-bg" height="100%">
+		<ScrollView height="85%" id="scrollidd">
+			<StackLayout>
+				<!--<StackLayout class="memMargin">
+					<Label text="Pharmacy" class="" (tap)="toggle(item)"></Label>
+					<Image col="1"  stretch ="none"></Image> 
+				</StackLayout>-->
+				<GridLayout columns="2*,auto" rows="auto,auto" class="textHeading memMargin" (tap)="toggle()">
+					<Label col="0" text="Search Pharmacy"></Label>
+					<Image col="1" [src]="pharSearchTab ? 'res://minusicon': 'res://plusicon'" stretch="none"></Image>
+				</GridLayout>
+				<StackLayout class="eme-call-Mar memDetail-Mar pharmacyMar" horizontalAlignment="left">
+					<Label text="Please select a pharmacy in case the doctor needs to call in a prescription medication. " textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout [visibility]="pharSearchTab ? 'visible' : 'collapse'">
+					<StackLayout class="pharmacy-controls" width="85%">
+						<StackLayout class="reganimation2">
+							<TextField hint="Pharmacy Name" #txtPharName="ngModel" [(ngModel)]="pharname" alphanumeric></TextField>
+							<StackLayout *ngIf="(txtPharName.errors && (txtPharName.dirty || txtPharName.touched)  && !txtPharName.pristine)">
+								<Label width="100%" class="required-label" *ngIf="txtPharName.errors.alphanumeric" text="Special characters not allowed."></Label>
+							</StackLayout>
+						</StackLayout>
+						<StackLayout class="reganimation3">
+							<TextField hint="City" [(ngModel)]="city"></TextField>
+						</StackLayout>
+						<StackLayout class="reganimation4">
+							<DropDown #states (selectedIndexChange)="onStateChange(states)" [items]="statesInfo" [selectedIndex]="sSelectedIndex" hint="State"></DropDown>
+						</StackLayout>
+						<StackLayout class="reganimation4">
+							<Label text="" class="dropdownline "></Label>
+						</StackLayout>
+						<StackLayout class="reganimation4">
+							<TextField hint="Zipcode" keyboardType="number" #txtZipCode="ngModel" [(ngModel)]="zipcode" maxlength="5" minlength="5"></TextField>
+							<StackLayout *ngIf="(formSubmitted && txtZipCode.invalid) || (txtZipCode.errors && (txtZipCode.dirty || txtZipCode.touched)  && !txtZipCode.pristine)">
+								<!--<Label width="100%" class="required-label" *ngIf="txtZipCode.errors.required" text="Zipcode is required."></Label>-->
+								<Label width="100%" class="required-label" *ngIf="txtZipCode.errors.minlength || txtZipCode.errors.maxlength" text="Zip code must be a 5 digit"></Label>
+							</StackLayout>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="conslt-backbtn" width="85%" (tap)="searchPharmacy(txtPharName.valid,txtZipCode.valid)">
+						<Label text="SEARCH"></Label>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout>
+					<Label *ngIf="update == true && (selectedPharmacy.PharmacyId == null || selectedPharmacy.PharmacyId == undefined)" text="Select your preferred pharmacy"
+					 class="search-required-label" width="85%"></Label>
+					<StackLayout width="100%" class="pharmacy-map">
+						<MapView top="0" left="0" width="100%" height="100%" (mapReady)="onMapReady($event)" (markerSelect)="onMarkerSelect($event)"></MapView>
+					</StackLayout>
+					<StackLayout height="100%" class="norecords" visibility="{{pharmacyList.length == 0 ? 'visible' : 'collapsed'}}">
+						<Label text="No Pharmacies Found" class="norecords"></Label>
+					</StackLayout>
+					<StackLayout *ngFor="let item of pharmacyList;let i = index" width="100%" height="100%">
+						<GridLayout columns="2*, auto" rows="auto,auto" class="pharmacyGrid-bg">
+							<StackLayout col="0" class="pharmacyGrid-mid" (tap)="setAsPreferredPharmacy(i)">
+								<GridLayout columns="2*,auto" rows="auto,auto">
+									<StackLayout col="0" class="pharmacy-mapText" horizontalAlignment="left">
+										<Label [text]="item.PharmacyName" textWrap="true"></Label>
+										<Label [text]='item.PharmacyAddress1 + " " + item.PharmacyCity +", "+item.PharmacyState+" "+item.PharmacyZip' textWrap="true"></Label>
+										<Label [text]="item.PharmacyPhone" textWrap="true"></Label>
+									</StackLayout>
+									<Image col="1" src="res://maptick" stretch="none" class="pharmacyGrid-left" *ngIf="item.MemberDefaultPharmacy"></Image>
+								</GridLayout>
+							</StackLayout>
+							<StackLayout col="1" verticalAlignment="center">
+								<RL:Ripple rippleColor="#fff" class="pharmacyGrid-right" (tap)="mapInGoogle(item)">
+									<Label text="MAP IT " textWrap="true"></Label>
+								</RL:Ripple>
+							</StackLayout>
+						</GridLayout>
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<StackLayout height="15%" class="searchpharmacy-bottom">
+			<RL:Ripple rippleColor="#fff" width="85%" (tap)="showNextPage()">
+				<Label class="pharmacy-button" text="UPDATE"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</StackLayout>

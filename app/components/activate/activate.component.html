@@ -1,0 +1,82 @@
+<StackLayout>
+	<StackLayout class="reg-topBg">
+		<Label class="regTopline"></Label>
+		<GridLayout columns="2*,2*,2*" rows="auto,auto,auto" width="100%" class="regGrid">
+			<StackLayout col="0" class="regTopsec regTopsec1 tophover">
+				<Label text="1" class="regRound"></Label>
+				<Label text="Personal Information"></Label>
+			</StackLayout>
+			<StackLayout col="1" class="regTopsec regTopsec2">
+				<Label text="2" class="regRound"></Label>
+				<Label text="Terms/Hipaa"></Label>
+			</StackLayout>
+			<StackLayout col="2" class="regTopsec regTopsec3">
+				<Label text="3" class="regRound"></Label>
+				<Label text="Confirmation "></Label>
+			</StackLayout>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout class="register-controls">
+		<ScrollView height="80%">
+			<StackLayout>
+				<StackLayout>
+					<Label text="Enter your personal information" class="textHeading2"></Label>
+				</StackLayout>
+				<StackLayout width="90%">
+					<StackLayout class="reganimation3">
+						<TextField width="100%" hint="First Name" #txtFirstName="ngModel" [(ngModel)]="firstName" required alphabets returnKeyType="next"></TextField>
+						<StackLayout *ngIf="(formSubmitted && txtFirstName.invalid) || (txtFirstName.errors && (txtFirstName.dirty || txtFirstName.touched)  && !txtFirstName.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtFirstName.errors.required" text="First Name is required"></Label>
+							<Label width="100%" class="required-label" *ngIf="txtFirstName.errors.alphabets" text="Numeric and Special characters are not allowed"></Label>
+						</StackLayout>
+						<StackLayout *ngIf="txtFirstName.valid">
+							<Label width="100%" class="required-label" *ngIf="firstName.trim() == ''" text="First Name is required"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="reganimation4">
+						<TextField width="100%" hint="Last Name" #txtLastName="ngModel" [(ngModel)]="lastName" required alphabets returnKeyType="next"></TextField>
+						<StackLayout *ngIf="(formSubmitted && txtLastName.invalid) || (txtLastName.errors && (txtLastName.dirty || txtLastName.touched)  && !txtLastName.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtLastName.errors.required" text="Last Name is required"></Label>
+							<Label width="100%" class="required-label" *ngIf="txtLastName.errors.alphabets" text="Numeric and Special characters are not allowed"></Label>
+						</StackLayout>
+						<StackLayout *ngIf="txtLastName.valid">
+							<Label width="100%" class="required-label" *ngIf="lastName.trim() == ''" text="Last Name is required"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="reganimation5">
+						<TextField width="100%" hint="Date of Birth(mm/dd/yy)" #txtDOB="ngModel" [(ngModel)]="dob" required returnKeyType="next"></TextField>
+						<StackLayout *ngIf="(formSubmitted && txtDOB.invalid) || (txtDOB.errors && (txtDOB.dirty || txtDOB.touched)  && !txtDOB.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtDOB.errors.required" text="Date of Birth is required"></Label>
+						</StackLayout>
+						<StackLayout *ngIf="txtDOB.valid && !(isValidDate())">
+							<Label width="100%" class="required-label" text="Invalid Date"></Label>
+						</StackLayout>
+					</StackLayout>
+					<StackLayout class="reganimation6">
+						<TextField width="100%" hint="Member Id" #txtMemberId="ngModel" [(ngModel)]="externalMemberId" required keyboardType="number" returnKeyType="done"></TextField>
+						<StackLayout *ngIf="(formSubmitted && txtMemberId.invalid) || (txtMemberId.errors && (txtMemberId.dirty || txtMemberId.touched)  && !txtMemberId.pristine)">
+							<Label width="100%" class="required-label" *ngIf="txtMemberId.errors.required" text="Member Id is required"></Label>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+				<StackLayout orientation="horizontal" class="MemConfirm-termsanimation " (tap)="onAccepting()">
+					<Image src="{{ authorize ? 'res://checkboxchecked' : 'res://checkbox'}}" stretch="none" class="MemConfirm-checkbox" ></Image>
+					<Label text="I request, and grant my consent, to be contacted by a member of the 24/7 Call-A-Doc Care Coordinating Team by telephone or email regarding the 24/7 Call-A-Doc services. Submitting personal information above constitutes my electronic signature."
+						textWrap="true"></Label>
+				</StackLayout>
+				<StackLayout *ngIf="(formSubmitted && !authorize)">
+					<Label class="required-label" text="Please accept Terms and Conditions."></Label>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<GridLayout columns="2*,2*" rows="auto,auto" height="20%">
+			<RL:Ripple col="0" class="backbtn" [nsRouterLink]="['/login']" clearHistory="true" rippleColor="#fff">
+				<Label text="GO BACK"></Label>
+			</RL:Ripple>
+			<RL:Ripple col="1" class="continuebtn" (tap)="gotoTermsAndConditions(txtFirstName.valid,txtLastName.valid,txtDOB.valid,txtMemberId.valid)"
+				rippleColor="#fff">
+				<Label text="CONTINUE"></Label>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+</StackLayout>

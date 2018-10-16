@@ -1,0 +1,112 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" [nsRouterLink]="['/home']" clearHistory="true">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="CONSULT HISTORY" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<ScrollView>
+		<StackLayout>
+			<RL:Ripple class="consultHeading" (tap)="toggle()" rippleColor="#a5a5a5">
+				<GridLayout columns="2*,auto" rows="auto,auto">
+					<Label col="0" text="Advanced Search"></Label>
+					<Image col="1" [src]="seachHistoryTab ? 'res://minusicon' : 'res://plusicon'" stretch="none"></Image>
+				</GridLayout>
+			</RL:Ripple>
+			<StackLayout class="conslt-controls" [visibility]="seachHistoryTab ? 'visible' : 'collapse'">
+				<StackLayout class="reganimation1">
+					<TextField hint="Physician First Name" [(ngModel)]="phyFirstName"></TextField>
+				</StackLayout>
+				<StackLayout class="reganimation2">
+					<TextField hint="Physician Last Name" [(ngModel)]="phyLastName"></TextField>
+				</StackLayout>
+				<StackLayout class="reganimation3">
+					<DropDown #serv (selectedIndexChange)="onSeriveChange(serv)" [items]="serviceName" [selectedIndex]="serviceNameIndex" hint="Service Name">
+					</DropDown>
+				</StackLayout>
+				<StackLayout class="reganimation3">
+					<Label text="" class="dropdownline "></Label>
+				</StackLayout>
+				<StackLayout class="reganimation4">
+					<DropDown #servsts (selectedIndexChange)="onSeriveStatusChange(servsts)" [items]="serviceStatus" [selectedIndex]="servStatusIndex"
+					 hint="Service Status"> </DropDown>
+				</StackLayout>
+				<StackLayout class="reganimation4">
+					<Label text="" class="dropdownline "></Label>
+				</StackLayout>
+				<StackLayout class="reganimation5">
+					<TextField hint="Service Date Start" [(ngModel)]="startDate"></TextField>
+				</StackLayout>
+				<StackLayout class="reganimation6">
+					<TextField hint="Service Date End" [(ngModel)]="endDate"></TextField>
+				</StackLayout>
+				<StackLayout>
+					<RL:Ripple class="conslt-backbtn" (tap)="searchConsultHistory()" rippleColor="#fff">
+						<Label text="SEARCH"></Label>
+					</RL:Ripple>
+				</StackLayout>
+			</StackLayout>
+		</StackLayout>
+	</ScrollView>
+	<StackLayout height="100%" class="norecords" visibility="{{consultHistoryList.length == 0 && norecords ? 'visible' : 'collapsed'}}">
+		<Label text="No Records Found" class="norecords"></Label>
+	</StackLayout>
+	<StackLayout>
+		<ListView [items]="consultHistoryList" (loadMoreItems)="loadMoreConsultItems()" width="100%">
+			<ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+				<StackLayout class="reganimation4">
+					<StackLayout class="consultGrid-bg">
+						<RL:Ripple (tap)="consultViewPage(item)" rippleColor="#a5a5a5">
+							<GridLayout columns="auto, 2*, auto" rows="auto,auto">
+								<Image col="0" src="res://msgicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email')>-1"></Image>
+								<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Diagnostic')>-1"></Image>
+								<Image col="0" src="res://convideoicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video')>-1"></Image>
+								<StackLayout col="1" class="consultGrid-mid" width="80%">
+									<Label [text]="item.ConsultationType" class="consultGrid-midHead" textWrap="true"></Label>
+									<StackLayout col="1" orientation="horizontal">
+										<Label text="Name: " textWrap="true"></Label>
+										<Label [text]="user.FirstName+' '+user.LastName" class="consultGrid-midText" textWrap="true"></Label>
+									</StackLayout>
+									<StackLayout col="1" orientation="horizontal">
+										<Label text="Relationship: " textWrap="true"></Label>
+										<Label [text]="user.RelationShip" textWrap="true"></Label>
+									</StackLayout>
+									<StackLayout col="1" orientation="horizontal">
+										<Label text="Physician Name: " textWrap="true"></Label>
+										<Label [text]="item.PhysicianName.trim()" textWrap="true"></Label>
+									</StackLayout>
+									<StackLayout col="1" orientation="horizontal">
+										<Label text="Schedule: " textWrap="true"></Label>
+										<Label [text]="convertTime(item.ServiceTime)" textWrap="true"></Label>
+									</StackLayout>
+								</StackLayout>
+								<StackLayout col="2" orientation="horizontal" class="consultGrid-right">
+									<Label [text]="item.Status" textWrap="true"></Label>
+								</StackLayout>
+							</GridLayout>
+						</RL:Ripple>
+					</StackLayout>
+				</StackLayout>
+			</ng-template>
+		</ListView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="last-item " visibility="{{isLoading ? 'visible' : 'collapsed'}}">
+	<ActivityIndicator [busy]="isLoading" width="30" height="30" class="actinicator"></ActivityIndicator>
+</AbsoluteLayout>

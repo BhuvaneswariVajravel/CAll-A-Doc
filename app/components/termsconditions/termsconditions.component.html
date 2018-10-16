@@ -1,0 +1,62 @@
+<StackLayout>
+	<StackLayout class="reg-topBg">
+		<Label class="regTopline1"></Label>
+		<GridLayout columns="2*,2*,2*" rows="auto,auto,auto" width="100%" class="regGrid">
+			<StackLayout col="0" class="regTopsec topactive">
+				<Label text="" class="regRound"></Label>
+				<Label text="Personal Information"></Label>
+			</StackLayout>
+			<StackLayout col="1" class="regTopsec tophover ">
+				<Label text="2" class="regRound"></Label>
+				<Label text="Terms/Hipaa"></Label>
+			</StackLayout>
+			<StackLayout col="2" class="regTopsec ">
+				<Label text="3" class="regRound"></Label>
+				<Label text="Confirmation "></Label>
+			</StackLayout>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout class="register-controls">
+		<StackLayout>
+			<Label text="Terms & Conditions / Hipaa Statement" class="textHeading2"></Label>
+		</StackLayout>
+		<ScrollView height="80%">
+			<StackLayout>
+				<StackLayout class="terms-text">
+					<Label text="THIS NOTICE DESCRIBES HOW MEDICAL INFORMATION ABOUT YOU MAY BE USED AND DISCLOSED AND HOW YOU CAN GET ACCESS TO THIS INFORMATION. PLEASE REVIEW IT CAREFULLY AND REPORT ANY GRIEVANCE TO: 24/7 Call-A-Doc PRIVACY OFFICER, 8670 Wilshire Blvd. Suite 301, Beverly Hills, CA 90211; PHONE. (844) 362-2447. 
+" textWrap="true"></Label>
+					<Label text="The Health Insurance Portability &amp; Accountability Act of 1996 (HIPAA) is a federal program that requires that all medical records and other individually identifiable health information used or disclosed by us in any form, whether electronically, on paper, or orally, are kept properly confidential. This Act gives you, the Patient, significant new rights to understand and control how your health information is used. HIPAA provides penalties for covered entities that misuse personal health information.
+" textWrap="true"></Label>
+					<Label text="We have prepared this Summary Notice of HIPAA Privacy Practices to explain how we are required to maintain the privacy of your health information and how we may use and disclose your health information. A Notice of HIPAA Privacy Practices containing a more complete description of the uses and disclosures of your health information is available to you upon request."
+						textWrap="true"></Label>
+					<Label text="We may use and disclose your medical records for each of the following purposes: treatment, payment, and health care operations:"
+						textWrap="true"></Label>
+					<Label text="TREATMENT means providing, coordinating, or managing health care and related services by one or more health care providers"
+						textWrap="true"></Label>
+					<Label text="TREATMENT means providing, coordinating, or managing health care and related services by one or more health care providers"
+						textWrap="true"></Label>
+					<Label text="PAYMENT means such activities as obtaining payment or reimbursement for services, billing or collection activities and utilization review."
+						textWrap="true"></Label>
+					<Label text="HEALTH CARE OPERATIONS include managing your Electronic Medical Record to facilitate diagnostic medical consultations with participating physicians, as well as conducting quality assessment and improvement activities, auditing functions, cost-management analysis and customer service."
+						textWrap="true"></Label>
+					<Label text="We may also create and distribute de-identified health information by removing all references to individually identifiable information."
+						textWrap="true"></Label>
+					<Label text="We may contact you to provide information about our services or other health-related services that may be of interest to you."
+						textWrap="true"></Label>
+					<Label text="Any other uses and disclosures will be made only with your written authorization. You may revoke such authorization in writing and we are required to honor and abide by that written request, except to the extent that we have already taken actions relying on your authorization."
+						textWrap="true"></Label>
+					<Label text="You have the following rights with respect to your protected health information, which you can exercise by presenting a written "
+						textWrap="true"></Label>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<GridLayout columns="2*,2*" rows="auto,auto" height="15%" class="terms-bod">
+			<RL:Ripple col="0" class="backbtn" [nsRouterLink]="['/login']" clearHistory="true" rippleColor="#fff">
+				<Label text="DECLINE"></Label>
+			</RL:Ripple>
+			<RL:Ripple col="1" class="continuebtn" (tap)="activate()" rippleColor="#fff">
+				<Label text="ACCEPT"></Label>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+</StackLayout>

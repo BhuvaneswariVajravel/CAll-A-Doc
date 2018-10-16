@@ -1,0 +1,90 @@
+<side-drawer></side-drawer>
+<dependent></dependent>
+<StackLayout tkMainContent>
+	<StackLayout class="consulttop-bg">
+		<GridLayout columns="auto,auto, 2*, auto" rows="auto,auto">
+			<RL:Ripple col="0" rippleColor="#fff" (tap)="goback()">
+				<StackLayout class="ripple-healthArrow">
+					<Image src="res://backarrow" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+			<StackLayout col="1" class="white-LogoIcon">
+				<Image src="res://whitelogoicon" stretch="none"></Image>
+			</StackLayout>
+			<StackLayout col="2" class="ripple-headingText">
+				<Label text="HEALTH TOOLS" class="regRound"></Label>
+			</StackLayout>
+			<RL:Ripple rippleColor="#fff" col="3" class="conslt-topright">
+				<StackLayout class="nav-ripple">
+					<Image src="res://emptyspace" stretch="none"></Image>
+				</StackLayout>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout height="45" class="reganimation2">
+		<GridLayout columns="2*, auto" class="inboxHeadtext">
+			<Label col="0" text="HEALTH TOPICS"></Label>
+			<RL:Ripple col="1" rippleColor="#a5a5a5" (tap)="popupbtn()">
+				<Image col="1" src="res://dropicon" stretch="none"></Image>
+			</RL:Ripple>
+		</GridLayout>
+	</StackLayout>
+	<StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<StackLayout class="health-secBg reganimation3">
+					<GridLayout columns="auto, 2*, auto">
+						<Image col="0" src="res://manicon" stretch="none"></Image>
+						<StackLayout col="1" class="health-secBod">
+							<Label text="Symptom Checker" textWrap="true" class="health-headText"></Label>
+							<Label text="Use this Symptom Checker to pinpoint possible causes of your medical symptoms." textWrap="true"></Label>
+						</StackLayout>
+						<RL:Ripple col="2" rippleColor="#fff" class="Health-startBtn" (tap)="launchBrowser('http://symptoms.webmd.com/symptomchecker')">
+							<Label text="START HERE"></Label>
+						</RL:Ripple>
+					</GridLayout>
+				</StackLayout>
+				<StackLayout width="90%" class="reganimation4">
+					<Label class="health-blackText" text="The 24/7 Call-A-Doc library of interactive health tools, provides members with the tools needed to make smart decisions about your health. To get started learning more about your health, click on an Interactive Tool."
+						textWrap="true"></Label>
+					<StackLayout>
+						<StackLayout orientation="horizontal" width="100%" class="healthtoolsList-Mar">
+							<Image src="res://weighticon" stretch="none" class="healthtools-imageMar"></Image>
+							<StackLayout class="healthtools-list">
+								<Label text="BMI Calculator" (tap)="launchBrowser('http://weightloss.webmd.com/')"></Label>
+								<Label text="Metabolism Calculator" (tap)="launchBrowser('http://www.webmd.com/diet/body-bmi-calculator')"></Label>
+								<Label text="Calorie Burn Rate Calculator" (tap)="launchBrowser('http://www.webmd.com/fitness-exercise/healthtool-exercise-calculator')"></Label>
+								<Label text="Joint-Friendly Exercises Slideshow" (tap)="launchBrowser('http://www.webmd.com/rheumatoid-arthritis/slideshow-rheumatoid-arthritis-exercises')"></Label>
+								<Label text="Slideshow: Exercises to Lower Blood Pressure" (tap)="launchBrowser('http://www.webmd.com/hypertension-high-blood-pressure/ss/slideshow-lowering-bp-tips')"></Label>
+								<Label text="Slideshow: 7 Most Effective Exercises Slideshow" (tap)="launchBrowser('http://www.webmd.com/fitness-exercise/ss/slideshow-7-most-effective-exercises')"></Label>
+								<Label text="Slideshow: The 30-Minute Workout Routine" (tap)="launchBrowser('http://www.webmd.com/fitness-exercise/ss/slideshow-30-minute-workout-routine')"></Label>
+								<Label text="Slideshow: 9 Least Effective Exercises Slideshow" (tap)="launchBrowser('http://www.webmd.com/fitness-exercise/ss/slideshow-9-least-effective-exercises')"></Label>
+								<Label text="Slideshow: 9 Tips for Flat Abs" (tap)="launchBrowser('http://www.webmd.com/fitness-exercise/ss/slideshow-9-tips-flat-abs')"></Label>
+								<Label text="Target Heart Rate Calculator" (tap)="launchBrowser('http://www.webmd.com/diet/body-bmi-calculator')"></Label>
+								<Label text="Energy Self-Assessment" (tap)="launchBrowser('http://www.webmd.com/balance/increase-energy-levels')"></Label>
+							</StackLayout>
+						</StackLayout>
+					</StackLayout>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+	</StackLayout>
+</StackLayout>
+<AbsoluteLayout class="inbox-popupBg" visibility="{{isVisible ? 'visible' : 'collapsed'}}" (tap)="popupclose()">
+	<StackLayout width="100%">
+		<StackLayout class="inbox-popup">
+			<RL:Ripple rippleColor="#a5a5a5" [nsRouterLink]="['/healthtools']" class="inbox-popupBod">
+				<Label text="Health Topics"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod">
+				<Label text="Topics by Category"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod inbox-popupactive" [nsRouterLink]="['/fitnesstools']">
+				<Label text="Health and Fitness Tools"></Label>
+			</RL:Ripple>
+			<RL:Ripple rippleColor="#a5a5a5" class="inbox-popupBod" [nsRouterLink]="['/pregnancytools']">
+				<Label text="Pregnancy Tools"></Label>
+			</RL:Ripple>
+		</StackLayout>
+	</StackLayout>
+</AbsoluteLayout>
