@@ -21,6 +21,7 @@ export class DependentComponent {
     }
     getFamliMembers() {
         let self = this;
+        /* to make use of users data when its in a cache */
         if (!ApplicationSettings.hasKey("FAMILY_MEMBER_DETAILS")) {
             self.webapi.personalAndLSSummary("FamilyMembers_Grid_Get").subscribe(data => {
                 xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
@@ -81,6 +82,7 @@ export class DependentComponent {
         }
 
     }
+    /* To get Images for dependent users */
     getMemberInfoImageService(i: any, ObjectFam: any) {
         let self = this;
         this.webapi.getMemberInfoForImage(ObjectFam.PersonId).subscribe(data => {
@@ -124,6 +126,7 @@ export class DependentComponent {
     openDependents() {
         this.dropdown = !this.dropdown;
     }
+    /* To get current gender index */
     currentUserGender() {
         if (ApplicationSettings.hasKey("MEMBER_ACCESS")) {
             if (ApplicationSettings.hasKey("FAMILY_MEMBER_DETAILS")) {
@@ -146,6 +149,7 @@ export class DependentComponent {
             }
         }
     }
+    /* To make use of new dependent user access */
     setMemberAccess(personId, dob, relationship, index) {
         this.dropdown = !this.dropdown;
         let age = this.getAge(dob);
@@ -163,6 +167,7 @@ export class DependentComponent {
             })
         }
     }
+    /* To get Basic information about the user by using member id */
     getMemberInfoService() {
         let self = this;
         this.webapi.loader.show(this.webapi.options);
@@ -213,6 +218,8 @@ export class DependentComponent {
         }
         return age
     }
+
+    /* To Update or Refresh the current page between current user and dependent user */
 
     loadCurrentUser() {
         switch (true) {

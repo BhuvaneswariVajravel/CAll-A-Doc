@@ -34,5 +34,4 @@ export class Configuration {
     //For GetMember Info 
     public EnrollmentAPI: string = "EnrollmentService.asmx/";
     public getMemberDtls = this.ServerUrl + this.EnrollmentAPI;
-
 }

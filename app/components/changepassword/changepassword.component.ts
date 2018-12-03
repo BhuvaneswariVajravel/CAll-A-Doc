@@ -39,7 +39,7 @@ export class ChangePasswordComponent {
 			let navigationExtras: NavigationExtras = {
 				queryParams: { "CHANGE_PWD": JSON.stringify(changePassword) }
 			};
-			this.router.navigate(["/passwordtermsconditions"], navigationExtras);
+			this.router.navigate(["/passwordtermsconditions"], navigationExtras);//Navigate to terms and condition once validation succeeded.
 		}
 	}
 	isAlphaNum() {
@@ -54,6 +54,7 @@ export class ChangePasswordComponent {
 			textfield.android.setFocusableInTouchMode(true);
 		}, 300);
 	}
+	/* To check passworf match or not */
 	pwdChecker(args) {
 		let textField = <TextField>args.object;
 		if (textField.text != this.password)

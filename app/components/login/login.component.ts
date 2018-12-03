@@ -32,6 +32,7 @@ export class LoginComponent {
 			textfield.android.setFocusableInTouchMode(true);
 		}, 300);
 	}
+	/* Check user login with login credentials */
 	doLogin(validUsername, validPassword) {
 		this.formSubmitted = true; let self = this;
 		if (validUsername && validPassword && self.webapi.netConnectivityCheck() && self.username.trim() != '') {

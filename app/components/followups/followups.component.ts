@@ -99,6 +99,7 @@ export class FollowUpComponent {
                             self.hideIndicator();
                         }
                     } else if (result.APIResult_ConsultationItemList.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
+                        self.hideIndicator();
                         self.webapi.logout();
                     } else {
                         self.hideIndicator();
@@ -148,6 +149,8 @@ export class FollowUpViewComponent {
         this.page.actionBarHidden = true; this.radSideComponent.folUpClass = true;
         ApplicationSettings.setString("refreshfollowups","No");
     }
+
+    /* To load the all follow up contents when user taps on followups button */
     ngAfterViewInit() {
         let self = this;
         self.actRoute.queryParams.subscribe(params => {
@@ -229,6 +232,8 @@ export class FollowUpViewComponent {
         }
     }
 
+    /* To Show all type of pop up messages */
+
     popupbtn(msg) {
         this.isVisible = true;
         if (msg == 'phynotes') {
@@ -242,6 +247,7 @@ export class FollowUpViewComponent {
             this.consultViewObj.consultHead = "Actions and Follow up messages";
         }
     }
+    /* To close pop up */
     popupclose() {
         this.isVisible = false; this.formSubmitted = false;
         this.isReplyVisible = false; this.markReadVisible = false;
@@ -262,6 +268,7 @@ export class FollowUpViewComponent {
             console.log("mark as unread");
         }
     }
+    /* To mark the content as read or unread update in server */
     markAsReadOrUnread(value) {
         let self = this;
         if (value == 'markread')
@@ -287,6 +294,8 @@ export class FollowUpViewComponent {
                 });
         }
     }
+
+    /* Load the audio file from server using sound plugin */
     openAudio(itemId) {
         let self = this;
         if (this.webapi.netConnectivityCheck()) {
@@ -306,6 +315,7 @@ export class FollowUpViewComponent {
                 });
         }
     }
+    /* To Play Audio file */
     playAudioUrl(audiourl) {
         this._player = new TNSPlayer();
         this._player.playFromUrl({
@@ -347,6 +357,9 @@ export class FollowUpViewComponent {
         // Android only: extra detail on error
         //  console.log('extra info on the error:', args.extra);
     }
+
+    /* To reply for the follow up messages */
+
     replyOrFollowUpSubmit(contValid) {
         this.formSubmitted = true; let self = this;
         if (contValid && self.content.trim() != '' && self.webapi.netConnectivityCheck()) {
@@ -393,6 +406,7 @@ export class FollowUpViewComponent {
     launchBrowser(url) {
         utilityModule.openUrl('https://www.247calladoc.com/member/' + url);
     }
+    /* To convert 24 time format to 12 hours time format */
     convertTime(time24) {
         return this.webapi.convertTime24to12(time24);
     }

@@ -22,6 +22,7 @@ export class ForgotPasswordComponent {
 			this.forgotPassword();
 		}
 	}
+	/* Giving request to server to gave a new link to update password with the user deatils */
 	forgotPassword() {
 		let self = this; self.webapi.loader.show(self.webapi.options);
 		self.webapi.forgotPassword(this.username, this.email).subscribe(data => {

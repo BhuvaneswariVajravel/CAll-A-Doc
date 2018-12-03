@@ -32,6 +32,7 @@ export class ConsultHistoryComponent {
     ngOnInit() {
         this.page.actionBarHidden = true; this.radSideComponent.conHisClass = true;
         let self = this;
+        /* To get consult history data */
         if (self.webapi.netConnectivityCheck()) {
             self.webapi.loader.show(self.webapi.options);
             this.webapi.consulthistorydata(this.phyFirstName != undefined ? this.phyFirstName : "", this.phyLastName != undefined ? this.phyLastName : "", this.servName != undefined ? this.servName : "", this.servStatus != undefined ? this.servStatus : "", this.startDate != undefined ? this.startDate : "", this.endDate != undefined ? this.endDate : "", this.pageNum).subscribe(data => {
@@ -99,6 +100,7 @@ export class ConsultHistoryComponent {
     onSeriveStatusChange(args) {
         this.servStatus = this.serviceStatus[args.selectedIndex];
     }
+    /* To load the contents dynamically on scroll */
     loadMoreConsultItems() {
         let self = this;
         if (this.totalCount >= this.pageNum * 10 && this.webapi.netConnectivityCheck()) {
@@ -139,6 +141,8 @@ export class ConsultHistoryComponent {
         };
         this.router.navigate(["/consulthistoryview"], navigationExtras);
     }
+
+    /* To search the consult history data based on user filled data */
     searchConsultHistory() {
         this.pageNum = 1;
         let self = this;
@@ -323,6 +327,7 @@ export class ConsultHistoryViewComponent {
            // console.log("mark as unread");
         }
     }
+    /* To make consult is mark read or unread */
     markAsReadOrUnread(value) {
         let self = this;
         if (value == 'markread')
@@ -350,6 +355,8 @@ export class ConsultHistoryViewComponent {
                 });
         }
     }
+
+    /* To open audio from the server using nativescript sound plugin */
     openAudio(itemId) {
         let self = this;
         if (this.webapi.netConnectivityCheck()) {
@@ -411,6 +418,7 @@ export class ConsultHistoryViewComponent {
         // Android only: extra detail on error
         //   console.log('extra info on the error:', args.extra);
     }
+    /* To reply for doctors help */
     replyOrFollowUpSubmit(contValid) {
         this.formSubmitted = true; let self = this;
         if (contValid && self.content.trim() != '' && self.webapi.netConnectivityCheck()) {
@@ -455,6 +463,7 @@ export class ConsultHistoryViewComponent {
     hideIndicator() {
         this.webapi.loader.hide();
     }
+    /* Launch browser in a new tab */
     launchBrowser(url) {
         utilityModule.openUrl('https://www.247calladoc.com/member/' + url);
     }

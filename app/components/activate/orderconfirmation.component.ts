@@ -12,7 +12,7 @@ export class OrderconfirmationComponent {
 		this.page.actionBarHidden = true;
 		this.activatedRoutes.queryParams.subscribe(params => {
 			if (params["LOGIN_CREDENTIALS"] != undefined) {
-				this.activateAccount = JSON.parse(params["LOGIN_CREDENTIALS"]);
+				this.activateAccount = JSON.parse(params["LOGIN_CREDENTIALS"]);// Afetr successive response from server activateAccount data will fetch here.
 				//console.log(JSON.stringify(this.activateAccount));
 			}
 		});

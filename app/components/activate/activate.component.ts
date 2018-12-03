@@ -16,6 +16,7 @@ export class ActivateComponent {
 	ngOnInit() {
 		this.page.actionBarHidden = true;
 	}
+	/* Navigate to Terms and condition once we get user acceptence */
 	gotoTermsAndConditions(firstnameIsValid, lastnameIsValid, dobIsValid, memberIdIsValid) {
 		this.formSubmitted = true;
 		if (firstnameIsValid && lastnameIsValid && dobIsValid && memberIdIsValid && this.authorize && this.isValidDate() && this.firstName.trim() != '' && this.lastName.trim() != '' && this.webapi.netConnectivityCheck()) {
@@ -30,6 +31,7 @@ export class ActivateComponent {
 			this.router.navigate(["/termsconditions"], navigationExtras);
 		}
 	}
+	/* To Validate date */
 	isValidDate() {
 		let date = this.dob;
 		let matches = /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/.exec(date);

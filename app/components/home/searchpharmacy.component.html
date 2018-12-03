@@ -35,43 +35,56 @@
 				</StackLayout>-->
 				<GridLayout columns="2*,auto" rows="auto,auto" class="textHeading memMargin" (tap)="toggle()">
 					<Label col="0" text="Search Pharmacy"></Label>
-					<Image col="1" [src]="pharSearchTab ? 'res://minusicon': 'res://plusicon'" stretch="none"></Image>
+					<!--<Image col="1" [src]="pharSearchTab ? 'res://minusicon': 'res://plusicon'" stretch="none"></Image>-->
 				</GridLayout>
 				<StackLayout class="eme-call-Mar memDetail-Mar pharmacyMar" horizontalAlignment="left">
-					<Label text="Please select a pharmacy in case the doctor needs to call in a prescription medication. " textWrap="true"></Label>
+					<Label text="Please select a pharmacy to be used should the doctor need to prescribe a medication. " textWrap="true"></Label>
+					<!--Please select a pharmacy in case the doctor needs to call in a prescription medication. -->
 				</StackLayout>
 				<StackLayout [visibility]="pharSearchTab ? 'visible' : 'collapse'">
 					<StackLayout class="pharmacy-controls" width="85%">
+						<GridLayout columns="2*,auto" rows="auto,auto">
+							<Button col="0" text="SEARCH BY CITY & STATE" style="font-size: 11;width:50%;" class="{{ pharCategory ? 'searchPhBtn':''}}"
+							 textWrap="true" (tap)="toggleSearchItem(false)"></Button>
+							<Button col="1" text="SEARCH BY ZIP CODE" style="font-size: 11;width:50%;" class="{{ !pharCategory ? 'searchPhBtn':''}}"
+							 textWrap="true" (tap)="toggleSearchItem(true)"></Button>
+						</GridLayout>
 						<StackLayout class="reganimation2">
-							<TextField hint="Pharmacy Name" #txtPharName="ngModel" [(ngModel)]="pharname" alphanumeric></TextField>
+							<TextField hint="Pharmacy Name (optional)" #txtPharName="ngModel" [(ngModel)]="pharname" alphanumeric></TextField>
 							<StackLayout *ngIf="(txtPharName.errors && (txtPharName.dirty || txtPharName.touched)  && !txtPharName.pristine)">
 								<Label width="100%" class="required-label" *ngIf="txtPharName.errors.alphanumeric" text="Special characters not allowed."></Label>
 							</StackLayout>
 						</StackLayout>
-						<StackLayout class="reganimation3">
-							<TextField hint="City" [(ngModel)]="city"></TextField>
+						<StackLayout class="reganimation3" visibility="{{ pharCategory ? 'visible':'collapsed'}}">
+							<TextField hint="City (required)" [(ngModel)]="city"></TextField>
+							<Label width="100%" class="required-label" *ngIf="formSubmitted && !city" text="City is required"></Label>
 						</StackLayout>
-						<StackLayout class="reganimation4">
-							<DropDown #states (selectedIndexChange)="onStateChange(states)" [items]="statesInfo" [selectedIndex]="sSelectedIndex" hint="State"></DropDown>
+						<StackLayout class="reganimation4" *ngIf="pharCategory">
+							<DropDown #states (selectedIndexChange)="onStateChange(states)" [items]="statesInfo" [selectedIndex]="sSelectedIndex"
+							 hint="State (required)"></DropDown>
 						</StackLayout>
-						<StackLayout class="reganimation4">
+						<StackLayout class="reganimation4" visibility="{{ pharCategory ? 'visible':'collapsed'}}">
 							<Label text="" class="dropdownline "></Label>
+							<Label width="100%" class="required-label" *ngIf="formSubmitted && !state" text="State is required"></Label>
 						</StackLayout>
-						<StackLayout class="reganimation4">
-							<TextField hint="Zipcode" keyboardType="number" #txtZipCode="ngModel" [(ngModel)]="zipcode" maxlength="5" minlength="5"></TextField>
+						<StackLayout class="reganimation4" visibility="{{ !pharCategory ? 'visible':'collapsed'}}">
+							<TextField hint="Zipcode (required)" keyboardType="number" #txtZipCode="ngModel" [(ngModel)]="zipcode" maxlength="5"
+							 minlength="5"></TextField>
 							<StackLayout *ngIf="(formSubmitted && txtZipCode.invalid) || (txtZipCode.errors && (txtZipCode.dirty || txtZipCode.touched)  && !txtZipCode.pristine)">
 								<!--<Label width="100%" class="required-label" *ngIf="txtZipCode.errors.required" text="Zipcode is required."></Label>-->
-								<Label width="100%" class="required-label" *ngIf="txtZipCode.errors.minlength || txtZipCode.errors.maxlength" text="Zip code must be a 5 digit"></Label>
+								<Label width="100%" class="required-label" *ngIf="txtZipCode.errors.minlength || txtZipCode.errors.maxlength"
+								 text="Zip code must be a 5 digit"></Label>
 							</StackLayout>
+							<Label width="100%" class="required-label" *ngIf="formSubmitted && zipcode == ''" text="Zipcode is required."></Label>
 						</StackLayout>
 					</StackLayout>
-					<StackLayout class="conslt-backbtn" width="85%" (tap)="searchPharmacy(txtPharName.valid,txtZipCode.valid)">
+					<StackLayout class="conslt-backbtn" width="85%" (tap)="searchPharmacy(txtPharName.valid,txtZipCode.valid,false)">
 						<Label text="SEARCH"></Label>
 					</StackLayout>
 				</StackLayout>
 				<StackLayout>
-					<Label *ngIf="update == true && (selectedPharmacy.PharmacyId == null || selectedPharmacy.PharmacyId == undefined)" text="Select your preferred pharmacy"
-					 class="search-required-label" width="85%"></Label>
+					<Label *ngIf="update == true && (selectedPharmacy.PharmacyId == null || selectedPharmacy.PharmacyId == undefined)"
+					 text="Select your preferred pharmacy" class="search-required-label" width="85%"></Label>
 					<StackLayout width="100%" class="pharmacy-map">
 						<MapView top="0" left="0" width="100%" height="100%" (mapReady)="onMapReady($event)" (markerSelect)="onMarkerSelect($event)"></MapView>
 					</StackLayout>
@@ -80,19 +93,22 @@
 					</StackLayout>
 					<StackLayout *ngFor="let item of pharmacyList;let i = index" width="100%" height="100%">
 						<GridLayout columns="2*, auto" rows="auto,auto" class="pharmacyGrid-bg">
-							<StackLayout col="0" class="pharmacyGrid-mid" (tap)="setAsPreferredPharmacy(i)">
+							<StackLayout col="0" class="pharmacyGrid-mid">
 								<GridLayout columns="2*,auto" rows="auto,auto">
 									<StackLayout col="0" class="pharmacy-mapText" horizontalAlignment="left">
 										<Label [text]="item.PharmacyName" textWrap="true"></Label>
-										<Label [text]='item.PharmacyAddress1 + " " + item.PharmacyCity +", "+item.PharmacyState+" "+item.PharmacyZip' textWrap="true"></Label>
+										<Label [text]='item.PharmacyAddress1 + " " + item.PharmacyCity +", "+item.PharmacyState+" "+item.PharmacyZip'
+										 textWrap="true"></Label>
 										<Label [text]="item.PharmacyPhone" textWrap="true"></Label>
 									</StackLayout>
 									<Image col="1" src="res://maptick" stretch="none" class="pharmacyGrid-left" *ngIf="item.MemberDefaultPharmacy"></Image>
+									<Button col="1" text="Select" class="pharmacyGrid-left" style="background-color:#50C878;color:#fff;width:30%"
+									 *ngIf="!item.MemberDefaultPharmacy" (tap)="setAsPreferredPharmacy(i)"></Button>
 								</GridLayout>
 							</StackLayout>
 							<StackLayout col="1" verticalAlignment="center">
 								<RL:Ripple rippleColor="#fff" class="pharmacyGrid-right" (tap)="mapInGoogle(item)">
-									<Label text="MAP IT " textWrap="true"></Label>
+									<Label text="MAP" textWrap="true"></Label>
 								</RL:Ripple>
 							</StackLayout>
 						</GridLayout>

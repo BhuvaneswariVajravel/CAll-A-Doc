@@ -10,7 +10,11 @@ import { takePicture, requestPermissions } from 'nativescript-camera';
 import { ImageSource } from 'tns-core-modules/image-source';
 import { ImageAsset } from 'tns-core-modules/image-asset';
 import { RadSideComponent } from "../radside/radside.component";
-let ImageSourceModule = require("image-source");
+//let ImageSourceModule = require("image-source");
+import * as application from "tns-core-modules/application";
+
+import { path, knownFolders, File } from "file-system";
+var fileSystemModule = require("tns-core-modules/file-system");
 // ADDITIONAL QUESTIONS
 let http_request = require("http");
 let xml2js = require('nativescript-xml2js');
@@ -59,10 +63,14 @@ export class AdditionalQuestionsComponent {
 		};
 		this.router.navigate(["/summary"], navigationExtras);
 	}
+
+	/* To Schedule an appointment with doctor */
 	showNextPage() {
 		this.formSubmitted = true;
 		if (this.formSubmitted && this.userPhoneNumber != undefined && this.userPhoneNumber != "" && (this.emergencyRoomChecked || this.urgentCareChecked || this.primaryCareChecked) && this.authorize) {
 			this.rDetails.MedicalRequestDetail = [];
+			//console.log(JSON.stringify(this.requestconsult));
+			//console.log(this.requestconsult.ServiceType);
 			if (this.requestconsult.ShortTermConditionChecked) {
 				let rDetail: any = {};
 				rDetail.ItemId = 1;
@@ -105,7 +113,8 @@ export class AdditionalQuestionsComponent {
 				usrdata.GroupNumber = data.GroupNumber;
 			}
 			let medDetail: string = this.createXMLDocument(this.rDetails.MedicalRequestDetail);
-			//console.log("resuklt         " + medDetail);
+			console.log("resuklt         " + medDetail);
+			console.log(JSON.stringify(this.requestconsult));
 
 			if (this.webapi.netConnectivityCheck()) {
 				http_request.request({
@@ -142,8 +151,10 @@ export class AdditionalQuestionsComponent {
 					"</soapenv:Body>" +
 					"</soapenv:Envelope>"
 				}).then((response) => {
-					//console.log("-----------------------------------------------------------------");
-					//console.log("response  " + response.content);
+					/*console.log("-----------------------------------------------------------------");
+					console.log("response  " + response.content);
+					console.log("SERV TYPE "+this.requestconsult.ServiceType+" STDID "+this.requestconsult.StateId+" MLength "+this.rDetails.MedicalRequestDetail.length+" STN  "+this.requestconsult.ScheduleTimeNow+"  SCTF "+this.requestconsult.ScheduleTimeFuture+" PHNAME  "//+this.requestconsult.PharmacyName+" PHID "+this.requestconsult.PharmacyId+" "+this.requestconsult.SetPreferredPharmacy);
+					console.log(medDetail);*/
 					//console.log("----------------------------------------------------------------");
 					let self = this;
 					//console.log(response.content);
@@ -221,6 +232,7 @@ export class AdditionalQuestionsComponent {
 			alert("User can upload only 3 images");
 		}
 	}
+	/* To select image from gallery */
 	startSelection(context) {
 		let _that = this;
 		context
@@ -247,7 +259,9 @@ export class AdditionalQuestionsComponent {
 							_that.saveConsultationDocs(_that.imgdtls, "Add");
 						} else {
 							//console.log("DOCUMENT NAME " + imageName);
-							_that.imgdtls.base64textString = res.toBase64String(imageName.split(".")[1], 10);
+							let imageFile = fileSystemModule.File.fromPath(selected.fileUri);
+							_that.imgdtls.base64textString = _that.getBase64String(imageFile);
+							//_that.imgdtls.base64textString = res.toBase64String(imageName.split(".")[1], 10);
 							_that.imgdtls.imageSize = Math.round(_that.imgdtls.base64textString.replace(/\=/g, "").length * 0.75) - 200;
 							//console.log(_that.imgdtls.imageSize);
 							_that.saveConsultationDocs(_that.imgdtls, "Add");
@@ -267,6 +281,16 @@ export class AdditionalQuestionsComponent {
 			});
 	}
 
+	getBase64String(file: File) {
+		const data = file.readSync();
+		if (application.ios) {
+			return data.base64EncodedStringWithOptions(0);
+		}
+		if (application.android) {
+			return android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
+		}
+	}
+
 	deleteImage(id) {
 		if (id == "pic1") {
 			this.pic1 = null;
@@ -279,6 +303,7 @@ export class AdditionalQuestionsComponent {
 
 	saveToGallery: boolean = true;
 	cameraImage: ImageAsset;
+	/* Taking picture from camera */
 	onTakePictureTap() {
 		let _that = this; this.imgdtls = {};
 		takePicture({ width: 180, height: 180, keepAspectRatio: false, saveToGallery: this.saveToGallery })
@@ -322,6 +347,7 @@ export class AdditionalQuestionsComponent {
 			this.onTakePictureTap();
 		}
 	}
+	/* To Upload medical documents for consultation */
 	saveConsultationDocs(item: any, operation) {
 		if (this.webapi.netConnectivityCheck()) {
 			let self = this;

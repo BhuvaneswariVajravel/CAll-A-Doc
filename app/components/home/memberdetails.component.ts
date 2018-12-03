@@ -27,6 +27,7 @@ export class MemberDetailsComponent {
         this.radSideComponent.rcClass = true;
         if (self.webapi.netConnectivityCheck()) {
             self.webapi.loader.show(self.webapi.options);
+            //Loading USStates dynamically
             self.webapi.getCodeList("USStates").subscribe(data => {
                 xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
                     if (result.APIResult_CodeList.Successful == "true") {
@@ -75,6 +76,7 @@ export class MemberDetailsComponent {
         };
         this.router.navigate(["/medicalemergency"], navigationExtras);
     }
+    //Navigate to next page based on seleted module.
     showNextPage() {
         let navigationExtras: NavigationExtras = {
             queryParams: { "REQUEST_CONSULT": JSON.stringify(this.requestconsult) }
@@ -83,6 +85,8 @@ export class MemberDetailsComponent {
             this.router.navigate(["/consultationdetails"], navigationExtras);
         } else if (this.requestconsult.ServiceType == 4) {
             this.router.navigate(["/healthrecords"], navigationExtras);
+        } else if (this.requestconsult.ServiceType == 7) {
+            this.router.navigate(["/consultationdetails"], navigationExtras);
         }
     }
 };

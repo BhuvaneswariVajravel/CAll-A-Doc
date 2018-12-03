@@ -15,7 +15,7 @@ let xml2js = require('nativescript-xml2js');
 })
 export class CreditCardComponent {
 	requestconsult = new RequestConsultModel(); billingInfo: any = {}; formSubmitted = false;
-		@ViewChild(RadSideComponent) radSideComponent: RadSideComponent;
+	@ViewChild(RadSideComponent) radSideComponent: RadSideComponent;
 	//public cardno: string; public cardname: string; 
 	//mSelectedIndex: number = 0; selectedMonth: string; public cvv: string;
 	//	ySelectedIndex: number = 0; selectedYear: string; 
@@ -54,7 +54,7 @@ export class CreditCardComponent {
 				});
 			},
 				error => {
-				//	console.log("Error in getting billing data.... " + error);
+					//	console.log("Error in getting billing data.... " + error);
 				});
 		}
 
@@ -69,15 +69,15 @@ export class CreditCardComponent {
 		this.formSubmitted = true; let self = this;
 		if (cardnum && name && cvv && self.isValidCard() && self.webapi.netConnectivityCheck()) {
 			self.webapi.loader.show(self.webapi.options);
-		//	console.log("PaymentAmount: " + self.billingInfo.ConsultFee + " FeeScheduleMasterId: " + self.billingInfo.CardNumber + " ServiceId: " + self.billingInfo.ServiceType);
+			//	console.log("PaymentAmount: " + self.billingInfo.ConsultFee + " FeeScheduleMasterId: " + self.billingInfo.CardNumber + " ServiceId: " + self.billingInfo.ServiceType);
 			self.webapi.paymentGateway(self.billingInfo).subscribe(data => {
 				xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
 					if (result.APIResult.Successful == "true") {
-				//		console.log("PAYMENT SUCCESFULL");
+						//		console.log("PAYMENT SUCCESFULL");
 						let navigationExtras: NavigationExtras = {
 							queryParams: { "REQUEST_CONSULT": JSON.stringify(self.requestconsult) }
 						};
-						if (self.requestconsult.ServiceType == 3) {
+						if (self.requestconsult.ServiceType == 3 || self.requestconsult.ServiceType == 7) {
 							self.router.navigate(["/billing"], navigationExtras);
 						} else {
 							self.router.navigate(["/secureemail"], navigationExtras);
@@ -123,7 +123,7 @@ export class CreditCardComponent {
 		};
 		if (this.requestconsult.ServiceType == 4) {
 			this.router.navigate(["/healthrecords"], navigationExtras);
-		} else if (this.requestconsult.ServiceType == 3 && this.requestconsult.SetPreferredPharmacy) {
+		} else if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.requestconsult.SetPreferredPharmacy) {
 			this.router.navigate(["/pharmacy"], navigationExtras);
 		} else {
 			this.router.navigate(["/searchpharmacy"], navigationExtras);

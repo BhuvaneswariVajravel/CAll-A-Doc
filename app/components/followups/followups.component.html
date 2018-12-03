@@ -30,8 +30,8 @@
 				<StackLayout class="consultGrid-bg">
 					<GridLayout columns="auto, 2*, auto" rows="auto,auto" (tap)="followUpView(item)">
 						<Image col="0" src="res://msgicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email')>-1"></Image>
-						<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Diagnostic')>-1"></Image>
 						<Image col="0" src="res://convideoicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video')>-1"></Image>
+						<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video') == -1 && item.ConsultationType.indexOf('Email') == -1"></Image><!--item.ConsultationType.indexOf('Diagnostic')>-1-->
 						<StackLayout col="1" class="consultGrid-mid" width="80%">
 							<Label [text]="item.ConsultationType" class="consultGrid-midHead" textWrap="true"></Label>
 							<StackLayout col="1" orientation="horizontal">

@@ -33,7 +33,7 @@
 					<Label text="Order Summary" class="textHeading"></Label>
 				</StackLayout>
 				<StackLayout class="eme-call-Mar memDetail-Mar pharmacyMar" horizontalAlignment="left">
-					<Label text="Thank you for scheduling the Diagnostic Medical Consultation. Please review the information below for accuracy and completene."
+					<Label text="Thank you for scheduling the Diagnostic {{requestconsult.ServiceType == 7 ? 'Video' : ''}} Medical Consultation. Please review the information below for accuracy and completene."
 						textWrap="true"></Label>
 				</StackLayout>
 				<StackLayout class="summary-mar reganimation2">

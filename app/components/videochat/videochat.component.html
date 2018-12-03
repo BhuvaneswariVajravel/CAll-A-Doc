@@ -1,12 +1,12 @@
-
-    <GridLayout id="container" width="100%" height="100%" columns="*,*" rows="auto,auto">
+<GridLayout id="container" width="100%" height="100%" columns="*,*" rows="auto,auto">
     <Label verticalAlignment="top" text="{{ error }}" colSpan="2" row="0" textWrap="true" visibility="{{ error === '' || !error ? 'collapse' : 'visible' }}"></Label>
-    <StackLayout id="actions" row="1" colSpan="2" width="100%" verticalAlignment="bottom">
-        <TextField id="name" [(ngModel)]="name" hint="Your Name"></TextField>
-        <TextField id="room" [(ngModel)]="room" hint="Room Name"></TextField>
-        <Button text="Toggle Mic" (tap)="disconnect()"></Button><!--toggle_local_audio-->
-        <Button text="Toggle Camera" (tap)="toggle_local_video()"></Button>
-        <Button text="Connect" (tap)="connect_to_room()"></Button>
-        <Button text="Disconnect" (tap)="disconnect()"></Button>
+    <StackLayout id="actions" row="1" colSpan="2" width="100%" class="videoIcon"verticalAlignment="bottom">
+         <Label text="{{ docconnected ? 'Waiting for Doctor to join in meeting':''}}"  row="0" textWrap="true" class="videoTxt"></Label><!--visibility="{{ docconnected ? 'visible' : 'collapsed'}}"-->
+        <GridLayout columns="*,*" rows="auto,auto">
+            <Image src="res://cutcall" stretch="none" col="0" verticalAlignment="center" horizontalAlignment="center" (tap)="disconnect()"></Image>
+            <Image src="res://voice" stretch="none" visibility="{{ !muted ? 'visible' : 'collapsed'}}" col="1" verticalAlignment="center" horizontalAlignment="center" (tap)="toggle_local_audio()"></Image>
+            <Image src="res://cutvoice" stretch="none" visibility="{{ muted ? 'visible' : 'collapsed'}}" col="1" verticalAlignment="center" horizontalAlignment="center" (tap)="toggle_local_audio()"></Image>
+
+        </GridLayout>
     </StackLayout>
 </GridLayout>

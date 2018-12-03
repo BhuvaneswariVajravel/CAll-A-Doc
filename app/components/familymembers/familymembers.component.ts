@@ -26,6 +26,7 @@ export class FamilyMembersComponent {
 		this.rscomp.fmclass = true;
 		this.getFamliMembers();
 	}
+	/* To load all dependent members when user navigate to family members tab */
 	getFamliMembers() {
 		let self = this;
 		self.webapi.loader.show(self.webapi.options);
@@ -92,6 +93,8 @@ export class FamilyMembersComponent {
 			this.delFamMem.index = -1;
 		}
 	}
+
+	/* To delete the family member one at a time*/
 	deleteFamilyMember() {
 		let usr: any;
 		if (this.delFamMem.PersonId != undefined && this.webapi.netConnectivityCheck()) {
@@ -175,6 +178,7 @@ export class AddmembersComponent {
 		});
 	}
 
+/* To add new family member after filling all mandatory fileds and validations succeeded */
 	addFamilyMember(fname, lname, dob) {
 		this.addform = true; let usr: any;
 		if (fname && lname && dob && this.isValidDate() && this.addMember.gendervalue != 'Unknown' && this.addMember.gendervalue != null && this.addMember.relationvalue != null && this.addMember.fname.trim() != '' && this.addMember.lname.trim() != '' && this.webapi.netConnectivityCheck()) {

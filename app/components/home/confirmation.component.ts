@@ -16,7 +16,7 @@ export class ConfirmationComponent {
 		this.activatedRoutes.queryParams.subscribe(params => {
 			if (params["REQUEST_CONSULT"] != undefined) {
 				this.requestconsult = JSON.parse(params["REQUEST_CONSULT"]);
-				if (this.requestconsult.ServiceType == 3) {
+				if (this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) {
 					this.diagnosticconsult = true;
 				} else if (this.requestconsult.ServiceType == 4) {
 					this.emailconsult = true;

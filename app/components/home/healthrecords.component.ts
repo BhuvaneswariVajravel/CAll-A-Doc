@@ -57,7 +57,7 @@ export class HealthRecordsComponent {
         });
       },
         error => {
-         // console.log("Error in getting preferred pharmacy.. " + error);
+          // console.log("Error in getting preferred pharmacy.. " + error);
         });
     }
   }
@@ -69,6 +69,7 @@ export class HealthRecordsComponent {
       this.consultationFeeDetails();
     }
   }
+  /* To Get Consulatation fee details basaed on user membership */
   consultationFeeDetails() {
     let self = this; self.webapi.loader.show(self.webapi.options);
     self.webapi.consultationFeeDetails(this.requestconsult.ServiceType).subscribe(data => {
@@ -85,13 +86,13 @@ export class HealthRecordsComponent {
           }
         } else {
           self.webapi.loader.hide();
-        //  console.log("Session expired/Acccess denied .Try after some time ...");
+          //  console.log("Session expired/Acccess denied .Try after some time ...");
         }
       });
     },
       error => {
         self.webapi.loader.hide();
-       // console.log("Error in Consultation feedetails... " + error);
+        // console.log("Error in Consultation feedetails... " + error);
       });
 
   }
@@ -100,11 +101,11 @@ export class HealthRecordsComponent {
     let navigationExtras: NavigationExtras = {
       queryParams: { "REQUEST_CONSULT": JSON.stringify(this.requestconsult) }
     }; this.webapi.loader.hide();
-    if (this.requestconsult.ServiceType == 3 && this.isUptoDate && this.requestconsult.UserPreferredPharmacy != null) {
+    if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.isUptoDate && this.requestconsult.UserPreferredPharmacy != null) {
       this.router.navigate(["/pharmacy"], navigationExtras);
     } else if (!this.isUptoDate) {
       this.router.navigate(["/userhealthrecords"], navigationExtras);
-    } else if (this.requestconsult.ServiceType == 3) {
+    } else if (this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) {
       this.router.navigate(["/searchpharmacy"], navigationExtras);
     } else if (this.requestconsult.ServiceType == 4) {
       this.router.navigate(["/creditcard"], navigationExtras);
@@ -115,11 +116,11 @@ export class HealthRecordsComponent {
     let navigationExtras: NavigationExtras = {
       queryParams: { "REQUEST_CONSULT": JSON.stringify(this.requestconsult) }
     }; this.webapi.loader.hide();
-    if (this.requestconsult.ServiceType == 3 && this.isUptoDate && this.requestconsult.UserPreferredPharmacy != null) {
+    if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.isUptoDate && this.requestconsult.UserPreferredPharmacy != null) {
       this.router.navigate(["/pharmacy"], navigationExtras);
     } else if (!this.isUptoDate) {
       this.router.navigate(["/userhealthrecords"], navigationExtras);
-    } else if (this.requestconsult.ServiceType == 3 && this.requestconsult.UserPreferredPharmacy == null) {
+    } else if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.requestconsult.UserPreferredPharmacy == null) {
       this.router.navigate(["/searchpharmacy"], navigationExtras);
     } else if (this.requestconsult.ServiceType == 4) {
       this.router.navigate(["/secureemail"], navigationExtras);
@@ -129,7 +130,7 @@ export class HealthRecordsComponent {
     let navigationExtras: NavigationExtras = {
       queryParams: { "REQUEST_CONSULT": JSON.stringify(this.requestconsult) }
     };
-    if (this.requestconsult.ServiceType == 3) {
+    if (this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) {
       this.router.navigate(["/scheduletype"], navigationExtras);
     } else if (this.requestconsult.ServiceType == 4) {
       this.router.navigate(["/memberdetails"], navigationExtras);

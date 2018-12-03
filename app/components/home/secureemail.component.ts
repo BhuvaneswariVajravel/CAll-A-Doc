@@ -29,6 +29,7 @@ export class SecureEmailComponent {
             }
         });
     }
+    /* To schedule an appointment with doctor through email */
     showNextPage(sub, desc) {
         this.formSubmitted = true; let self = this;
         if (sub && desc && self.subject.trim() != '' && self.description.trim() != '' && self.webapi.netConnectivityCheck()) {

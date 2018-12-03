@@ -81,6 +81,8 @@ export class HealthRecordsComponent {
 		this.healthView = true;
 	}
 
+	/* To Auto select the all drop dropdowns dynamically with user data */
+
 	codeList() {
 		let self = this;
 		if (this.webapi.netConnectivityCheck()) {
@@ -168,7 +170,7 @@ export class HealthRecordsComponent {
 									}
 									break;
 								default:
-									//console.log("CodeList over.............................");
+								//console.log("CodeList over.............................");
 							}
 						} else {
 							//console.log("Error in getting the codelist index. " + self.codeListArray[j]);
@@ -181,6 +183,8 @@ export class HealthRecordsComponent {
 			}
 		}
 	}
+
+	/* To get Personal Lifestyle Tab data from server */
 	getPersonalData() {
 		let self = this;
 		self.webapi.personalAndLSSummary("EMR_PersonalAndLifeStyle_Summary_Get").subscribe(data => {
@@ -238,6 +242,8 @@ export class HealthRecordsComponent {
 		this.personalLsObj.ExerciseLengthItemId = this.extimes.getValue(args.selectedIndex);
 		this.personalLsObj.ExerciseLengthItem = this.extimes.getDisplay(args.selectedIndex);
 	}
+
+	/* To Update Personal Lifestyle data to server */
 	updatePersonalInfo() {
 
 		if (this.webapi.netConnectivityCheck()) {
@@ -276,7 +282,7 @@ export class HealthRecordsComponent {
 				xml2js.parseString(response.content, { explicitArray: false }, function (err, result) {
 					let resp = result['soap:Envelope']['soap:Body'].EMR_PersonalAndLifeStyle_SaveResponse.EMR_PersonalAndLifeStyle_SaveResult;
 					if (resp.Successful == "true") {
-						self.healthView = false; 
+						self.healthView = false;
 					} else if (resp.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
 						self.webapi.logout();
 					} else {
@@ -288,6 +294,8 @@ export class HealthRecordsComponent {
 			});
 		}
 	}
+
+	/* To update Surgery details To  server ie. add or delete or update */
 	updateOrAddSurgery(operation, surgname, when) {
 		this.surgform = true;
 
@@ -341,6 +349,7 @@ export class HealthRecordsComponent {
 			});
 		}
 	}
+	/* Loading the data dynamically when user changes tab by using tab index */
 	onTabChange(args) {
 		let tabView = <TabView>args.object;
 		switch (true) {
@@ -363,9 +372,10 @@ export class HealthRecordsComponent {
 				this.medicalImagList();
 				break;
 			default:
-				//console.log("Nothing.............................");
+			//console.log("Nothing.............................");
 		}
 	}
+	/* To Get drug allergies list from server */
 	drugAllergyGet() {
 		let self = this;
 		self.webapi.gridGetInHealth("EMR_DrugAllergy_Grid_Get").subscribe(data => {
@@ -399,6 +409,7 @@ export class HealthRecordsComponent {
 	closeMedicationStatus() {
 		this.medication = false;
 	}
+	/* To View Medication data */
 	editMedicationDetails(medItem) {
 		this.editMedication = true;
 		this.mSubmitted = false;
@@ -412,6 +423,7 @@ export class HealthRecordsComponent {
 		this.Medication = null;
 		this.editMedication = false;
 	}
+	/* To get Medication List from Server */
 
 	getMedicationsList() {
 		let self = this;
@@ -440,7 +452,7 @@ export class HealthRecordsComponent {
 				//console.log("Error in Medications.... " + error);
 			});
 	}
-
+	/* To Load drop down data ie medical usage frequency dynamically */
 	getMedicationUsageFrequency() {
 		let self = this;
 		if (self.medicationUsageFrequency.length == 0) {
@@ -489,7 +501,7 @@ export class HealthRecordsComponent {
 		this.msSelectedIndex = args.selectedIndex;
 		this.updateMedicationItem.Status = this.medicationStatus.getValue(args.selectedIndex);
 	}
-
+	/* To Update Or Add Medications */
 	updateMedications() {
 		this.mSubmitted = true;
 		if (this.medicationItem.ItemId != undefined) {
@@ -545,7 +557,7 @@ export class HealthRecordsComponent {
 			});
 		}
 	}
-
+	/* To Delete Medication Based on medication ItemId */
 	deleteMedications() {
 		if (this.delMedication.Medication != undefined && this.delMedication.Frequency != undefined && this.delMedication.Status != undefined) {
 			http_request.request({
@@ -636,6 +648,8 @@ export class HealthRecordsComponent {
 		this.delMedicalCondition.index = i;
 	}
 
+	/* To get Medical condition list  */
+
 	getMedicalConditionsList() {
 		let self = this;
 		self.medicalConditionsList = [];
@@ -661,6 +675,8 @@ export class HealthRecordsComponent {
 				//console.log("Error in Medications.... " + error);
 			});
 	}
+
+	/* To load drop down Get Emr medical conditions List */
 
 	getEMRMedicalConditionsList() {
 		let self = this;
@@ -711,6 +727,8 @@ export class HealthRecordsComponent {
 		this.mcsSelectedIndex = args.selectedIndex;
 		this.updateMedCondition.Status = this.medicalConditionStatus.getValue(args.selectedIndex);
 	}
+
+	/* To Update Medical condition */
 
 	updateMedicalCondition() {
 		this.mcSubmitted = true;
@@ -767,6 +785,8 @@ export class HealthRecordsComponent {
 		}
 	}
 
+	/* To delete Medical condition */
+
 	deleteMedicalConditions() {
 		if (this.delMedicalCondition.MedicalCondition != undefined && this.delMedicalCondition.Description != undefined && this.delMedicalCondition.Status != undefined) {
 			http_request.request({
@@ -820,6 +840,8 @@ export class HealthRecordsComponent {
 		this.mcsSelectedIndex = null;
 		this.getEMRMedicalConditionsList();
 	}
+
+	/* To get Surgery history List from server*/
 	surgeryHisGet() {
 		let self = this;
 		self.webapi.gridGetInHealth("EMR_SurgeryHistory_Grid_Get").subscribe(data => {
@@ -846,6 +868,7 @@ export class HealthRecordsComponent {
 			});
 	}
 	imageViewArray: any = [];
+	/* To load all medical images List from server */
 	medicalImagList() {
 		let self = this;
 		self.webapi.gridGetInHealth("EMR_MedicalImage_Grid_Get").subscribe(data => {
@@ -856,7 +879,7 @@ export class HealthRecordsComponent {
 					if (images.length != undefined) {
 						for (let i = 0; i < images.length; i++) {
 							self.medimglist.push(images[i]);
-							self.imageViewArray.push('https://www.247calladoc.com/member/' + self.medimglist[i].ImageSourceSmallURL);
+							self.imageViewArray.push('https://www.247calladoc.com/member/' + self.medimglist[i].ImageSourceSmallURL);//To view in photo viewer
 						}
 					} else {
 						self.medimglist.push(images);
@@ -961,6 +984,7 @@ export class HealthRecordsComponent {
 		this.delSurgery.selected = true;
 		this.delSurgery.indx = i;
 	}
+	/* To Add or update or delete drug allergy in server */
 	updateOrAddDrug(operation, drug, react) {
 		this.drugform = true;
 
@@ -1025,6 +1049,7 @@ export class HealthRecordsComponent {
 		}
 	}
 	imgdtls: any = {};
+	/* Selecting image from gallery */
 	startSelection(context) {
 		let _that = this;
 		context
@@ -1037,7 +1062,7 @@ export class HealthRecordsComponent {
 					selected.getImage().then(res => {
 						//	if (application.android) {
 						_that.imgdtls.imageName = "test.jpg";
-						_that.imgdtls.base64textString = res.toBase64String("jpg", 10);
+						_that.imgdtls.base64textString = res.toBase64String("jpg", 10);// To convert image in to base64
 						_that.imgdtls.imageSize = Math.round(_that.imgdtls.base64textString.replace(/\=/g, "").length * 0.75) - 200;
 
 						/*	} else if (application.ios) {
@@ -1061,6 +1086,7 @@ export class HealthRecordsComponent {
 				console.log(e);
 			});
 	}
+	/* Checking Android Permissions */
 	onRequestPermissionsTap() {
 		if (platformModule.device.os === "Android" && platformModule.device.sdkVersion >= 23) {
 			permissions.requestPermission(android.Manifest.permission.CAMERA, "I need these permissions to read from storage")
@@ -1077,6 +1103,7 @@ export class HealthRecordsComponent {
 		}
 	}
 	//cameraImage: ImageAsset;
+	/* Taking Picture from Camera and upload*/
 	onTakePictureTap() {
 		let _that = this;
 		takePicture({ width: 180, height: 180, keepAspectRatio: false, saveToGallery: true })
@@ -1109,10 +1136,11 @@ export class HealthRecordsComponent {
 			okButtonText: "Yes",
 			cancelButtonText: "No",
 		}).then(function (result) {
-			if(result)
+			if (result)
 				self.delOrUploadMedImage(date, operation, data);
 		});
 	}
+	/* To add or delete the uploaded medical images in server */
 	delOrUploadMedImage(date, operation, data: any) {
 		let item: any = {}; this.medimgform = true;
 		if (this.webapi.netConnectivityCheck()) {
@@ -1253,7 +1281,7 @@ export class HealthRecordsComponent {
 		if (ans == 'Y')
 			this.familyHistoryItem[0].Answer = ans;
 	}
-
+	/* To get Family History List */
 	getFamilyHistoryList() {
 		let self = this;
 		self.webapi.getFamilyHistory_http().subscribe(data => {
@@ -1287,7 +1315,7 @@ export class HealthRecordsComponent {
 				//console.log("Error in Family History.... " + error);
 			});
 	}
-
+	/* To load the family relation dropdown */
 	getFamilyHistoryWho() {
 		let self = this;
 		if (self.familyHistoryWho.length == 0) {
@@ -1334,6 +1362,7 @@ export class HealthRecordsComponent {
 		this.addNewMember = false;
 	}
 
+	/* To add or update New Family History Item */
 	addNewFamilyHistoryItem() {
 		this.addFHForm = true;
 
@@ -1403,7 +1432,7 @@ export class HealthRecordsComponent {
 			});
 		}
 	}
-
+	/* To Delete Family History Item */
 	deleteFamilyHistoryItem(itemId) {
 		for (let i = 0; i < this.familyHistoryItem.length; i++) {
 			if (itemId == this.familyHistoryItem[i].ItemId) {
@@ -1479,7 +1508,7 @@ export class HealthRecordsComponent {
 	}
 
 	updateFamilyCondition() {
-	//	console.log(this.familyHistoryItem[0].ItemId + "  +++  " + this.familyHistoryItem.length);
+		//	console.log(this.familyHistoryItem[0].ItemId + "  +++  " + this.familyHistoryItem.length);
 		if (this.familyHistoryItem[0].ItemId == 0 && !this.addNewMember) {
 			let self = this;
 			let conditionId = this.updateFamilyHistoryItem.ConditionItemId;
@@ -1519,7 +1548,7 @@ export class HealthRecordsComponent {
 			this.rs.navigate(["/home"], { clearHistory: true });
 		}
 	}
-
+	/* To Show Payment Fee details */
 	consultationFeeDetails() {
 		let self = this; self.webapi.loader.show(self.webapi.options);
 		self.webapi.consultationFeeDetails(this.requestconsult.ServiceType).subscribe(data => {
@@ -1550,9 +1579,9 @@ export class HealthRecordsComponent {
 		let navigationExtras: NavigationExtras = {
 			queryParams: { "REQUEST_CONSULT": JSON.stringify(this.requestconsult) }
 		}; this.webapi.loader.hide();
-		if (this.requestconsult.ServiceType == 3 && this.requestconsult.UserPreferredPharmacy != null) {
+		if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.requestconsult.UserPreferredPharmacy != null) {
 			this.router.navigate(["/pharmacy"], navigationExtras);
-		} else if (this.requestconsult.ServiceType == 3) {
+		} else if (this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) {
 			this.router.navigate(["/searchpharmacy"], navigationExtras);
 		} else if (this.requestconsult.ServiceType == 4) {
 			this.router.navigate(["/creditcard"], navigationExtras);
@@ -1564,14 +1593,15 @@ export class HealthRecordsComponent {
 			queryParams: { "REQUEST_CONSULT": JSON.stringify(this.requestconsult) }
 		}; this.webapi.loader.hide();
 
-		if (this.requestconsult.ServiceType == 3 && this.requestconsult.UserPreferredPharmacy != null) {
+		if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.requestconsult.UserPreferredPharmacy != null) {
 			this.router.navigate(["/pharmacy"], navigationExtras);
-		} else if (this.requestconsult.ServiceType == 3 && this.requestconsult.UserPreferredPharmacy == null) {
+		} else if ((this.requestconsult.ServiceType == 3 || this.requestconsult.ServiceType == 7) && this.requestconsult.UserPreferredPharmacy == null) {
 			this.router.navigate(["/searchpharmacy"], navigationExtras);
 		} else if (this.requestconsult.ServiceType == 4) {
 			this.router.navigate(["/secureemail"], navigationExtras);
 		}
 	}
+	/* To show Images in a Image viewer */
 	showImageInPhotoViewer(i) {
 		this.photoViewer.showViewer(this.imageViewArray);
 	}

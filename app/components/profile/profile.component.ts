@@ -33,7 +33,7 @@ export class ProfileComponent {
     pharname: string; state: string; centeredOnLocation: boolean = false; selectedPharmacy: any = {}; pharSearchTab: boolean = true;
     personalInfo: any = {}; carstates = new ValueList<string>(); prefPhar: any = {}; billingInfo: any = {}; years: any = [];
     months: any = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-    timezones = new ValueList<string>()
+    timezones = new ValueList<string>(); pharCategory: boolean = false;
     constructor(private page: Page, private webapi: WebAPIService) { }
     ngOnInit() {
         this.page.actionBarHidden = true; this.radSideComponent.pfClass = true;
@@ -44,6 +44,7 @@ export class ProfileComponent {
     }
     ngAfterViewInit() {
         this.getPersonalData();
+        // To show Time zone drop down
         this.timezones.push({ value: "2", display: "Atlantic (GMT-4:00)" },
             { value: "3", display: "Eastern (GMT-5:00)" },
             { value: "4", display: "Eastern (GMT-5:00) No DST Adjustment" },
@@ -70,6 +71,7 @@ export class ProfileComponent {
             //  console.log("EX ID "+this.usrdata.ExternalMemberId);
         }
     }
+    /* To load USStates drop down dynamically */
     getStates() {
         this.webapi.getCodeList("USStates").subscribe(data => {
             let self = this;
@@ -79,12 +81,12 @@ export class ProfileComponent {
                         self.carstates.push({ value: result.APIResult_CodeList.List.List.CodeListItem[l].ItemId, display: result.APIResult_CodeList.List.List.CodeListItem[l].Value });
                     }
                 } else {
-                   // console.log("Session expired profile in getting the states. ");
+                    // console.log("Session expired profile in getting the states. ");
                 }
             });
         },
             error => {
-               // console.log("Error in getting the states.. " + error);
+                // console.log("Error in getting the states.. " + error);
             });
     }
     setStateForInsurance() {
@@ -114,6 +116,7 @@ export class ProfileComponent {
                 this.personalInfo.timezoneid = z;
         }
     }
+    /* To Load Personal data dynamically */
     getPersonalData() {
         if (this.webapi.netConnectivityCheck()) {
             let self = this;
@@ -135,11 +138,11 @@ export class ProfileComponent {
                 });
             },
                 error => {
-                   // console.log("Error in Personal Info get.... " + error);
+                    // console.log("Error in Personal Info get.... " + error);
                 });
         }
     }
-
+    /* To Load different tab data dynamically when user taps based on their tab index */
     onTabChange(args) {
         let tabView = <TabView>args.object;
         switch (true) {
@@ -158,7 +161,7 @@ export class ProfileComponent {
             case tabView.selectedIndex == 5:
                 break;
             default:
-                //console.log("Nothing. in Profile............................");
+            //console.log("Nothing. in Profile............................");
         }
     }
     onCarStateChage(args) {
@@ -173,6 +176,7 @@ export class ProfileComponent {
     onTimeZoneChange(args) {
         this.personalInfo.TimeZoneId = this.timezones.getValue(args.selectedIndex);
     }
+    /* To load billing info data */
     getBillingInfo() {
         let self = this;
         if (self.webapi.netConnectivityCheck()) {
@@ -186,16 +190,16 @@ export class ProfileComponent {
                     } else if (result.APIResult_CCInfo.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
                         self.webapi.logout();
                     } else {
-                       // console.log("Session expired or error in getting billing data...");
+                        // console.log("Session expired or error in getting billing data...");
                     }
                 });
             },
                 error => {
-                   // console.log("Error in getting billing data.... " + error);
+                    // console.log("Error in getting billing data.... " + error);
                 });
         }
     }
-
+    /* To load Insurance  info data */
     insuranceInfoGet() {
         if (this.webapi.netConnectivityCheck()) {
             let self = this;
@@ -208,7 +212,7 @@ export class ProfileComponent {
                     } else if (result.APIResult_InsuranceInfo.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
                         self.webapi.logout();
                     } else {
-                       // console.log("Session expired or error in getting insure data..." + result.APIResult_InsuranceInfo.Message);
+                        // console.log("Session expired or error in getting insure data..." + result.APIResult_InsuranceInfo.Message);
                     }
                 });
             },
@@ -217,6 +221,7 @@ export class ProfileComponent {
                 });
         }
     }
+    /* To load Plan info data */
     getPlanInfo() {
         let self = this;
         if (self.webapi.netConnectivityCheck()) {
@@ -236,7 +241,7 @@ export class ProfileComponent {
                 });
         }
     }
-
+    /* To Update Contact info after successive validation*/
     updateContactInfo(fname, lname, dob, addr1, city, zip, phone, email) {
         //console.log(fname + " " + lname + " " + dob + " " + addr1 + " --" + city + " " + zip + " " + phone + "  " + email);
         this.formSubmitted = true; this.personalInfo.Phone2error = false;
@@ -258,7 +263,7 @@ export class ProfileComponent {
                     } else if (result.ServiceCallResult.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
                         self.webapi.logout();
                     } else {
-                       // console.log("Session expired in save Insurance data..." + result.ServiceCallResult.Message);
+                        // console.log("Session expired in save Insurance data..." + result.ServiceCallResult.Message);
                     }
                 });
             },
@@ -269,9 +274,10 @@ export class ProfileComponent {
             this.focusContactInfoError(fname, lname, dob, addr1, city, zip, phone, email);
         }
     }
+    /* To Update Billing info after successive validation*/
     updateBillInfo(cardno, name, addr, city, zip, phone) {
         this.billFormSubmit = true;
-       // console.log(cardno + "---" + name + " -- " + addr + " -- " + city + "--" + zip + "--" + phone);
+        // console.log(cardno + "---" + name + " -- " + addr + " -- " + city + "--" + zip + "--" + phone);
         if (cardno && name && addr && city && zip && phone && this.isValidPhone(this.billingInfo.Phone) && this.isValidCard() && this.authorize && this.billingInfo.NameOnCard.trim() != '' && this.billingInfo.Address1.trim() != '' && this.billingInfo.City.trim() != '' && this.webapi.netConnectivityCheck()) {
             let self = this;
             self.webapi.saveBillingInfo(self.billingInfo).subscribe(data => {
@@ -295,6 +301,7 @@ export class ProfileComponent {
             this.focusBillInfoError(cardno, name, addr, city, zip, phone);
         }
     }
+    /* To Update Insurance info after successive validation*/
     updateInsuranceInfo(name, phone, id) {
         this.insrFormSubmit = true;
         if (name && phone && this.isValidNo(this.insureInfo.InsuranceMemberId) && this.isValidPhone(this.insureInfo.CarrierPhone) && this.insureInfo.CarrierName.trim() != '' && this.webapi.netConnectivityCheck()) {
@@ -318,7 +325,7 @@ export class ProfileComponent {
                     //console.log("Error in Personal and Lifestyle.... " + error);
                 });
 
-           // console.log("Update Insure info");
+            // console.log("Update Insure info");
         }
     }
     formatPhoneNumber(s) {
@@ -327,6 +334,7 @@ export class ProfileComponent {
         if (m != null)
             return m[1] + "-" + m[2] + "-" + m[3];
     }
+    /* To Make Focus for invalid data inside ContactInfo */
     focusContactInfoError(fname, lname, dob, addr1, city, zip, phone, email) {
         let name: boolean = true;
         switch (name || "") {
@@ -358,9 +366,10 @@ export class ProfileComponent {
                 (<TextField>this.page.getViewById("phone2")).focus();
                 break;
             default:
-                //console.log("All Contact info fine.............................");
+            //console.log("All Contact info fine.............................");
         }
     }
+    /* To Make Focus for invalid data inside BillingInfo */
     focusBillInfoError(cardno, name, addr, city, zip, phone) {
         switch (true || "") {
             case !cardno || this.billingInfo.CardNumber == undefined || !this.isValidCard():
@@ -382,7 +391,7 @@ export class ProfileComponent {
                 (<TextField>this.page.getViewById("billingphone")).focus();
                 break;
             default:
-                //console.log("All Billing info fine.............................");
+            //console.log("All Billing info fine.............................");
         }
     }
     onMonthChange(args) {
@@ -418,8 +427,18 @@ export class ProfileComponent {
         this.mapView.longitude = -119.417931;
         this.mapView.zoom = 2;
     };
-    searchPharmacy(pvalue, zvalue) {
-        this.formSubmitted = true; let self = this;
+    /* Search the Pharmacy */
+    searchPharmacy(pvalue, zvalue, from) {
+        //console.log("search pharmacy called in profile" + pvalue + " " + zvalue + " " + this.state + " city" + this.city);
+        let self = this;
+        if (!from) {
+            this.formSubmitted = true;
+        }
+        if (!from && this.pharCategory && (!this.city || !this.state)) {
+            return false;
+        } else if (!from && !this.pharCategory && (!zvalue || this.zipcode == '')) {
+            return false;
+        }
         if (pvalue && self.webapi.netConnectivityCheck()) {
             self.webapi.loader.show(self.webapi.options); self.pharmacyList = [];
             this.webapi.pharmacySearch(this.pharname != undefined ? this.pharname : "", this.zipcode != undefined ? this.zipcode : "", this.state != undefined ? this.state : "", this.city != undefined ? this.city : "").subscribe(data => {
@@ -441,6 +460,7 @@ export class ProfileComponent {
                         self.searchPharmacyToPlaceMarkers(self.pharmaciesAddr);
                         self.webapi.loader.hide();
                     } else if (result.APIResult_PharmacyList.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
+                        self.webapi.loader.hide();
                         self.webapi.logout();
                     } else {
                         self.webapi.loader.hide();
@@ -454,6 +474,7 @@ export class ProfileComponent {
                 });
         }
     }
+    /* Placing Markers inside map by using their address */
     searchPharmacyToPlaceMarkers(pharAddrs: any[]) {
         let self = this; let searchField = "";
         for (let i = 0; i < pharAddrs.length; i++) {
@@ -499,6 +520,7 @@ export class ProfileComponent {
             }
         }
     }
+    /* To show Preferred pharmacy */
     preferredPharList() {
         this.webapi.getMembersPreferredPharmacy_http().subscribe(data => {
             let self = this;
@@ -516,9 +538,10 @@ export class ProfileComponent {
             });
         },
             error => {
-               // console.log("Error in getting preferred pharmacy.. " + error);
+                // console.log("Error in getting preferred pharmacy.. " + error);
             });
     }
+    /* To update Preferred pharmacy */
     updatePreferredPhar() {
         (<ScrollView>this.page.getViewById("scrollid")).scrollToVerticalOffset(0, false);
         this.selectedPharmacy.submitted = true;
@@ -535,16 +558,16 @@ export class ProfileComponent {
                     } else if (result.APIResult_PreferredPharmacy.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
                         self.webapi.logout();
                     } else {
-                       // console.log("Error in getting preferred pharmacy ");
+                        // console.log("Error in getting preferred pharmacy ");
                     }
                 });
             },
                 error => {
-                   // console.log("Error in getting preferred pharmacy.. " + error);
+                    // console.log("Error in getting preferred pharmacy.. " + error);
                 });
         }
     }
-
+    /* Mapit the user selected pharmacy inside the google map */
     mapInGoogle(item) {
         (<ScrollView>this.page.getViewById("scrollid")).scrollToVerticalOffset(0, false);
         let markPhar: any = [];
@@ -592,12 +615,13 @@ export class ProfileComponent {
     isValidNo(num: any) {
         return /^\d+$/.test(num);
     }
+    /* Checking Android permissions */
     onRequestPermissionsTap() {
         this.pic1 = null; this.imgdtls = {};
         if (platformModule.device.os === "Android" && platformModule.device.sdkVersion >= 23) {
             permissions.requestPermission(android.Manifest.permission.CAMERA, "I need these permissions to read from storage")
                 .then(() => {
-                   // console.log("Permissions granted!");
+                    // console.log("Permissions granted!");
                     this.onTakePictureTap();
                 })
                 .catch(() => {
@@ -611,13 +635,14 @@ export class ProfileComponent {
 
     cameraImage: ImageAsset;
     imgdtls: any = {};
+    /* Taking Picture from camera */
     onTakePictureTap() {
         let _that = this; this.user.showPic = true;
         takePicture({ width: 180, height: 180, keepAspectRatio: false, saveToGallery: true })
             .then((imageAsset) => {
                 let source = new ImageSource();
                 source.fromAsset(imageAsset).then((source) => {
-                  //  console.log(`Size: ${source.width}x${source.height}`);
+                    //  console.log(`Size: ${source.width}x${source.height}`);
                     _that.user.showPic = false;
                     _that.imgdtls.imageName = "sample.jpg";
                     _that.imgdtls.base64textString = source.toBase64String("jpg", 10);
@@ -631,9 +656,10 @@ export class ProfileComponent {
                     _that.pic1 = imageAsset;
                 }
             }, (error) => {
-               // console.log("Error: " + error);
+                // console.log("Error: " + error);
             });
     }
+    /* To save picture in server */
     savePersonalImage(item: any, operation) {
         if (this.webapi.netConnectivityCheck()) {
             let self = this;
@@ -667,7 +693,7 @@ export class ProfileComponent {
                 // console.log("response");
                 // console.log(this.usrdata.ExternalMemberId+" == "+this.webapi.ExternalMemberId);
                 xml2js.parseString(response.content, { explicitArray: false }, function (err, result) {
-                   // console.log(response.content);
+                    // console.log(response.content);
                     self.webapi.loader.hide();
                     if (result) {
                         let resp = result['soap:Envelope']['soap:Body'].PersonalImage_SaveResponse.PersonalImage_SaveResult;
@@ -687,7 +713,7 @@ export class ProfileComponent {
                 });
             }, function (e) {
                 self.webapi.loader.hide();
-               // console.log("Error:... " + e);
+                // console.log("Error:... " + e);
             });
         }
     }
@@ -697,6 +723,7 @@ export class ProfileComponent {
         else
             this.pharSearchTab = true;
     }
+    /* To get Family members data */
     getFamliMembers() {
         let self = this;
         self.webapi.personalAndLSSummary("FamilyMembers_Grid_Get").subscribe(data => {
@@ -747,5 +774,15 @@ export class ProfileComponent {
             }
         }
     }
+    
+    toggleSearchItem(param) {
+		if (param) {
+			this.city = '';
+			this.state = undefined;
+		} else {
+			this.zipcode = '';
+		}
+		this.pharCategory = !param;
+	}
 
 };

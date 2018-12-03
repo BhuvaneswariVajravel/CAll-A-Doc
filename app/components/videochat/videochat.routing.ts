@@ -1,5 +1,5 @@
 import { VideoChatComponent } from './videochat.component'
 export const videoChatRoutes = [
-  { path: 'videochat', component: VideoChatComponent },
+  { path: 'videochat/:id', component: VideoChatComponent },
 ];
 

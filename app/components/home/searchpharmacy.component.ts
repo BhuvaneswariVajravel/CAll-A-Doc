@@ -24,7 +24,7 @@ export class SearchPharmacyComponent {
 	formSubmitted = false; pharmacyList: any = []; mapView: any = null;
 	pharmaciesAddr: any = []; placeG: any = []; centeredOnLocation: boolean = false;
 	statesInfo: any = []; sSelectedIndex: number = null; state: string;
-	update: boolean = false; selectedPharmacy: any = {};
+	update: boolean = false; selectedPharmacy: any = {}; pharCategory: boolean = false;
 	@ViewChild(RadSideComponent) radSideComponent: RadSideComponent;
 
 	constructor(private page: Page, private webapi: WebAPIService, private router: Router, private activatedRoutes: ActivatedRoute) { }
@@ -46,7 +46,7 @@ export class SearchPharmacyComponent {
 					this.selectedPharmacy.PharmacyPhone = this.requestconsult.PharmacyPhone;
 					this.pharmacyList = this.requestconsult.SearchPharmacyResults;
 				} else {
-					this.searchPharmacy(true, true);
+					this.searchPharmacy(true, true, true);
 				}
 			}
 		});
@@ -59,7 +59,7 @@ export class SearchPharmacyComponent {
 							self.statesInfo.push(result.APIResult_CodeList.List.List.CodeListItem[loop].Value);
 						}
 					} else {
-					//	console.log("Error in getting the states. ");
+						//	console.log("Error in getting the states. ");
 					}
 				});
 			},
@@ -68,10 +68,19 @@ export class SearchPharmacyComponent {
 				});
 		}
 	}
-	searchPharmacy(pvalue, zvalue) {
-		//console.log("search pharmacy called" + pvalue + " " + zvalue);
-		this.formSubmitted = true; let self = this;
+	/* serch pharmacies based on user input */
+	searchPharmacy(pvalue, zvalue, from) {
+		//console.log("search pharmacy called" + pvalue + " " + zvalue + " " + this.state + " city" + this.city);
+		let self = this;
+		if (!from) {
+			this.formSubmitted = true;
+		}
 		//console.log(this.state + "    " + this.city + "    " + this.zipcode);
+		if (!from && this.pharCategory && (!this.city || !this.state)) {
+			return false;
+		} else if (!from && !this.pharCategory && (!zvalue || this.zipcode == '')) {
+			return false;
+		}
 		if (pvalue && self.webapi.netConnectivityCheck()) {
 			self.pharSearchTab = false;
 			self.webapi.loader.show(self.webapi.options); self.pharmacyList = [];
@@ -93,7 +102,7 @@ export class SearchPharmacyComponent {
 						self.webapi.loader.hide();
 					} else if (result.APIResult_PharmacyList.Message == "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
 						self.webapi.loader.hide();
-					//	console.log("LOGOUT DUE SESSION TIME OUT IN SEARCH PHARMACY --->" + result.APIResult_PharmacyList.Message);
+						//	console.log("LOGOUT DUE SESSION TIME OUT IN SEARCH PHARMACY --->" + result.APIResult_PharmacyList.Message);
 						self.webapi.logout();
 					} else {
 						self.webapi.loader.hide();
@@ -117,6 +126,7 @@ export class SearchPharmacyComponent {
 		this.mapView.longitude = -119.417931;
 		this.mapView.zoom = 2;
 	};
+	/* To add markers for the pahrmacies list */
 	searchPharmacyToPlaceMarkers(pharAddrs: any[]) {
 		let self = this; let searchField = "";
 		for (let i = 0; i < pharAddrs.length; i++) {
@@ -167,6 +177,7 @@ export class SearchPharmacyComponent {
 			}
 		}
 	}
+	/* Map it in google based on selected pharmacy */
 	mapInGoogle(item) {
 		(<ScrollView>this.page.getViewById("scrollidd")).scrollToVerticalOffset(0, false);
 		let markPhar: any = [];
@@ -187,7 +198,7 @@ export class SearchPharmacyComponent {
 					self.mapView.longitude = self.placeG[0].geometry.location.lng;
 					self.mapView.zoom = 16;
 					self.centeredOnLocation = true;
-				//	console.log("Marker added. and Zoomed.......");
+					//	console.log("Marker added. and Zoomed.......");
 				},
 				error => {
 					console.log(error);
@@ -196,6 +207,7 @@ export class SearchPharmacyComponent {
 		}
 		//this.searchPharmacyToPlaceMarkers(markPhar.push(item.PharmacyAddress1 + " " + item.PharmacyCity + ", " + item.PharmacyState + " " +item.PharmacyZip));
 	}
+	/* Navigate to next based on user membership */
 	showNextPage() {
 		this.update = true;
 		(<ScrollView>this.page.getViewById("scrollidd")).scrollToVerticalOffset(0, false);
@@ -235,6 +247,15 @@ export class SearchPharmacyComponent {
 			this.pharSearchTab = false;
 		else
 			this.pharSearchTab = true;
+	}
+	toggleSearchItem(param) {
+		if (param) {
+			this.city = '';
+			this.state = undefined;
+		} else {
+			this.zipcode = '';
+		}
+		this.pharCategory = !param;
 	}
 
 };

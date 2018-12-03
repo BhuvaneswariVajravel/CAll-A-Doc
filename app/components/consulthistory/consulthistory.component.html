@@ -45,7 +45,7 @@
 				</StackLayout>
 				<StackLayout class="reganimation4">
 					<DropDown #servsts (selectedIndexChange)="onSeriveStatusChange(servsts)" [items]="serviceStatus" [selectedIndex]="servStatusIndex"
-					 hint="Service Status"> </DropDown>
+						hint="Service Status"> </DropDown>
 				</StackLayout>
 				<StackLayout class="reganimation4">
 					<Label text="" class="dropdownline "></Label>
@@ -75,8 +75,8 @@
 						<RL:Ripple (tap)="consultViewPage(item)" rippleColor="#a5a5a5">
 							<GridLayout columns="auto, 2*, auto" rows="auto,auto">
 								<Image col="0" src="res://msgicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email')>-1"></Image>
-								<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Diagnostic')>-1"></Image>
 								<Image col="0" src="res://convideoicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video')>-1"></Image>
+								<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video') == -1 && item.ConsultationType.indexOf('Email') == -1"></Image>
 								<StackLayout col="1" class="consultGrid-mid" width="80%">
 									<Label [text]="item.ConsultationType" class="consultGrid-midHead" textWrap="true"></Label>
 									<StackLayout col="1" orientation="horizontal">

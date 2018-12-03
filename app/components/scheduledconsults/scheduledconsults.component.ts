@@ -15,28 +15,47 @@ let xml2js = require('nativescript-xml2js');
 })
 export class ScheduledConsultsComponent {
     pageNum = 1; totalCount = 0; user: any = {}; norecords: boolean = false;
-    scheduledConsultList: any = []; isLoading: boolean = false;
+    scheduledConsultList: any = []; isLoading: boolean = false; newVideoConsults: any = [];// videoList: any = [];
     @ViewChild(RadSideComponent) radSideComponent: RadSideComponent;
     constructor(private page: Page, private webapi: WebAPIService, private router: Router, private actRoute: ActivatedRoute, private location: Location) { }
+    /* To Load Schduled Consults */
     ngOnInit() {
         this.page.actionBarHidden = true;
         this.radSideComponent.schConslts = true;
-        let self = this;
+        let self = this; let videoList = [];
         if (self.webapi.netConnectivityCheck()) {
             self.webapi.loader.show(self.webapi.options);
-            this.webapi.scheduledconsults(this.pageNum).subscribe(data => {
+            this.webapi.scheduledconsults(this.pageNum, 20).subscribe(data => {
                 xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
                     if (result.APIResult_ConsultationItemList.Successful == "true") {
+                        if (ApplicationSettings.hasKey("VIDEO_CONSULTS")) {
+                            videoList = JSON.parse(ApplicationSettings.getString("VIDEO_CONSULTS"));
+                            //console.log(videoList);
+                        }
+                        let date = new Date();
                         if (result.APIResult_ConsultationItemList.ItemCount != "0") {
                             self.totalCount = result.APIResult_ConsultationItemList.TotalItemCountInAllPages;
                             let total = result.APIResult_ConsultationItemList.ItemList.ConsultationItemShort;
                             if (total.length != undefined) {
                                 for (let i = 0; i < total.length; i++) {
-                                    self.scheduledConsultList.push(total[i]);
-                                    console.log(total[i].RelatedTime+"   REALTIME   Item Id"+total[i].ItemId);
+                                    self.newVideoConsults.push(total[i].ItemId);
+                                    if (videoList.indexOf(total[i].ItemId) > -1 && total[i].ConsultationType.indexOf('Video') > -1) {
+                                        total[i].showVideo = true;
+                                        self.scheduledConsultList.push(total[i]);
+                                    } else {
+                                        total[i].showVideo = false;
+                                        self.scheduledConsultList.push(total[i]);
+                                    }
                                 }
                             } else {
-                                self.scheduledConsultList.push(total);
+                                self.newVideoConsults.push(total.ItemId);
+                                if (videoList.indexOf(total.ItemId) > -1) {
+                                    total.showVideo = true;
+                                    self.scheduledConsultList.push(total);
+                                } else {
+                                    total.showVideo = false;
+                                    self.scheduledConsultList.push(total);
+                                }
                             }
                             self.hideIndicator();
                         } else {
@@ -60,7 +79,66 @@ export class ScheduledConsultsComponent {
                 });
         }
     }
+    /* To Update Video consults for every 20 mins */
+    pushVideoConsults() {
+        let self = this; let videoList = []; //self.newVideoConsults = [];
+        this.webapi.scheduledconsults(1, 10).subscribe(data => {
+            xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
+                if (result.APIResult_ConsultationItemList.Successful == "true") {
+                    if (ApplicationSettings.hasKey("VIDEO_CONSULTS")) {
+                        videoList = JSON.parse(ApplicationSettings.getString("VIDEO_CONSULTS"));
+                    }
+                    let date = new Date();
+                    if (result.APIResult_ConsultationItemList.ItemCount != "0") {
+                        self.totalCount = result.APIResult_ConsultationItemList.TotalItemCountInAllPages;
+                        let total = result.APIResult_ConsultationItemList.ItemList.ConsultationItemShort;
+                        if (total.length != undefined) {
+                            for (let i = 0; i < total.length; i++) {
+                                if (videoList.indexOf(total[i].ItemId) > -1) {
+                                    self.scheduledConsultList[i].showVideo = true;
+                                } else {
+                                    self.scheduledConsultList[i].showVideo = false;
+                                }
+                                //console.log("new Dataaaa " + self.newVideoConsults.indexOf(total[i].ItemId));
+                                //console.log(Date.parse(total[i].RelatedTime) > date.getTime());
+                                if (self.newVideoConsults.indexOf(total[i].ItemId) == -1 && Date.parse(total[i].RelatedTime) > date.getTime()) {
+                                    self.newVideoConsults.push(total[i].ItemId);
+                                    if (total[i].ConsultationType.indexOf('Video') > -1)
+                                        total[i].showVideo = true;
+                                    else
+                                        total[i].showVideo = false;
+                                    self.scheduledConsultList.push(total[i]);
+                                }
+                            }
+                        } else {
+                            if (videoList.indexOf(total.ItemId) > -1) {
+                                self.scheduledConsultList.showVideo = true;
+                            } else {
+                                self.scheduledConsultList.showVideo = false;
+                            }
+                            if (self.newVideoConsults.indexOf(total.ItemId) == -1 && Date.parse(total.RelatedTime) > date.getTime()) {
+                                self.newVideoConsults.push(total.ItemId);
+                                if (total.ConsultationType.indexOf('Video') > -1)
+                                    total.showVideo = true;
+                                else
+                                    total.showVideo = false;
+                                self.scheduledConsultList.push(total);
+                            }
+                        }
+                    }
+                }
+            });
+        },
+            error => {
+                //console.log("Error while getting scheduled consult.. " + error);
+            });
+    }
 
+
+    startVideo(itemId) {
+        this.router.navigate(['/videochat', itemId]);
+    }
+    intervalId = 0;
     ngAfterViewInit() {
         if (ApplicationSettings.hasKey("USER")) {
             this.user = JSON.parse(ApplicationSettings.getString("USER"));
@@ -76,8 +154,19 @@ export class ScheduledConsultsComponent {
 
             }
         }
-    }
+        this.intervalId = setInterval(() => {
+            this.pushVideoConsults();
+        }, 60000);//20 minutes //1200000
 
+    }
+    clearTimer() { clearInterval(this.intervalId); }
+
+    getTimeInMinute(timeInMilli) {
+        let seconds = timeInMilli / 1000;
+        let minutes = seconds / 60;
+        return Math.floor(minutes);
+    }
+    /* To view Scheduled consult data after navigation */
     scheduleView(item: any) {
         let navigationExtras: NavigationExtras = {
             queryParams: {
@@ -89,22 +178,39 @@ export class ScheduledConsultsComponent {
     hideIndicator() {
         this.webapi.loader.hide();
     }
+    /* Loads the schdeuled consults dynamicaaly on scrolling */
     loadMoreScheduleList() {
-        let self = this;
-        if (this.totalCount >= this.pageNum * 6 && this.webapi.netConnectivityCheck()) {
+        let self = this; let date = new Date(); let videoList = [];
+        if (this.totalCount >= this.pageNum * 20 && this.webapi.netConnectivityCheck()) {
             this.pageNum = this.pageNum + 1; self.isLoading = true;
-            this.webapi.scheduledconsults(this.pageNum).subscribe(data => {
+            this.webapi.scheduledconsults(this.pageNum, 20).subscribe(data => {
                 xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
                     if (result.APIResult_ConsultationItemList.Successful == "true") {
+                        if (ApplicationSettings.hasKey("VIDEO_CONSULTS")) {
+                            videoList = JSON.parse(ApplicationSettings.getString("VIDEO_CONSULTS"));
+                        }
                         self.totalCount = result.APIResult_ConsultationItemList.TotalItemCountInAllPages;
                         let total = result.APIResult_ConsultationItemList.ItemList.ConsultationItemShort;
                         if (total.length != undefined) {
                             for (let i = 0; i < total.length; i++) {
-                                self.scheduledConsultList.push(total[i]);
-                                console.log(total[i].RelatedTime+"   REALTIME   Item Id"+total[i].ItemId);
+                                self.newVideoConsults.push(total[i].ItemId);
+                                if (videoList.indexOf(total[i].ItemId) > -1) {
+                                    total[i].showVideo = true;
+                                    self.scheduledConsultList.push(total[i]);
+                                } else {
+                                    total[i].showVideo = false;
+                                    self.scheduledConsultList.push(total[i]);
+                                }
                             }
                         } else {
-                            self.scheduledConsultList.push({ "ConsultationType": total.ConsultationType, "ItemId": total.ItemId, "RelatedTime": total.RelatedTime });
+                            self.newVideoConsults.push(total.ItemId);
+                            if (videoList.indexOf(total.ItemId) > -1) {
+                                total.showVideo = true;
+                                self.scheduledConsultList.push(total);
+                            } else {
+                                total.showVideo = false;
+                                self.scheduledConsultList.push(total);
+                            }
                         }
                         self.isLoading = false;
                     } else {
@@ -122,6 +228,10 @@ export class ScheduledConsultsComponent {
     }
     convertTime(time24) {
         return this.webapi.convertTime24to12(time24);
+    }
+    ngOnDestroy() {
+        // console.log("clearTimer");
+        this.clearTimer();
     }
 };
 // SCHEDULE CONSULT VIEW
@@ -182,7 +292,7 @@ export class ScheduledConsultsViewComponent {
                             self.hideIndicator();
                         } else {
                             self.hideIndicator();
-                           // console.log("Session expired / Error in Scheduled list view");
+                            // console.log("Session expired / Error in Scheduled list view");
                         }
                     });
                 },
@@ -208,6 +318,7 @@ export class ScheduledConsultsViewComponent {
             }
         }
     }
+    /* To show diffrent type of popups */
     popupbtn(msg) {
         this.isVisible = true;
         if (msg == 'phynotes') {

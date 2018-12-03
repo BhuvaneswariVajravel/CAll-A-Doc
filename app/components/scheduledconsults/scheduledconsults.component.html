@@ -28,31 +28,52 @@
 		<ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
 			<StackLayout class="reganimation4">
 				<StackLayout class="consultGrid-bg">
-					<RL:Ripple (tap)="scheduleView(item)" rippleColor="#a5a5a5">
-						<GridLayout columns="auto, 2*, auto" rows="auto,auto">
-							<Image col="0" src="res://msgicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email')>-1"></Image>
-							<Image col="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Diagnostic')>-1"></Image>
-							<Image col="0" src="res://convideoicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video')>-1"></Image>
-							<StackLayout col="1" class="consultGrid-mid" width="80%">
-								<Label [text]="item.ConsultationType" class="consultGrid-midHead" textWrap="true"></Label>
-								<StackLayout col="1" orientation="horizontal">
-									<Label text="Name: " textWrap="true"></Label>
-									<Label [text]="user.FirstName+' '+user.LastName" class="consultGrid-midText" textWrap="true"></Label>
-								</StackLayout>
-								<StackLayout col="1" orientation="horizontal">
-									<Label text="Relationship: " textWrap="true"></Label>
-									<Label [text]="user.RelationShip" textWrap="true"></Label>
-								</StackLayout>
-								<StackLayout col="1" orientation="horizontal">
-									<Label text="Date: " textWrap="true"></Label>
-									<Label [text]="convertTime(item.RelatedTime)" textWrap="true"></Label>
+
+					<GridLayout class="SchedlGrid" columns="275, *" rows="auto,auto">
+						<RL:Ripple col="0" row="0" (tap)="scheduleView(item)" rippleColor="#a5a5a5">
+							<StackLayout col="0" row="0" orientation="horizontal" class="CBroderRit">
+
+								<Image col="0" row="0" src="res://msgicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email') > -1"></Image>
+								<Image col="0" row="0" src="res://convideoicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Video') > -1"></Image>
+								<Image col="0" row="0" src="res://concallicon" stretch="none" class="consultGrid-left" *ngIf="item.ConsultationType.indexOf('Email') == -1 && item.ConsultationType.indexOf('Video') == -1"></Image><!--*ngIf="item.ConsultationType == 'Diagnostic Consultation' || item.ConsultationType == 'Diagnostic Consult'"-->
+
+								<StackLayout col="1" row="0" class="consultGrid-mid">
+									<Label [text]="item.ConsultationType" class="consultGrid-midHead" textWrap="true"></Label>
+									<StackLayout orientation="horizontal">
+										<Label text="Name: " textWrap="true"></Label>
+										<Label [text]="user.FirstName+' '+user.LastName" class="consultGrid-midText" textWrap="true"></Label>
+									</StackLayout>
+									<StackLayout orientation="horizontal">
+										<Label text="Relationship: " textWrap="true"></Label>
+										<Label [text]="user.RelationShip" textWrap="true"></Label>
+									</StackLayout>
+									<StackLayout orientation="horizontal">
+										<Label text="Date: " textWrap="true"></Label>
+										<Label [text]="convertTime(item.RelatedTime)" textWrap="true"></Label>
+									</StackLayout>
 								</StackLayout>
 							</StackLayout>
-							<StackLayout col="2" orientation="horizontal" class="consultGrid-right">
-								<Label text="NEW" textWrap="true"></Label>
+						</RL:Ripple>
+						<RL:Ripple col="1" row="0" orientation="horizontal" (tap)="scheduleView(item)" rippleColor="#a5a5a5" *ngIf="!item.showVideo">
+							<StackLayout orientation="vertical" class="consultGrid-right" verticalAlignment="center">
+								<Label text="NEW" orientation="horizontal" textWrap="true"></Label>
 							</StackLayout>
-						</GridLayout>
-					</RL:Ripple>
+						</RL:Ripple>
+						<RL:Ripple col="1" row="0" rippleColor="#fff" (tap)="startVideo(item.ItemId)" *ngIf="item.showVideo">
+							<!--*ngIf=item.showVideo--item.ItemId-->
+							<StackLayout orientation="vertical" verticalAlignment="center" class="consultGrid-right">
+								<Label text="JOIN" orientation="horizontal" textWrap="true" class="JoinColr"></Label>
+							</StackLayout>
+						</RL:Ripple>
+					</GridLayout>
+
+					<!--<ng-template #video>
+						<RL:Ripple col="1" row="0" rippleColor="#fff" (tap)="startVideo()">
+							<StackLayout orientation="vertical" verticalAlignment="center" class="consultGrid-right">
+								<Label text="JOIN" orientation="horizontal" textWrap="true" class="JoinColr"></Label>
+							</StackLayout>
+						</RL:Ripple>
+					</ng-template>-->
 				</StackLayout>
 			</StackLayout>
 		</ng-template>

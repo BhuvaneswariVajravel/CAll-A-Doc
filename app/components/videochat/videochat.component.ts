@@ -13,6 +13,9 @@ import * as ApplicationSettings from "application-settings";
 import { WebAPIService } from "../../shared/services/web-api.service";
 import { Configuration } from "../../shared/configuration/configuration";
 let xml2js = require('nativescript-xml2js');
+import { RouterExtensions } from "nativescript-angular/router";
+import { ActivatedRoute } from "@angular/router";
+
 
 
 let http = require("http");
@@ -33,11 +36,13 @@ export class VideoChatComponent extends Observable implements OnInit {
     public room: string;
     public name: string;
     public error: string;
-    public videoActivity: VideoActivity;
-    constructor(private page: Page, private webapi: WebAPIService) {
+    public videoActivity: VideoActivity; muted: boolean = false;
+    public docconnected: boolean = true;
+    constructor(private page: Page, private webapi: WebAPIService, private rt: RouterExtensions, private act: ActivatedRoute) {
         super();
-        console.log("Constructor............................");
-      //  this.playCallingSound();
+        //console.log("Constructor............................");
+        //  this.playCallingSound();
+        // let _that = this;
         this.page.actionBarHidden = true;
 
         this.videoActivity = new VideoActivity();
@@ -57,10 +62,16 @@ export class VideoChatComponent extends Observable implements OnInit {
             console.log(JSON.stringify(reason.object['reason']));
         });
 
-        console.log("Constructor11111111111............................");
+        // console.log("Constructor11111111111............................");
 
         this.videoActivity.event.on('didConnectToRoom', (r) => {
             console.log("VIJAY DID CONNECT TO ROOM " + r.object['count']);
+            if (r.object['count'] > 0) {
+                //  console.log("TRRRRRRRRRRRRRRRRRRRRR");
+                this.docconnected = false;
+            } else {
+                this.docconnected = true;
+            }
             if (r.object['count'] < 1) return;
             console.log("didConnectToRoom");
             this.toggle_local_video_size();
@@ -71,14 +82,14 @@ export class VideoChatComponent extends Observable implements OnInit {
         });
 
         this.videoActivity.event.on('participantDidConnect', (r) => {
-            console.log("VIJAY PARTICIPANT DID CONNECT " + r.object['count']);
+            //console.log("VIJAY PARTICIPANT DID CONNECT " + r.object['count']);            
             if (r.object['count'] < 1) return;
             console.log("participantDidConnect");
             this.toggle_local_video_size();
         });
 
         this.videoActivity.event.on('participantDidDisconnect', (r) => {
-            console.log("participantDidDisconnect");
+            console.log("participantDidDisconnect"); this.docconnected = true;
             this.toggle_local_video_size();
         });
 
@@ -125,32 +136,35 @@ export class VideoChatComponent extends Observable implements OnInit {
         this.videoActivity.event.on('participantEnabledAudioTrack', (r) => {
             console.log("participantEnabledAudioTrack");
         });
-        console.log("Constructo22222222............................");
+        // console.log("Constructo22222222............................");
 
 
         let self = this;
         this.get_permissions()
             .then(() => {
-                console.log("GET PERMISSIONS METHOD");
+                //console.log("GET PERMISSIONS METHOD");
 
                 // i find the settimeout allows for a smoother load if you're looking for the preview to begin immediately
                 //  var t = timer.setTimeout(() => {
-                console.log("JJJKLKKKKJHKHKHJJ");
+                // console.log("JJJKLKKKKJHKHKHJJ");
                 self.videoActivity.startPreview();
                 //      timer.clearTimeout(t);
-                console.log("jjjjj");
+                // console.log("jjjjj");
                 //}, 1200);
             });
     }
     ngOnInit() {
-        console.log("NG ON INIT");
+        // console.log("NG ON INIT");
         this.container = <StackLayout>this.page.getViewById('container');
         // this.container = <StackLayout>this.mainData.nativeElement;
         this.add_video_views();
     }
+    ngAfterViewInit() {
+        this.getTwilioVCToken(this.act.snapshot.params["id"]);
+    }
 
     toggle_local_video_size(): void {
-        console.log("TAPPED ON CAM VIDEO");
+        // console.log("TAPPED ON CAM VIDEO");
         if (this.localVideo.className === 'large') {
             this.localVideo.className = 'small';
             GridLayout.setColumn(this.localVideo, 1);
@@ -164,7 +178,7 @@ export class VideoChatComponent extends Observable implements OnInit {
     }
 
     add_video_views(): void {
-        console.log("ADD VIDEO VIEW METHOD " + this.container);
+        // console.log("ADD VIDEO VIEW METHOD " + this.container);
         // this.localVideo.id = 'local-video';
         this.localVideo.className = 'large';
         this.remoteVideo.id = 'remote-video';
@@ -179,7 +193,7 @@ export class VideoChatComponent extends Observable implements OnInit {
         GridLayout.setRow(this.localVideo, 0);
         this.container.insertChild(this.remoteVideo, 0);
         this.container.insertChild(this.localVideo, 0);
-        console.log("ADD VIDEO VIEW METHOD END.......");
+        //  console.log("ADD VIDEO VIEW METHOD END.......");
     }
 
 
@@ -203,6 +217,7 @@ export class VideoChatComponent extends Observable implements OnInit {
     }
 
     get_permissions(): Promise<any> {
+        let self = this;
 
         return new Promise((resolve, reject) => {
 
@@ -229,7 +244,9 @@ export class VideoChatComponent extends Observable implements OnInit {
 
                         if (!has_permissions) {
 
-                            dialogs.alert("without mic and camera permissions \n you cannot connect. \n please allow permissions in settings and try again.").then(() => {
+                            // dialogs.alert("without mic and camera permissions \n you cannot connect. \n please allow permissions in settings and try again.").then(() => {
+                            dialogs.alert("24/7 Call-A-Doc needs access to your mic and camera for video consult. Please allow permissions and try again.").then(() => {
+                                self.rt.navigate(["/home"], { clearHistory: true });
 
                             });
 
@@ -246,7 +263,7 @@ export class VideoChatComponent extends Observable implements OnInit {
                         console.log(JSON.stringify(reason));
                         this.error = reason;
 
-                        dialogs.alert("without mic and camera permissions \n you cannot connect. \n please allow permissions in settings and try again.").then(() => {
+                        dialogs.alert("24/7 Call-A-Doc needs access to your mic and camera for video consult. Please allow permissions and try again.").then(() => {
 
                             UIApplication.sharedApplication.openURL(NSURL.URLWithString(UIApplicationOpenSettingsURLString));
 
@@ -311,22 +328,22 @@ export class VideoChatComponent extends Observable implements OnInit {
 
 
     public disconnect() {
-        ApplicationSettings.setBoolean("isDocCalling", false);
-        global.__extends.isAppRuns = false;
+        // ApplicationSettings.setBoolean("isDocCalling", false);
+        // global.__extends.isAppRuns = false;
         if (this.videoActivity.room) {
             this.videoActivity.disconnect();
         }
-        if (this.player != null)
+        if (this.player != null) {
             this.player.dispose();
+        }
+        this.rt.navigate(["/home"], { clearHistory: true });
     }
 
 
     public toggle_local_audio() {
-
+        this.muted = !this.muted;
         this.videoActivity.toggle_local_audio();
-
     }
-
 
     public toggle_local_video() {
 
@@ -351,30 +368,37 @@ export class VideoChatComponent extends Observable implements OnInit {
              }, e => {
                  this.set('error', e);
              });*/
-             this.getTwilioVCToken();
+        // this.getTwilioVCToken();
     }
 
-    getTwilioVCToken() {
+    getTwilioVCToken(id) {
+
         let self = this;
-        console.log("GET TWILIO TOKEN.............");
+        //console.log("GET TWILIO TOKEN............."+id);
         if (self.webapi.netConnectivityCheck()) {
-            self.webapi.launchTwilioVideo(68971).subscribe(data => {
+            self.webapi.loader.show(self.webapi.options);
+            self.webapi.launchTwilioVideo(id).subscribe(data => {
                 xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
                     if (result.APIResult_VideoConferenceAuthKey.Successful == "true" && result.APIResult_VideoConferenceAuthKey.RoomAvailable == "true") {
                         console.log("GOT THE ACCESS TOKEN AND NAME");
                         self.videoActivity.set_access_token(result.APIResult_VideoConferenceAuthKey.AuthKey);
                         self.videoActivity.connect_to_room(result.APIResult_VideoConferenceAuthKey.RoomName);
+                        self.webapi.loader.hide();
 
                     } else {
                         console.log("ROOM NOT AVAILABLE");
+                        self.webapi.loader.hide();
                         if (result.APIResult_VideoConferenceAuthKey.Message === "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
                             self.webapi.logout();
+                        } else {
+                            alert("Room not available. Please try after some time.");
                         }
                         console.log("Session expired / Error in Video consult status");
                     }
                 });
             },
                 error => {
+                    self.webapi.loader.hide();
                     console.log("Error while getting video consult token.. " + error);
                 });
         }
@@ -395,18 +419,18 @@ export class VideoChatComponent extends Observable implements OnInit {
              content: JSON.stringify(data)
          });
  }*/
-    public get_token(): Promise<any> {
-        console.log("getToken");
-        let name = this.get('name')
-        return http.request({
-            url: "http://192.168.3.52:8080/grabaccess/rest/grab/accessToken",
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({ userName: name, roomName: this.get('room') })
-        });
-    }
+    /*   public get_token(): Promise<any> {
+           console.log("getToken");
+           let name = this.get('name')
+           return http.request({
+               url: "http://192.168.3.52:8080/grabaccess/rest/grab/accessToken",
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               content: JSON.stringify({ userName: name, roomName: this.get('room') })
+           });
+       } */
     playCallingSound() {
-        console.log("Play ifle")
+        //  console.log("Play ifle")
         this.player = new TNSPlayer();
         this.player.initFromFile({
             audioFile: '~/sounds/' + "iphone.mp3", // ~ = app directory
@@ -438,9 +462,9 @@ export class VideoChatComponent extends Observable implements OnInit {
         //  console.log('extra info on the error:', args.extra);
     }
     ngOnDestroy() {
-        console.log("VIDEO DESTROYED....");
-        ApplicationSettings.setBoolean("isDocCalling", false);
-        global.__extends.isAppRuns = false;
+        if (this.videoActivity.room) {
+            this.videoActivity.disconnect();
+        }
         if (this.player != null)
             this.player.dispose();
     }

@@ -26,6 +26,7 @@ export class PharmacyComponent {
     ngOnInit() {
         this.page.actionBarHidden = true; let self = this;
         this.radSideComponent.rcClass = true;
+        /* To show Preferred pharmacy */
         if (this.webapi.netConnectivityCheck()) {
             this.webapi.getMembersPreferredPharmacy_http().subscribe(data => {
                 xml2js.parseString(data._body, { explicitArray: false }, function (err, result) {
@@ -35,7 +36,7 @@ export class PharmacyComponent {
                         pharmacyAddr.push(self.preferredPharmacy.PharmacyAddress1 + " " + self.preferredPharmacy.PharmacyCity + ", " + self.preferredPharmacy.PharmacyState + " " + self.preferredPharmacy.PharmacyZip);
                         self.searchPharmacyToPlaceMarkers(pharmacyAddr);
                     } else if (result.APIResult_PreferredPharmacy.Message == "Session expired, please login using MemberLogin screen to get a new key for further API calls") {
-                        console.log("LOGOUT DUE SESSION TIME OUT IN PREFFRED PHARMACY --->" + result.APIResult_PreferredPharmacy.Message);
+                        //console.log("LOGOUT DUE SESSION TIME OUT IN PREFFRED PHARMACY --->" + result.APIResult_PreferredPharmacy.Message);
                         self.webapi.logout();
                     } else {
                         console.log("Error in getting preferred pharmacy ");
@@ -56,7 +57,7 @@ export class PharmacyComponent {
     }
     //Map events
     onMapReady(event) {
-        console.log('Map Ready');
+        // console.log('Map Ready');
         if (this.mapView || !event.object) return;
         this.mapView = event.object;
         this.mapView.latitude = 36.778259;
@@ -97,7 +98,7 @@ export class PharmacyComponent {
     }
     searchPharmacyToPlaceMarkers(pharAddrs: any[]) {
         let self = this;
-        console.log("Search place in map " + pharAddrs.length);
+        //console.log("Search place in map " + pharAddrs.length);
         let searchField = "";
         for (let i = 0; i < pharAddrs.length; i++) {
             searchField = "";
@@ -110,7 +111,8 @@ export class PharmacyComponent {
                     marker.title = self.placeG[0].name;
                     marker.snippet = self.placeG[0].formatted_address;
                     self.mapView.addMarker(marker);
-                    //self.mapView.zoom = 50;
+                    self.mapView.latitude = self.placeG[0].geometry.location.lat;
+                    self.mapView.longitude = self.placeG[0].geometry.location.lng;
                     self.centeredOnLocation = true;
                 },
                 error => {

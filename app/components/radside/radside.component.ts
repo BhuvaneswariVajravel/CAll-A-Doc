@@ -49,6 +49,8 @@ export class RadSideComponent {
         this.webapi.clearCache();
         this.rs.navigate(["/login"], { clearHistory: true });
     }
+
+    // To Show Loader Long content pages 
     navigateToPage(data: any) {
         let self = this;
         if (self.webapi.netConnectivityCheck()) {

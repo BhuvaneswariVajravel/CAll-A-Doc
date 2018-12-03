@@ -21,6 +21,7 @@ export class TermsConditionsComponent {
 			}
 		});
 	}
+	/* To activate user account in server */
 	activate() {
 		if (this.webapi.netConnectivityCheck()) {
 			let self = this;

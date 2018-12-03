@@ -226,6 +226,17 @@ export class WebAPIService {
                         .post(this.configuration.ConsultHistoryAPI + "ConsultationSearch", body, options)
                         .map((response: Response) => response);
         }
+
+        videochathistory(): Observable<any> {
+                let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+                let options = new RequestOptions({ headers: headers });
+                let input = { Key: this.Key, GroupNumber: this.GroupNumber, ExternalMemberId: this.ExternalMemberId, PhysicianFirstName: "", PhysicianLastName: "", ServiceType: "Video Consult", ServiceStatus: "New", ServiceDateStart: "", ServiceDateEnd: "", PageNumber: 1, ItemCountPerPage: 100, Demo: "" };
+                let body = this.JsonToFormEncoded(input);
+                return this.http
+                        .post(this.configuration.ConsultHistoryAPI + "ConsultationSearch", body, options)
+                        .map((response: Response) => response);
+        }
+
         consulthistoryView(itemId): Observable<any> {
                 let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
                 let options = new RequestOptions({ headers: headers });
@@ -254,10 +265,10 @@ export class WebAPIService {
                         .map((response: Response) => response);
         }
         //Scheduled Consults
-        scheduledconsults(pageNo): Observable<any> {
+        scheduledconsults(pageNo,total): Observable<any> {
                 let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
                 let options = new RequestOptions({ headers: headers });
-                let input = { Key: this.Key, GroupNumber: this.GroupNumber, ExternalMemberId: this.ExternalMemberId, PageNumber: pageNo, ItemCountPerPage: 6, Demo: "" };
+                let input = { Key: this.Key, GroupNumber: this.GroupNumber, ExternalMemberId: this.ExternalMemberId, PageNumber: pageNo, ItemCountPerPage: total, Demo: "" };
                 let body = this.JsonToFormEncoded(input);
                 return this.http
                         .post(this.configuration.ConsultHistoryAPI + "ConsultationScheduledList_Get", body, options)
